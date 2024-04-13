@@ -4,7 +4,8 @@ import TaskComponent, { TaskProps } from './components/task'
 import ChallengeComponent, { ChallengeUsageProps } from './components/challenge'
 import QuizComponent, { QuizObjectProps } from './components/quiz';
 
-import Title from '@/app/reusables/title'
+import Title from '@/app/reusables/content/title'
+import DividerWithText from '@/app/reusables/layouts/divider';
 
 type CourseData = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps;
 
@@ -39,8 +40,8 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ dataItem }) =
         case 'quiz':
             return <QuizComponent data={ dataItem as QuizObjectProps } />
         default:
-            // This should never happen, but it's good to handle unexpected cases
-            return <div> Could not render course Item... </div>;
+            // This should never happen, but it's good to handle unexpected cases ...
+            return <div> Could not render course Item... </div>
     }
 }
 
@@ -48,10 +49,15 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ dataItem }) =
 const CourseMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> = ({ data, courseInfo }) => {
     return (
         <div className="overflow-y-scroll overflow-x-hidden px-3">
-            <Title title={ courseInfo.title } variant='heading' />
-            <p> 
-                { courseInfo.description }
-            </p>
+            <div className="mb-10">
+                <Title title={ courseInfo.title } variant='heading' />
+                <p> { courseInfo.description } </p>    
+            </div>
+            
+            <DividerWithText className="">
+                enjoy your course 🙂
+            </DividerWithText>
+
             {data.map((item: CourseData, index: React.Key | null | undefined) => (
                 <DataChoiceComponent key={index} dataItem={item} />
             ))}

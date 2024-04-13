@@ -1,5 +1,5 @@
-import ReusableVideoComponent, { VideoReference } from "@/app/reusables/video";
-import ReusableArticleCardComponent, { ArticleReference } from "@/app/reusables/article";
+import ReusableVideoComponent, { VideoReference } from "@/app/reusables/content/video";
+import ReusableArticleCardComponent, { ArticleReference } from "@/app/reusables/content/article";
 
 type CourseReference = VideoReference | ArticleReference;
 
@@ -34,7 +34,7 @@ export default function CourseSidebarComponent({ references }: CourseSidebarRefe
         <div className="flex-grow rounded-xl flex-col ml-3">
             <h2 className="text-lg font-bold">References</h2>
             {references.map((reference, index) => (
-                <div key={index} className="bg-white p-3 rounded-xl my-4 hover:shadow-lg cursor-pointer">
+                <div key={index} className="my-4 cursor-pointer">
                     <ReferenceComponent reference={ reference } />
                 </div>
             ))}

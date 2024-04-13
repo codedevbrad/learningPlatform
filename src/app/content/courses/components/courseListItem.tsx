@@ -8,6 +8,17 @@ interface CourseComponentProps {
   course: Course;
 }
 
+import Heart from "react-animated-heart";
+
+function HeartIcon () {
+  const [isClick, setClick] = useState(false);
+  return (
+    <div className="App">
+      <Heart isClick={isClick} onClick={() => setClick(!isClick)} />
+    </div>
+  );
+}
+
 // CourseComponent functional component
 const CourseComponent: React.FC<CourseComponentProps> = ({ course }) => {
   return (
@@ -34,6 +45,9 @@ const CourseComponent: React.FC<CourseComponentProps> = ({ course }) => {
                 View course
             </Link>
           </div>
+      </div>
+      <div>
+          <HeartIcon />
       </div>
     </div>
   );

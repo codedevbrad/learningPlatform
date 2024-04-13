@@ -22,7 +22,9 @@ const ReusableVideoComponent: React.FC<ReusableVideoComponentProps> = ({ referen
   const { title, description, imageUrl, url } = reference;
 
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="max-w-4xl mx-auto flex items-center bg-white rounded-lg  transition-shadow duration-300 ease-in-out no-underline">
+    <a href={url} target="_blank" 
+    rel="noopener noreferrer" 
+    className="p-4 shadow-md shadow-purple-900 max-w-4xl mx-auto flex items-center bg-purple-950 rounded-lg transition-shadow duration-300 ease-in-out no-underline">
       <div className="relative flex-none aspect-w-16 aspect-h-9 w-20">
         <img src={imageUrl} alt={`Cover for ${title}`} className="rounded-lg w-full h-full object-cover" />
         <div className="absolute inset-0 flex justify-center items-center">
@@ -30,8 +32,8 @@ const ReusableVideoComponent: React.FC<ReusableVideoComponentProps> = ({ referen
         </div>
       </div>
       <div className="ml-4 flex-grow">
-        <h2 className="text-lg font-bold truncate text-black">{title}</h2>
-        <p className="mt-1 text-gray-600 text-sm truncate">{description}</p>
+        <h2 className="text-lg font-bold truncate text-white">{title}</h2>
+        <p className="mt-1 text-white text-sm truncate">{description}</p>
       </div>
     </a>
   );

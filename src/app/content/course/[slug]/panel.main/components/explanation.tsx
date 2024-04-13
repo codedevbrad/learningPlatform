@@ -1,5 +1,5 @@
 import React from 'react';
-import Title from '@/app/reusables/title';
+import Title from '@/app/reusables/content/title';
 
 interface ExplanationProps {
   content: string;

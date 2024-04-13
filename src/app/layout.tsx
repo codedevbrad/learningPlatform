@@ -23,7 +23,9 @@ export default function RootLayout({
         <html className="h-full" lang="en">
         <body className='h-full overflow-hidden'>
             <DashboardLayout>
-                { children }
+                <div className="overflow-y-scroll">
+                   { children }
+                </div>
                 {/* <Toaster />  */}
             </DashboardLayout>
         </body>

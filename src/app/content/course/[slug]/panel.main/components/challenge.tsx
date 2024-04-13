@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import React from 'react';
-import Title from "@/app/reusables/title";
+import Title from "@/app/reusables/content/title";
 
 // Define the type for a single challenge
 interface ChallengeProps {

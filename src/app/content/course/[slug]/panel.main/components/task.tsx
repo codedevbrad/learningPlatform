@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Title from '@/app/reusables/title';
+import Title from '@/app/reusables/content/title';
 
 interface TaskProps {
     type: 'task';
