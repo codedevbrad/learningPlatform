@@ -1,4 +1,4 @@
-import { colors } from "@/app/data";
+import { colors } from "@/app/authed/data";
 export default function DividerWithText ({ className, children }) {
     return (
       <div className={`relative flex items-center justify-center py-2 z-0 ${className}`}>

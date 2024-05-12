@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,60 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Passwords {
-//   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-//   associated  Json  
-//   username    String
-//   password    String
-//   status      Boolean @default(true)
-//   lastUsed    DateTime?
-//   categoryIds String[]
-//   userId      String
-// }
+// schema.prisma
 
-model Courses {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
-  description   String
-  imageUrl      String
-  categoryTags  String[] // Assuming these are just string identifiers for now
-  tagIds        String[] @db.ObjectId // Array of Tag IDs
-  belongsToIds  String[] @db.ObjectId // Array of BelongsTo IDs (e.g., departments or categories)
-  courseData    String[] @db.ObjectId
-  projects      Json[]
-}
- 
-model CourseInCourses {
-  id  String   @id @default(auto()) @map("_id") @db.ObjectId
-  data Json[]
+model Concepts {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  topics      Topic[]   // Define a one-to-many relationship with the Topic model
 }
 
-model Tags {
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  // Any other fields relevant to a Tag
-}
- 
-model BelongsTo {
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  // Additional fields as needed
+model Topic {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  data        Json[]
+  concept     Concepts   @relation(fields: [conceptId], references: [id])
+  conceptId   String
 }
 
-model UserLearning {
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId String 
-  coursesAssigned String[] @db.ObjectId // Array of Course IDs
+model Category {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
 }
-
-model CourseWork {
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  videos String[]
-  // resources
-  // completed 
-  // notes
-}
-
-
-
-// 

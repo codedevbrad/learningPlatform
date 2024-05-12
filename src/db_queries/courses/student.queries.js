@@ -1,7 +1,7 @@
 import prisma from '../../../prisma/client'; 
 import { currentUser } from '@clerk/nextjs';
 
-// Retrieve all passwords
+// * COURSES * //
 export async function getAllCourses ( ) {
   // get current logged userId.
   const { id } = await currentUser();
@@ -11,7 +11,3 @@ export async function getAllCourses ( ) {
     where: { userId: id }
   });
 } 
-
-export async function getCoursesAssigned ( ) {
-    
-}
