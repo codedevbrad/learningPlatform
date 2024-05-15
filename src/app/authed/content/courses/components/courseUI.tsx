@@ -1,41 +1,70 @@
 'use client';
-import React, { useState } from "react";
-import { Course } from "../types";
-import CourseComponent from "./courseListItem";
+import React, { useState } from "react"
+import Heart from "react-animated-heart"
+import Link from "next/link";
 
-export default function CoursesUI() {
-    const [courses, updateCourses] = useState<Course[]>([
-        {
-            courseId: 1,
-            title: "Introduction to React",
-            description: "Learn the fundamentals of React, including components, state, and props.",
-            imageUrl: "https://via.placeholder.com/150",
-            categoryTags: ["JavaScript", "ReactJs"],
-            belongsTo: 'Frontend'
-        },
-        {
-            courseId: 2,
-            title: "Advanced React",
-            description: "Dive deeper into React with hooks, context API, and advanced patterns.",
-            imageUrl: "https://via.placeholder.com/150",
-            categoryTags: ["JavaScript", "ReactJs", "Advanced"],
-            belongsTo: 'Frontend'
-        },
-        {
-            courseId: 3,
-            title: "Full Stack Development with Node.js",
-            description: "Become a full stack developer by learning how to build backend services with Node.js.",
-            imageUrl: "https://via.placeholder.com/150",
-            categoryTags: ["JavaScript", "Node.js"],
-            belongsTo: 'Full Stack'
-        },
-    ]);
-    
-    return (
-        <div className="">
-            {courses.map((course) => (
-                <CourseComponent course={ course } />
-            ))}
+function HeartIcon () {
+  const [isClick, setClick] = useState(false);
+  return (
+    <div className="App">
+      <Heart isClick={isClick} onClick={() => setClick(!isClick)} />
+    </div>
+  );
+}
+
+
+interface Course {
+  id: string;
+  name: string;
+  categories: { id: string; name: string }[];
+  languages: { id: string; name: string }[];
+  description: string;
+  imgUrl: string;
+}
+
+interface CoursesUIProps {
+  courses: Course[];
+}
+
+export default function CoursesUI({ courses }: CoursesUIProps) {
+  const [coursesData, updateCourses] = useState<Course[]>(courses);
+
+  return (
+    <div className="">
+      {courses.map((course, index) => (
+        
+        <div key={index} className="flex flex-row mb-6 bg-white p-4 rounded-xl">
+          <img src={course.imgUrl} alt={course.name} className="w-29 h-24 mr-4 rounded-xl" />
+
+          <div className="flex flex-col flex-1">
+            <h2 className="text-xl font-semibold">
+              {course.name}
+              {course.categories.map((category, catIndex) => (
+                <span key={catIndex} className="mx-2 border border-grey-200 rounded-lg p-1 px-2 font-normal text-sm">
+                  {category.name}
+                </span>
+              ))}
+            </h2>
+            <p className="text-gray-700 mt-2">{course.description}</p>
+            <div className="flex flex-row my-2">
+              {course.languages.map((language, langIndex) => (
+                <span key={langIndex} className="mr-3 border border-grey-200 rounded-lg p-1 px-2 text-sm">
+                  {language.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <HeartIcon />
+          </div>
+          <div className="flex items-center justify-end">
+            <Link href={`course/${course.id}`} className="bg-blue-800 p-3 px-5 text-white rounded-md">
+              View course
+            </Link>
+          </div>
         </div>
-    );
+      ))}
+    </div>
+  );
 }

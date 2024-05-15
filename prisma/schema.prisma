@@ -16,22 +16,70 @@ datasource db {
 // schema.prisma
 
 model Concepts {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   topics      Topic[]   // Define a one-to-many relationship with the Topic model
 }
 
 model Topic {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   data        Json[]
-  concept     Concepts   @relation(fields: [conceptId], references: [id])
-  conceptId   String
+  concept     Concepts @relation(fields: [conceptId], references: [id])
+  conceptId   String 
 }
 
-model Category {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+model Courses {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  description String 
+  imgUrl      String 
+  data        Json[]
+  resources   Json[]
+  categories  CategoryCourse[]
+  languages   LanguagesCourse[]
+  userDataOnCourse UserDataForCourse?
+}
+
+model Categories {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  color       String
+  courses     CategoryCourse[]
+}
+
+model Languages {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  color       String
+  courses     LanguagesCourse[]
+}
+
+model CategoryCourse {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Courses      @relation(fields: [courseId], references: [id])
+  courseId    String       @db.ObjectId
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  categoryId  String       @db.ObjectId
+}
+
+model LanguagesCourse {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Courses      @relation(fields: [courseId], references: [id])
+  courseId    String       @db.ObjectId
+  language    Languages    @relation(fields: [languageId], references: [id])
+  languageId  String       @db.ObjectId
+}
+
+// ... user content ... //
+
+model UserDataForCourse {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  userNotes    Json[]
+  userProgress Boolean
+  userId       String
+  course       Courses     @relation(fields: [courseId], references: [id])
+  courseId     String      @db.ObjectId @unique
 }

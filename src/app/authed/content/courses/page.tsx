@@ -1,12 +1,14 @@
 import Title from "@/app/reusables/content/title"
 import CoursesUI from "./components/courseUI"
- 
-export default function CoursesPage ( ) {
+import { getAllCourses } from "@/db_queries/courses/student.queries"
+
+export default async function CoursesPage ( ) {
+    const courses = await getAllCourses();
     return (
         <main className="flex flex-col items-center p-4">
             <Title title="Courses to work on" variant="heading" />
             <div className="my-6">
-                <CoursesUI /> 
+                <CoursesUI courses={ courses }/> 
             </div>
         </main>
     )
