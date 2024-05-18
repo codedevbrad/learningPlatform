@@ -1,7 +1,9 @@
 'use client';
 import React, { useState } from "react"
 import Heart from "react-animated-heart"
-import Link from "next/link";
+import Link from "next/link"
+import { CourseType } from "@/../prisma/schema.types"
+
 
 function HeartIcon () {
   const [isClick, setClick] = useState(false);
@@ -13,25 +15,16 @@ function HeartIcon () {
 }
 
 
-interface Course {
-  id: string;
-  name: string;
-  categories: { id: string; name: string }[];
-  languages: { id: string; name: string }[];
-  description: string;
-  imgUrl: string;
-}
-
 interface CoursesUIProps {
-  courses: Course[];
+  courses: CourseType[];
 }
 
 export default function CoursesUI({ courses }: CoursesUIProps) {
-  const [coursesData, updateCourses] = useState<Course[]>(courses);
+  const [coursesData, updateCourses] = useState<CourseType[]>(courses);
 
   return (
     <div className="">
-      {courses.map((course, index) => (
+      {coursesData.map((course, index) => (
         
         <div key={index} className="flex flex-row mb-6 bg-white p-4 rounded-xl">
           <img src={course.imgUrl} alt={course.name} className="w-29 h-24 mr-4 rounded-xl" />

@@ -6,7 +6,8 @@ import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { SignedIn, UserButton } from "@clerk/nextjs"
 import Link from 'next/link'
-import { signInRedirect } from "@/app/flows";
+import { signInRedirect } from "@/app/flows"
+import { usePathname } from 'next/navigation'
 
 function HeaderLogo ( ) {
   return (
@@ -35,7 +36,7 @@ export default function Header() {
                       <NavMenu link={{ title: 'explore' , href: '#' }} subLinks={[
                         { title: 'courses' , href: '/authed/content/courses' },
                         { title: 'concepts' , href: '/authed/content/concepts' },
-                        { title: 'challenge me' , href: '/authed/content/challenge' }
+                        { title: 'challenge me' , href: '/authed/content/challenges' }
                       ]} />
                       <NavMenu link={{ title: 'help with' , href: '#' }} subLinks={[
                         { title: 'figuring problems out' , href: '/authed/content/help/chat' },
@@ -57,7 +58,6 @@ export default function Header() {
           </button>
           <div>
             <SignedIn>
-              {/* Mount the UserButton component */}
               <UserButton />
             </SignedIn>
           </div>

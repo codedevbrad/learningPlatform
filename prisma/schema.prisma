@@ -13,41 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// schema.prisma
+// schema.prisma ...
 
-model Concepts {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  topics      Topic[]   // Define a one-to-many relationship with the Topic model
-}
 
-model Topic {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  data        Json[]
-  concept     Concepts @relation(fields: [conceptId], references: [id])
-  conceptId   String 
-}
-
-model Courses {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String 
-  imgUrl      String 
-  data        Json[]
-  resources   Json[]
-  categories  CategoryCourse[]
-  languages   LanguagesCourse[]
-  userDataOnCourse UserDataForCourse?
-}
+// ***** Tags ****** //
 
 model Categories {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   color       String
   courses     CategoryCourse[]
+  concepts    CategoriesConcept[]
 }
 
 model Languages {
@@ -55,7 +31,81 @@ model Languages {
   name        String
   color       String
   courses     LanguagesCourse[]
+  concepts    LanguagesTopic[]
 }
+
+// ****** CONCEPTS ****** // 
+
+model Concepts {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  topics      Topic[]   // Define a one-to-many relationship with the Topic model.
+  active      Boolean
+  imgUrl      String  @default("")
+  categories  CategoriesConcept[]
+}
+
+model Topic {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  concept     Concepts @relation(fields: [conceptId], references: [id])
+  conceptId   String   @db.ObjectId
+  active      Boolean 
+  data        Json[]
+  resources   Json[]
+  languages   LanguagesTopic[]
+  userDataOnCourse UserDataForTopic?
+}
+
+// ... relations between a topic and tags ... //
+
+model CategoriesConcept {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  concept     Concepts        @relation(fields: [conceptId], references: [id])
+  conceptId   String       @db.ObjectId
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  categoryId  String       @db.ObjectId
+}
+
+model LanguagesTopic {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Topic        @relation(fields: [topicId], references: [id])
+  topicId     String       @db.ObjectId
+  language    Languages    @relation(fields: [languageId], references: [id])
+  languageId  String       @db.ObjectId
+}
+
+// ... user content for concepts ... //
+
+model UserDataForTopic {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  userNotes    Json[]
+  userProgress Boolean
+  userId       String
+  topic        Topic     @relation(fields: [topicId], references: [id])
+  topicId      String    @db.ObjectId @unique
+}
+
+
+// **** Courses ***** //
+
+model Courses {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String 
+  imgUrl      String  @default("")
+  data        Json[]
+  resources   Json[]
+  categories  CategoryCourse[]
+  languages   LanguagesCourse[]
+  userDataOnCourse UserDataForCourse?
+  active      Boolean
+}
+
+
+// ... relations between course and tags ... //
 
 model CategoryCourse {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId

@@ -1,4 +1,4 @@
-import { FaHome, FaUserAlt, FaCog } from 'react-icons/fa'; // Import specific icons
+import { FaHome, FaUserAlt, FaCog } from 'react-icons/fa' // Import specific icons ..
 
 export const navigation = [
     { name: 'Courses', href: '/content/courses', current: true  },

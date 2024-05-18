@@ -1,4 +1,5 @@
-import prisma from '../../../prisma/client'; 
+import prisma from '../../../prisma/client'
+
 
 // Fetch categories by IDs
 export async function getCategoriesByIds(categoryIds: string[]) {
@@ -35,14 +36,18 @@ export async function getLanguagesByIds(languageIds: string[]) {
   }
 }
 
-
-export async function getUserDataForCourse ( ) {
-  try {
-
-  }
-  catch ( err ) {
-
-  }
+export async function getCourseById( id ) {
+    try {
+      return await prisma.courses.findUnique({
+        where: {
+          id
+        }
+      })
+    }
+    catch ( error ) {
+      console.error('Error fetching languages:', error);
+      return [];
+    }
 }
 
 // Fetch all courses with associated categories and languages ...

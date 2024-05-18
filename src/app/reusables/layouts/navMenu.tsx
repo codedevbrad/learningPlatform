@@ -1,5 +1,6 @@
 import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "@/components/ui/navigation-menu"
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
+import { usePathname } from 'next/navigation'
 
 import Link from "next/link"
 import { UrlObject } from "url"

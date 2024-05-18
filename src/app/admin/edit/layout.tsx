@@ -12,7 +12,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
         <div className="p-5">
             <Title title="Content Work" variant="heading" />
-            <div className=" mt-5 flex min-h-screen w-full flex-col bg-gray-100 p-5 rounded-lg">
+            <div className=" mt-5 flex min-h-screen w-full flex-col">
                { children }
             </div>
         </div>
