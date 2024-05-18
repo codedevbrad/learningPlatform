@@ -1,0 +1,36 @@
+import prisma from '../../../prisma/client'
+
+// Fetch categories by IDs
+export async function getCategoriesByIds(categoryIds: string[]) {
+    try {
+      const categories = await prisma.categories.findMany({
+        where: {
+          id: {
+            in: categoryIds
+          }
+        }
+      });
+      return categories;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+  }
+  
+  // Fetch languages by IDs
+  export async function getLanguagesByIds(languageIds: string[]) {
+    try {
+      const languages = await prisma.languages.findMany({
+        where: {
+          id: {
+            in: languageIds
+          }
+        }
+      });
+      return languages;
+    } 
+    catch (error) {
+      console.error('Error fetching languages:', error);
+      return [];
+    }
+  }
