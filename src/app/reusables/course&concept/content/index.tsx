@@ -1,5 +1,5 @@
 import React from 'react';
-import ExplanationComponent, { ExplanationProps } from "@/app/reusables/components/explanation"
+import ExplanationComponent, { ExplanationProps } from "@/app/reusables/components/blocks/explanation/explanation"
 import TaskComponent, { TaskProps } from '@/app/reusables/components/task'
 import ChallengeComponent, { ChallengeUsageProps } from '@/app/reusables/components/challenge'
 import QuizComponent, { QuizObjectProps } from '@/app/reusables/components/quiz'
