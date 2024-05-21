@@ -14,4 +14,10 @@ what i need to know
 * will courses and concepts look exactly the same. if so, then what makes a course better and more unique than
   a concept?.
 
-i've also got 
+i've also got i real issue with how i do admin edit for concepts/courses and challenges.
+Do i do the edit in the actual page? or do i seperate this into the admin. 
+
+at the moment i've got concept, courses and challenges that are all using the same blocks and get rendered the same way. I'm
+really not sure about this though.
+
+you'd think really, i should be adding the admin sections into the page content

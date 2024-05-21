@@ -1,7 +1,4 @@
-// The web development learning path object
 
-
-// model
  {
     "id": "some_concept_id_1",
     "title": "Concept Title 1",

@@ -1,8 +1,8 @@
 import React from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
-import ContentHeader from '@/app/reusables/course&concept/header'
-import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/course&concept/content"
+import ContentHeader from '@/app/reusables/components/templates/client/header/index'
+import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/components/render/index"
 
 
 interface InfoProps {
@@ -18,7 +18,6 @@ interface DataProps {
 }
 
 
-
 const CourseMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> = ({ data, courseInfo }) => {
     return (
         <div className=" overflow-x-hidden px-3">
@@ -28,7 +27,7 @@ const CourseMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> 
                 enjoy your course 🙂
             </DividerWithText>
 
-            <PlatformContentBlocks data={ data } />
+            <PlatformContentBlocks data={ data } isInAdminMode={ false } adminTools={ null } />
 
             <div className="flex justify-center p-5 my-7 items-center">
                 <p className='border border-gray-200 rounded-xl p-3 px-6'> I feel i've completed this course </p> 

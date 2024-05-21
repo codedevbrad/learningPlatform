@@ -1,21 +1,25 @@
-import React , { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import ExplanationComponent, { ExplanationProps } from './explanation';
+import React , { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import ExplanationComponent, { ExplanationProps } from './explanation'
 
-import AdminBlockTemplate from '../../admin/admin.block.form'
+import AdminBlockTemplate from '../../templates/admin/admin.block.form'
+
+import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
 
-export default function ExplanationAdminBlock() {
-  const [formData, setFormData] = useState<ExplanationProps>({
-    content: '',
-    title: '',
-    type: 'explanation',
-  });
+interface ExplanationBlockProps {
+    data: ExplanationProps;
+    blockIndex: number;
+    adminTools: AdminToolsProps;
+}
 
-  const [savedData, setSavedData] = useState<ExplanationProps | null>(null);
+
+const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminTools, blockIndex }) => {
+  const [formData, setFormData] = useState<ExplanationProps>( data );
+  const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
   const [isSaved, setIsSaved] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -31,6 +35,7 @@ export default function ExplanationAdminBlock() {
     e.preventDefault();
     setSavedData(formData);
     setIsSaved(true);  // Set the save status to true
+    adminTools.updateDataBlock({ blockData: formData , blockIndex });
   };
 
   const form = (
@@ -79,3 +84,5 @@ export default function ExplanationAdminBlock() {
       />
   );
 }
+
+export default ExplanationAdminBlock;

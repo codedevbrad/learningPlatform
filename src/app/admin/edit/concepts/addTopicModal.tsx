@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { action_addNewTopic } from './actions'
 import { ConceptType } from '../../../../../prisma/schema.types'
+
+
 interface AddTopicModalProps {
   updateTable: (topics: ConceptType[]) => void;
   conceptId: string;

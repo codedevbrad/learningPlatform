@@ -1,6 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "@/components/ui/card";
-import Title from "../../content/title";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription,  CardHeader, CardTitle } from "@/components/ui/card"
+import Title from "../../../content/title"
 
 interface AdminBlockTemplateProps {
     title: string;
@@ -8,7 +8,6 @@ interface AdminBlockTemplateProps {
     form: React.ReactNode;
     savedData: React.ReactNode;
 }
-  
   
 const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, description, form, savedData }) => {
     return (
@@ -21,10 +20,6 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, descript
             </TabsList>
             <TabsContent value="form">
               <Card className="border-none">
-                <CardHeader>
-                  <CardTitle> Fill Out the {title} form </CardTitle>
-                  <CardDescription>{description}</CardDescription>
-                </CardHeader>
                 {form}
               </Card>
             </TabsContent>

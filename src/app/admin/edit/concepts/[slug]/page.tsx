@@ -2,7 +2,7 @@
 // Import necessary dependencies and functions.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import EditDataComponent from "./admin/data"
+import EditDataComponent from "./admin/data/data"
 
 export default function AdminPage ({ params }: { params: { slug: string } }) {
   return (
