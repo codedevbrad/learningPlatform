@@ -80,7 +80,7 @@ model LanguagesTopic {
 // ... user content for concepts ... //
 
 model UserDataForTopic {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   userNotes    Json[]
   userProgress Boolean
   userId       String

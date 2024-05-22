@@ -12,6 +12,29 @@ interface ConceptsTableProps {
   conceptsState: ConceptType[];
 }
 
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button'
+ 
+export function ConceptTopicPopup ({ topicId }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline"> ... </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <span> Delete </span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+
 // Define ConceptsTable functional component
 const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
   console.log(conceptsState);
@@ -102,6 +125,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
                 <TableHead className="w-auto">Description</TableHead>
                 <TableHead className="">Status</TableHead>
                 <TableHead className="">Edit your page</TableHead>
+                <TableHead className=""> </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -153,12 +177,16 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
 
                   <TableCell className="font-medium">
                     <div className="flex mt-2">
-                      <Link href={`/admin/edit/concepts/${topic.id}`}>
+                      <Link href={`/admin/edit/${topic.id}`}>
                           <div className={`border px-2 py-1 rounded border-gray-200`}>
                             edit topic
                           </div>
                       </Link>
                     </div>
+                  </TableCell>
+
+                  <TableCell className="cursor-pointer">
+                      <ConceptTopicPopup topicId={ topic.id } />
                   </TableCell>
                 </TableRow>
               ))}

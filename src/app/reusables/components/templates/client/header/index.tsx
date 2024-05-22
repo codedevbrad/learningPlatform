@@ -1,4 +1,4 @@
-import Title from "../../content/title"
+import Title from "../../../../content/title"
 import CourseExtraExpandable from "./expands"
 
 

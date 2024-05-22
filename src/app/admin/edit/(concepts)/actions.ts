@@ -1,11 +1,23 @@
 'use server'
-import { updateTopicDetails, updateTopicStatus, addNewTopic, findTopicById } from "@/db_queries/concepts/student.queries"
+import { findTopicById } from "@/db_queries/concepts/student.queries"
+import { updateTopicData,  updateTopicDetails, updateTopicStatus, addNewTopic } from "@/db_queries/concepts/admin.queries"
 
-// Define a custom error interface
+// Define a custom error interface.
 interface CustomError extends Error {
   message: string;
 }
 
+export const action_saveConceptBlock = async(topicId: string, newData: any[]): Promise<any> => {
+    try {
+        let topics = await updateTopicData(topicId, newData);
+        console.log( topics );
+        return topics;
+    } 
+    catch (error) {
+        console.error('Error updating topic data asynchronously:', error);
+        throw new Error('Failed to update topic data asynchronously.');
+    }
+}
 
 export async function action_getTopicById(topicId: string) {
   try {

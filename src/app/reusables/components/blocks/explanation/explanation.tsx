@@ -11,6 +11,12 @@ interface ExplanationUsageProps {
     data: ExplanationProps
 }
 
+export const explanationObject = {
+  content: '',
+  title: '',
+  type: 'explanation'
+}
+
 const ExplanationComponent: React.FC<ExplanationUsageProps> = ({ data }) => {
   return (
     <div className="mt-4">

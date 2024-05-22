@@ -20,7 +20,7 @@ export default function AdminPage ({ params }: { params: { slug: string } }) {
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="Data" className="p-6 border border-gray-200 mt-4 rounded-lg">
-                    <EditDataComponent id={ params.slug } />
+                    <EditDataComponent topicId={ params.slug } />
                 </TabsContent>
                 <TabsContent value="Resources">
                     Resources

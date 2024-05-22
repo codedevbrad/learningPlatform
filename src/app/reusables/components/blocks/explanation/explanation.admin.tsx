@@ -35,12 +35,12 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
     e.preventDefault();
     setSavedData(formData);
     setIsSaved(true);  // Set the save status to true
-    adminTools.updateDataBlock({ blockData: formData , blockIndex });
+    adminTools.updateDataBlock({ type: 'update', blockData: formData , blockIndex });
   };
 
   const form = (
     <form onSubmit={handleSubmit}>
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-2 px-0">
         <div className="space-y-1">
           <Label htmlFor="title">Title</Label>
           <Input
@@ -53,6 +53,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
         <div className="space-y-1">
           <Label htmlFor="content">Content</Label>
           <textarea
+            rows={5}
             id="content"
             name="content"
             value={formData.content}

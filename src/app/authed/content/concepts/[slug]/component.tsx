@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
@@ -17,7 +18,7 @@ interface DataProps {
 }
 
 
-const CourseMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> = ({ data, courseInfo }) => {
+const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> = ({ data, courseInfo }) => {
     return (
         <div className=" overflow-x-hidden px-3">
             <ContentHeader courseInfo={ courseInfo } />
@@ -36,4 +37,4 @@ const CourseMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> 
 };
 
 
-export default CourseMainComponent;
+export default ConceptTopicMainComponent;

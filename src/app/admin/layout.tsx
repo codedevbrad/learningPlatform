@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Title from "../reusables/content/title"
 import Header from './(layout)/header'
   
 // imports ...

@@ -19,7 +19,7 @@ const ConceptsRender = async () => {
               <ul>
                 { area.topics.map((topic, topicIndex) => (
                   <li key={topicIndex} className="p-3 border border-gray-200 rounded-lg my-4">
-                    <Link href={`/authed/content/concepts/${ area.id }`} className="text-md">
+                    <Link href={`/authed/content/concepts/${ topic.id }`} className="text-md">
                         <Title title={ topic.title } variant="subheading2" /> 
                         <p> { topic.description }  </p>  
                     </Link>
