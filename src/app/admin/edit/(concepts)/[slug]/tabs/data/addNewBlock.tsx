@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 
 import { explanationObject } from "@/app/reusables/components/blocks/explanation/explanation"
 import { quizObject } from "@/app/reusables/components/blocks/quiz/quiz"
+import { codeSnippetObject } from "@/app/reusables/components/blocks/snippet/snippet"
 
 import { UpdateDataBlockProps } from "."
 
@@ -36,10 +37,14 @@ export default function AddNewDataBlock ({ addDataToBlock }: AddNewDataBlockProp
               }) }>
                 <div> Quiz </div>
               </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
+                  type: 'new', blockData: codeSnippetObject, blockIndex: 0 
+              }) }>
+                <div> Code snippet </div>
+              </DropdownMenuItem>
 
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     )
-  }
-  
+}
