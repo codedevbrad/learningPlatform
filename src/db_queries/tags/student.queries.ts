@@ -1,5 +1,15 @@
 import prisma from '../../../prisma/client'
 
+export async function getCategories ( ) {
+    try {
+      return await prisma.categories.findMany({});
+    }
+    catch ( error ) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+}
+
 // Fetch categories by IDs
 export async function getCategoriesByIds(categoryIds: string[]) {
     try {

@@ -11,10 +11,10 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
         <div className="p-5">
             <div>
-            <NextBreadcrumb />
+            <NextBreadcrumb breadcrumbs={[]}/>
             </div>
             <Title title="Content Work" variant="heading" />
-            <div className=" mt-5 flex min-h-screen w-full flex-col">
+            <div className="mt-5 flex min-h-screen w-full flex-col">
                { children }
             </div>
         </div>

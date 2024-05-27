@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { action_getTopicById , action_saveConceptBlock } from "../../../actions"
+import { action_getTopicById , action_saveTopicBlock } from "../../../actions"
 
 import PlatformContentBlocks, { DataForBuild } from "@/app/reusables/components/render"
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
@@ -33,7 +33,7 @@ export default function EditDataComponent({ topicId } : { topicId: string }) {
         else if ( type === 'new' ) {
           arrayCopy.push( blockData );
         }
-        let savedData = await action_saveConceptBlock(topicId, arrayCopy );
+        let savedData = await action_saveTopicBlock(topicId, arrayCopy );
         setData( arrayCopy );
     }
   

@@ -1,8 +1,8 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is your Prisma schema file..
+// learn more about it in the docs: https://pris.ly/d/prisma-schema.
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?.
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init.
 
 generator client {
   provider = "prisma-client-js"
@@ -50,7 +50,7 @@ model Topic {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  concept     Concepts @relation(fields: [conceptId], references: [id])
+  concept     Concepts @relation(fields: [conceptId], references: [id], onDelete: Cascade ) 
   conceptId   String   @db.ObjectId
   active      Boolean 
   data        Json[]
@@ -63,7 +63,7 @@ model Topic {
 
 model CategoriesConcept {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  concept     Concepts        @relation(fields: [conceptId], references: [id])
+  concept     Concepts     @relation(fields: [conceptId], references: [id], onDelete: Cascade )
   conceptId   String       @db.ObjectId
   category    Categories   @relation(fields: [categoryId], references: [id])
   categoryId  String       @db.ObjectId
@@ -73,7 +73,7 @@ model LanguagesTopic {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   course      Topic        @relation(fields: [topicId], references: [id])
   topicId     String       @db.ObjectId
-  language    Languages    @relation(fields: [languageId], references: [id])
+  language    Languages    @relation(fields: [languageId], references: [id], onDelete: Cascade )
   languageId  String       @db.ObjectId
 }
 

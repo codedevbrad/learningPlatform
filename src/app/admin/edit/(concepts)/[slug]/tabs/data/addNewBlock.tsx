@@ -1,12 +1,13 @@
 import { 
     DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
-    DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut,
-    DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger,
+    DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
 import { explanationObject } from "@/app/reusables/components/blocks/explanation/explanation"
-import { UpdateDataBlockProps } from "./data"
+import { quizObject } from "@/app/reusables/components/blocks/quiz/quiz"
+
+import { UpdateDataBlockProps } from "."
 
 
 interface AddNewDataBlockProps {
@@ -24,11 +25,18 @@ export default function AddNewDataBlock ({ addDataToBlock }: AddNewDataBlockProp
           <DropdownMenuLabel> Add a new block </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                type: 'new', blockData: explanationObject, blockIndex: 0 
-            }) }>
-              <div> Explanation </div>
-            </DropdownMenuItem>
+
+              <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
+                  type: 'new', blockData: explanationObject, blockIndex: 0 
+              }) }>
+                <div> Explanation </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
+                  type: 'new', blockData: quizObject, blockIndex: 0 
+              }) }>
+                <div> Quiz </div>
+              </DropdownMenuItem>
+
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

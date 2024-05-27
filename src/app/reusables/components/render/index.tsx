@@ -3,14 +3,17 @@ import React from 'react'
 import ExplanationComponent, { ExplanationProps } from "@/app/reusables/components/blocks/explanation/explanation"
 import ExplanationAdminBlock from '../blocks/explanation/explanation.admin'
 
+import QuizComponent, { QuizObjectProps } from '@/app/reusables/components/blocks/quiz/quiz'
+import QuizAdminBlock from '../blocks/quiz/quiz.admin'
+
 import TaskComponent, { TaskProps } from '@/app/reusables/components/blocks/task/task'
 import ChallengeComponent, { ChallengeUsageProps } from '@/app/reusables/components/blocks/challenge/challenge'
-import QuizComponent, { QuizObjectProps } from '@/app/reusables/components/blocks/quiz/quiz'
+
 
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
 
-export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps
+export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps;
 
 
 interface DataChoiceComponentProps {
@@ -32,14 +35,22 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                         <ExplanationComponent data={ dataItem as ExplanationProps } /> 
                     }
                 </>
+            );        
+        case 'quiz':
+            return (
+                  <>
+                    { isInAdminMode ?
+                        <QuizAdminBlock blockIndex={ blockIndex } data={ dataItem as QuizObjectProps } adminTools={ adminTools } /> :
+                        <QuizComponent  data={ dataItem as QuizObjectProps } /> 
+                    }   
+                </>
             );
         case 'task':
             // Render the task component, passing the entire task object
             return <TaskComponent projectTask={ dataItem as TaskProps } />;
         case 'challenge':
             return <ChallengeComponent data={ dataItem as ChallengeUsageProps } />
-        case 'quiz':
-            return <QuizComponent data={ dataItem as QuizObjectProps } />
+
         default:
             // This should never happen, but it's good to handle unexpected cases ...
             return <div> Could not render course Item... </div>
@@ -50,7 +61,9 @@ export default function PlatformContentBlocks ({ data , isInAdminMode = false, a
     return (
         <>
             { data.map((item: DataForBuild, index: number ) => (
-                <DataChoiceComponent key={index} blockIndex={ index } dataItem={item} isInAdminMode={ isInAdminMode } adminTools={ adminTools } />
+                <div className="my-5">
+                    <DataChoiceComponent key={index} blockIndex={ index } dataItem={item} isInAdminMode={ isInAdminMode } adminTools={ adminTools } />
+                </div>
             ))}   
         </>
     )

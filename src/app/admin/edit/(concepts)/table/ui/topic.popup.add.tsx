@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { action_addNewTopic } from './actions'
-import { ConceptType } from '../../../../../prisma/schema.types'
-
+import { action_addNewTopic } from '../../actions'
+import { ExtendedConcepts } from '../../../../../../../prisma/schema.types'
 
 interface AddTopicModalProps {
-  updateTable: (topics: ConceptType[]) => void;
+  updateTable: (topics: ExtendedConcepts[], message: string) => void;
   conceptId: string;
 }
 
@@ -24,9 +23,10 @@ const AddTopicModal: React.FC<AddTopicModalProps> = ({ updateTable, conceptId })
       const topicsUpdated = await action_addNewTopic(conceptId, title, description);
       setTitle('');
       setDescription('');
-      updateTable(topicsUpdated); // Refresh the table to reflect the new topic
+      updateTable(topicsUpdated, 'created topic successfully'); // Refresh the table to reflect the new topic
       setOpen(false);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to add new topic:', error);
     }
   };

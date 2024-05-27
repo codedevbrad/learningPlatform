@@ -6,9 +6,10 @@ import { Label } from "@/components/ui/label"
 import ExplanationComponent, { ExplanationProps } from './explanation'
 
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
-
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
+
+import { useRef } from 'react'
 
 interface ExplanationBlockProps {
     data: ExplanationProps;
@@ -21,6 +22,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
   const [formData, setFormData] = useState<ExplanationProps>( data );
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
   const [isSaved, setIsSaved] = useState(false);
+
+  const formRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -39,7 +42,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
   };
 
   const form = (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} ref={ formRef }>
       <CardContent className="space-y-2 px-0">
         <div className="space-y-1">
           <Label htmlFor="title">Title</Label>
@@ -62,11 +65,6 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
           />
         </div>
       </CardContent>
-      <CardFooter>
-        <Button type="submit">
-          {isSaved ? 'Saved' : 'Save'}
-        </Button>
-      </CardFooter>
     </form>
   );
 
@@ -82,6 +80,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
         description="Fill out the form and click save."
         form={form}
         savedData={preview}
+        formRef={ formRef }
+        isSaved={ isSaved }
       />
   );
 }

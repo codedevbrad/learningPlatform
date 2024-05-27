@@ -1,6 +1,131 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
-import { getAllConcepts } from './student.queries'
+import { getCategoriesByIds } from '../tags/student.queries'
+import { ExtendedConceptsNotAttached } from '../../../prisma/schema.types'
+
+/*
+[
+  {
+    id: '664893db7ae0a79bf0192a21',
+    title: 'Frontend dev',
+    description: 'learn the concepts of frontend Dev',
+    active: true,
+    imgUrl: "''",
+    topics: [ [Object], [Object], [Object], [Object], [Object] ],
+    categories: [ [Object] ]
+  },
+  {
+    id: '664f9f15010aef9ccb344650',
+    title: 'new concept',
+    description: 'this is a desc',
+    active: true,
+    imgUrl: '',
+    topics: [],
+    categories: [ [Object], [Object] ]
+  }
+]
+*/
+
+export async function getAllConcepts ( ) {
+  let concepts = await prisma.concepts.findMany({
+      include: {
+        topics: true , categories: true 
+      }
+  });
+
+  // Map courses and replace categories and languages with fetched data.
+  const mappedConcepts = concepts.map( async (concept) => {
+      // Fetch categories and languages for this course
+      const categories = await getCategoriesByIds(concept.categories.map(cat => cat.categoryId));
+      // const userData = await getUserDataForCourse()
+      console.log( categories );
+      // Replace category and language IDs with actual data
+      return { ...concept, categories };
+  });
+  return Promise.all(mappedConcepts);
+}
+
+export async function deleteConceptById(conceptId: string) {
+  try {
+    // Fetch the concept to ensure it exists
+    const concept = await prisma.concepts.findUnique({
+      where: {
+        id: conceptId,
+      },
+      include: {
+        topics: true,       // Include related topics
+        categories: true,   // Include related categories
+      },
+    });
+
+    if (!concept) {
+      throw new Error('Concept not found');
+    }
+
+    // Delete all related categories
+    await prisma.categoriesConcept.deleteMany({
+      where: {
+        conceptId: conceptId,
+      },
+    });
+
+    // Delete all related topics
+    await prisma.topic.deleteMany({
+      where: {
+        conceptId: conceptId,
+      },
+    });
+
+    // Delete the concept after all related topics and categories are deleted
+    await prisma.concepts.delete({
+      where: {
+        id: conceptId,
+      },
+    });
+    console.log(`Concept with ID ${conceptId}, all related topics, and categories were successfully deleted.`);
+    return await getAllConcepts();
+  } 
+  catch (error) {
+    console.error('Error deleting concept and removing all related topics and categories:', error);
+    throw new Error('Failed to delete concept and remove all related topics and categories.');
+  }
+}
+
+export async function deleteTopicAndRemoveConnections(topicId: string) {
+  try {
+    // Fetch the topic to get the associated conceptId
+    const topic = await prisma.topic.findUnique({
+      where: {
+        id: topicId,
+      },
+    });
+
+    if (!topic) {
+      throw new Error('Topic not found');
+    }
+
+    // Remove all LanguagesTopic entries associated with the topic
+    await prisma.languagesTopic.deleteMany({
+      where: {
+        topicId: topicId,
+      },
+    });
+
+    // Delete the topic
+    await prisma.topic.delete({
+      where: {
+        id: topicId,
+      },
+    });
+
+    console.log(`Topic with ID ${topicId} and its references were successfully deleted.`);
+    return await getAllConcepts();
+  } 
+  catch (error) {
+    console.error('Error deleting topic and removing connections:', error);
+    throw new Error('Failed to delete topic.');
+  }
+}
 
 export async function updateTopicData(topicId: string, newData: any[]): Promise<any> {
     try {
@@ -12,11 +137,41 @@ export async function updateTopicData(topicId: string, newData: any[]): Promise<
         });
         console.log('Topic data updated successfully.');
         return await getAllConcepts();
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error updating topic data:', error);
         throw new Error('Failed to update topic data.');
     }
 }
+
+export const addNewConcept = async (data ) => {
+  const { title, description, active, imgUrl = "", categories : categoryIds } = data;
+  try {
+    const newConcept = await prisma.concepts.create({
+      data: {
+        title,
+        description,
+        active,
+        imgUrl,
+        categories: {
+          create: categoryIds.map(categoryId => ({
+            categoryId
+          }))
+        }
+      },
+      include: {
+        categories: true
+      }
+    });
+    let concepts = await getAllConcepts();
+    console.log( concepts );
+    return concepts;
+  } 
+  catch (error) {
+    console.error("Error adding new concept:", error);
+    throw new Error(`Failed to create a new concept: ${error.message}`);
+  } 
+};
 
 export const addNewTopic = async (conceptId: string, title: string, description: string, active: boolean = false ) => {
     try {
@@ -33,7 +188,7 @@ export const addNewTopic = async (conceptId: string, title: string, description:
     catch (error) {
       throw new Error(`Failed to create a new topic: ${error.message}`);
     }
-  };
+};
   
 export const updateTopicStatus = async (topicId: string, status: boolean) => {
     try {
@@ -47,7 +202,6 @@ export const updateTopicStatus = async (topicId: string, status: boolean) => {
       throw new Error(`Failed to update topic status: ${error.message}`);
     }
 };
-
 
 export const updateTopicDetails = async (topicId: string, data: object ) => {
   try {

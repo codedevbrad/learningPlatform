@@ -1,13 +1,45 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
-import { updateTopicData,  updateTopicDetails, updateTopicStatus, addNewTopic } from "@/db_queries/concepts/admin.queries"
+import { 
+  addNewConcept, deleteConceptById,
+  updateTopicData, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
+} from "@/db_queries/concepts/admin.queries"
 
 // Define a custom error interface.
 interface CustomError extends Error {
   message: string;
 }
 
-export const action_saveConceptBlock = async(topicId: string, newData: any[]): Promise<any> => {
+// concept ...
+
+export const action_addNewConcept = async( concept ) => {
+    try {
+        let concepts = await addNewConcept(concept);
+        return concepts;
+    }
+    catch ( error ) {
+        console.error('Error creating concept asynchronously:', error);
+        throw new Error('Failed to create concept asynchronously.');
+    }
+}
+
+
+export const action_DeleteConcept = async( conceptId : string ) => {
+  try {
+      let conceptsChanged = await deleteConceptById( conceptId );
+      return conceptsChanged;
+  }
+  catch ( error ) {
+      console.error('Error deleting concept asynchronously:', error);
+      throw new Error('Failed to delete concept asynchronously.');
+  }
+}
+
+
+// topics...
+
+
+export const action_saveTopicBlock = async(topicId: string, newData: any[]): Promise<any> => {
     try {
         let topics = await updateTopicData(topicId, newData);
         console.log( topics );
@@ -30,6 +62,18 @@ export async function action_getTopicById(topicId: string) {
     throw new Error(`Failed to get topic by ID: ${err.message}`);
   }
 }
+
+
+export async function action_deleteTopic ( topicId : string ) {
+  try {
+      return await deleteTopicAndRemoveConnections( topicId );
+  }
+  catch ( error ) {
+      console.error('Error updating topic data asynchronously:', error);
+      throw new Error('Failed to update topic data asynchronously.');
+   }
+}
+
 
 // Update function signatures with explicit return types
 export async function action_addNewTopic(conceptId: string, title: string, description: string, active: boolean = true): Promise<any> {

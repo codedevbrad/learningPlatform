@@ -20,7 +20,7 @@ interface DataProps {
 
 const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoProps }> = ({ data, courseInfo }) => {
     return (
-        <div className=" overflow-x-hidden px-3">
+        <div className="w-full overflow-x-hidden px-3">
             <ContentHeader courseInfo={ courseInfo } />
             
             <DividerWithText className="">

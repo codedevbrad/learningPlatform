@@ -1,13 +1,33 @@
-'use client'
-import React, { useState } from 'react';
+'use client' 
+import React, { useState } from 'react'
 
 interface QuizType {
   title: string;
   content: {
     question: string;
     options: string[];
-    answerIndex: number; // Single correct answer index
+    answerIndex: number;
   };
+}
+
+export const quizObject = {
+  type: 'quiz',
+  title: 'React.js Quiz',
+  quizData: [
+      {
+        title: 'Question 1',
+        content: {
+            question: 'What is React?',
+            options: [
+            'A server-side framework',
+            'A database',
+            'A client-side library',
+            'A programming language'
+            ],
+            answerIndex: 2
+        }
+      }
+  ]
 }
 
 interface QuizObjectProps {
