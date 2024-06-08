@@ -19,6 +19,15 @@ interface ChallengeComponentProps {
   data: ChallengeUsageProps;
 }
 
+export const ChallengeComponentObject = {
+  type: 'challenge',
+  content: [
+      { 
+          title: '', showcase: ''
+      }
+  ]
+}
+
 // Annotate the function with the defined props type
 const ChallengeComponent: React.FC<ChallengeComponentProps> = ({ data }) => {
   const { content } = data;
@@ -42,4 +51,4 @@ const ChallengeComponent: React.FC<ChallengeComponentProps> = ({ data }) => {
 }
 
 export default ChallengeComponent;
-export type {ChallengeUsageProps }
+export type {ChallengeUsageProps , ChallengeProps }

@@ -6,11 +6,15 @@ import ExplanationAdminBlock from '../blocks/explanation/explanation.admin'
 import QuizComponent, { QuizObjectProps } from '@/app/reusables/components/blocks/quiz/quiz'
 import QuizAdminBlock from '../blocks/quiz/quiz.admin'
 
-import TaskComponent, { TaskProps } from '@/app/reusables/components/blocks/task/task'
-import ChallengeComponent, { ChallengeUsageProps } from '@/app/reusables/components/blocks/challenge/challenge'
-
 import CodeSnippetAdminBlock from '../blocks/snippet/snippet.admin'
 import CodeSnippetComponent, { CodeSnippetProps } from '../blocks/snippet/snippet'
+
+import ChallengeAdminBlock from '../blocks/challenge/challenge.admin'
+import ChallengeComponent, { ChallengeUsageProps } from '@/app/reusables/components/blocks/challenge/challenge'
+
+import TaskAdminBlock from '../blocks/task/task.admin'
+import TaskComponent, { TaskProps } from '@/app/reusables/components/blocks/task/task'
+
 
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
@@ -40,10 +44,14 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return (
                     <CodeSnippetAdminBlock blockIndex={blockIndex} data={dataItem as CodeSnippetProps} adminTools={adminTools} />
                 );
-            case 'task':
-                return null;
             case 'challenge':
-                return null; 
+                return (
+                    <ChallengeAdminBlock blockIndex={ blockIndex } data={ dataItem as ChallengeUsageProps } adminTools={adminTools} />
+                )
+            case 'task':
+                return (
+                    <TaskAdminBlock blockIndex={ blockIndex } data={ dataItem as TaskProps } adminTools={adminTools} />
+                )
             default:
                 return <div>Could not render course Item...</div>;
         }
@@ -56,9 +64,11 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
             case 'codeSnippet':
                 return <CodeSnippetComponent data={dataItem as CodeSnippetProps} />;
             case 'task':
-                return <TaskComponent projectTask={dataItem as TaskProps} />;
+                return <TaskComponent data={dataItem as TaskProps} />;
             case 'challenge':
                 return <ChallengeComponent data={dataItem as ChallengeUsageProps} />;
+            case 'task': 
+                return <TaskComponent data={ dataItem as TaskProps } />
             default:
                 return <div>Could not render course Item...</div>;
         }

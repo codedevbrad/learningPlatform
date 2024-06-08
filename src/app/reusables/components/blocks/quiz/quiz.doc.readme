@@ -1,0 +1,19 @@
+{
+  type: 'quiz',
+  title: 'React.js Quiz',
+  quizData: [
+      {
+        title: 'Question 1',
+        content: {
+            question: 'What is React?',
+            options: [
+            'A server-side framework',
+            'A database',
+            'A client-side library',
+            'A programming language'
+            ],
+            answerIndex: 2
+        }
+      }
+  ]
+}

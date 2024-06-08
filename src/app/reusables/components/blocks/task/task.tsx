@@ -1,6 +1,22 @@
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Title from '@/app/reusables/content/title';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Title from '@/app/reusables/content/title'
+
+export const taskObject = {
+    type: 'task',
+    title: '',
+    content: {
+        description: '',
+        tasks: [{
+            title: '',
+            explanation: ''
+        }],
+        tips: [{
+            title: '',
+            explanation: ''
+        }]
+    }
+}
 
 interface TaskProps {
     type: 'task';
@@ -18,13 +34,14 @@ interface TaskProps {
     };
 }
 
-// Define a wrapper type for the task to be passed as a prop named projectTask
-interface TaskComponentProps {
-    projectTask: TaskProps;
+
+// Define a wrapper type for the task to be passed as a prop named projectTask ...
+interface TaskUsageProps {
+    data: TaskProps;
 }
 
-const TaskComponent: React.FC<TaskComponentProps> = ({ projectTask }) => {
-    const { title, content } = projectTask;
+const TaskComponent: React.FC<TaskUsageProps> = ({ data }) => {
+    const { title, content } = data;
     const { description, tasks , tips } = content;
 
     return (
@@ -79,4 +96,4 @@ const TaskComponent: React.FC<TaskComponentProps> = ({ projectTask }) => {
 }
 
 export default TaskComponent;
-export type { TaskProps };
+export type { TaskProps , TaskUsageProps };

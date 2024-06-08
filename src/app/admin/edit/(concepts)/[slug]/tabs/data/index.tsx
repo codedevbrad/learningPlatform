@@ -1,12 +1,13 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { action_getTopicById , action_saveTopicBlock } from "../../../actions"
+import { Button } from "@/components/ui/button"
 
 import PlatformContentBlocks, { DataForBuild } from "@/app/reusables/components/render"
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
 import AddNewDataBlock from "./addNewBlock"
-import { Button } from "@/components/ui/button"
+import Title from "@/app/reusables/content/title"
 
 interface UpdateDataBlockProps {
     type: 'new' | 'update';
@@ -22,6 +23,14 @@ export default function EditDataComponent({ topicId } : { topicId: string }) {
   
     const [conceptData, setConceptData] = useState<any>({}); 
     const [ data , setData ] = useState<DataForBuild[]>([]);
+    const [ inAdminMode , changeAdminView ] = useState(true);
+
+    function DataDisplaySwitch ( ) {
+        const buttonTitle = inAdminMode ? 'Switch to student mode' : 'View in Admin mode';
+        return (
+          <Button variant={'outline'} className="mx-3" onClick={ () => changeAdminView( !inAdminMode ) }> { buttonTitle } </Button>
+        )
+    }
 
     const updateDataBlock = async ( { type = 'update', blockData, blockIndex } : UpdateDataBlockProps ) => {
         // index of block and content
@@ -52,19 +61,25 @@ export default function EditDataComponent({ topicId } : { topicId: string }) {
     // UseEffect hook to fetch topic data when component mounts...
     useEffect(() => {
       fetchTopicData( topicId );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Empty dependency array ensures useEffect runs only once when component mounts...
   
     return (
       <div className="flex flex-col">
           <div className="flex-1 p-4 flex-row flex justify-between items-center">
+            
               <div key={conceptData.id}>
-                  <h2>{conceptData.title}</h2>
+                  <Title variant="heading" title={ conceptData.title } />
                   <p>{conceptData.description}</p>
               </div>
+
               <div>
-                <Link href={`/authed/content/concepts/${topicId}`}>
+
+                <DataDisplaySwitch />
+               
+                <Link href={`/authed/content/concepts/${topicId}`} rel="noopener noreferrer" target="_blank">
                     <Button>
-                        View page in student mode
+                        View page
                     </Button>
                 </Link>
               </div>
@@ -72,7 +87,7 @@ export default function EditDataComponent({ topicId } : { topicId: string }) {
 
           <div>
               {/* render blocks based on data. */}
-              <PlatformContentBlocks data={ data } isInAdminMode={ true } adminTools={{
+              <PlatformContentBlocks data={ data } isInAdminMode={ inAdminMode } adminTools={{
                   updateDataBlock
               } as AdminToolsProps } />
               <div className="flex justify-center fixed bottom-0 bg-white h-20 left-0 w-full items-center">
