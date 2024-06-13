@@ -3,7 +3,6 @@ import React, { useState, ReactNode, useEffect } from 'react'
 
 import Header from  './parts/header'
 import Sidebar from './parts/sidebar'
-import Loading from '../../reusables/layouts/loading'
 
 import { colors } from "../data"
 import { useUser } from "@clerk/clerk-react"
@@ -19,6 +18,14 @@ interface DashboardLayoutProps {
 }
 
 
+function AppLoading ( ) {
+  return (
+      <div className='flex w-full h-full fixed z-40 justify-center items-center'>
+          loading ...
+      </div>
+  )
+}
+
 function Authed({ children }) {
   const { user, isLoaded } = useUser();
   const [isUserRegistered, setIsUserRegistered] = useState(false);
@@ -27,7 +34,7 @@ function Authed({ children }) {
   useEffect(() => {
     const checkUserRegistration = async () => {
       if (isLoaded && user) {
-        const result = await action__userRegisteredThroughDbCheck(user.id);
+        const result = await action__userRegisteredThroughDbCheck();
         setIsUserRegistered(result === true);
         setLoading(false);
       }
@@ -37,7 +44,7 @@ function Authed({ children }) {
 
   if (loading) {
     return (
-      <Loading />
+        <AppLoading />
     );
   }
 

@@ -1,5 +1,14 @@
 import prisma from '../../../prisma/client'
 
+export async function getLanguages ( ) {
+    try {
+      return await prisma.languages.findMany({});
+    }
+    catch ( error ) {
+
+    }
+}
+
 export async function getCategories ( ) {
     try {
       return await prisma.categories.findMany({});

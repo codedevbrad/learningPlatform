@@ -17,13 +17,10 @@ export async function getUserByUserId(userId) {
 }
 
 
-export async function addUser({userId, bio}) {
+export async function addUser( userObj ) {
   try {
     const newUser = await prisma.users.create({
-      data: {
-        userId,
-        bio
-      },
+      data: userObj
     });
     return newUser;
   } 

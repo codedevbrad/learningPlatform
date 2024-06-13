@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import Select, { MultiValue } from 'react-select';
-import { action_getCategories } from "./actions";
+import { useEffect, useState } from 'react'
+import Select, { MultiValue } from 'react-select'
+import { action_getCategories } from "./actions"
 
 interface Category {
     id: string; // Change id to string
