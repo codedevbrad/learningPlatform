@@ -8,6 +8,8 @@ import { SignedIn, UserButton } from "@clerk/nextjs"
 import Link from 'next/link'
 import { signInRedirect } from "@/app/flows"
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
+
 
 function HeaderLogo ( ) {
   return (

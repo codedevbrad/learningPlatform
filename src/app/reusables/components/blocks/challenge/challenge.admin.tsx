@@ -1,5 +1,5 @@
 // components/admin/ChallengeAdminBlock.tsx
-
+'use client'
 import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";

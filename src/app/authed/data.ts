@@ -13,7 +13,7 @@ export const navigationAuthItems = [
 ];
 
 export const colors = {
-    app_primary_bg :  "bg-purple-50",
+    app_primary_bg :  "bg-white",
     difficulty: [
         { level: 1, color: 'bg-green-400', tag: 'easy' },
         { level: 2, color: 'bg-blue-400', tag: 'medium' },
