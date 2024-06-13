@@ -9,21 +9,25 @@ export async function getUserByUserId(userId) {
       },
     });
     return user;
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error fetching user:", error);
     throw error;
   }
 }
 
-export async function addUser(userId) {
+
+export async function addUser({userId, bio}) {
   try {
     const newUser = await prisma.users.create({
       data: {
-        userId: userId,
+        userId,
+        bio
       },
     });
     return newUser;
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error creating user:", error);
     throw error;
   }

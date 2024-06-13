@@ -1,48 +1,60 @@
 'use client'
-import React, { ReactNode, useEffect } from 'react'
-import Header from './parts/header'
+import React, { useState, ReactNode, useEffect } from 'react'
+
+import Header from  './parts/header'
 import Sidebar from './parts/sidebar'
+import Loading from '../../reusables/layouts/loading'
+
 import { colors } from "../data"
 import { useUser } from "@clerk/clerk-react"
-import { SignedIn , SignedOut } from "@clerk/nextjs"
-import Link from 'next/link'
+import { SignInButton, SignedIn , SignedOut } from "@clerk/nextjs"
 import { action__userRegisteredThroughDbCheck } from "./actions"
+import { Button } from '@/components/ui/button'
+import Title from '@/app/reusables/content/title'
+import AuthedButRegister from './register'
 
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-function AuthId () {
-  const { isSignedIn, user, isLoaded } = useUser();
-  if (isSignedIn) {
-    return user.id;
-  } 
-  else {
-    return null;
+
+function Authed({ children }) {
+  const { user, isLoaded } = useUser();
+  const [isUserRegistered, setIsUserRegistered] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkUserRegistration = async () => {
+      if (isLoaded && user) {
+        const result = await action__userRegisteredThroughDbCheck(user.id);
+        setIsUserRegistered(result === true);
+        setLoading(false);
+      }
+    };
+    checkUserRegistration();
+  }, [isLoaded, user]);
+
+  if (loading) {
+    return (
+      <Loading />
+    );
   }
-}
 
-
-function Authed ( { children } ) {
-  
-    useEffect( ( ) => {
-       
-    }, [  ] );
-
-    return ( 
-      <SignedIn>
-          <div className={`h-full flex flex-row ${ colors.app_primary_bg } p-5 `}>
-              {/* left main content */}
-              <div className="flex-grow p-5 mt-4 overflow-hidden pb-20">
-                  <Header />
-                  {children}
-              </div>
-              {/* right sidebar */}
-              <Sidebar />
+  return (
+    <SignedIn>
+          <div className={`h-full flex flex-row ${colors.app_primary_bg} p-5`}>
+            { !isUserRegistered ? <AuthedButRegister /> : null }
+            {/* left main content */}
+            <div className="flex-grow p-5 mt-4 overflow-hidden pb-20">
+              <Header />
+              {children}
             </div>
-      </SignedIn>
-    )
+            {/* right sidebar */}
+            <Sidebar />
+          </div>
+    </SignedIn>
+  );
 }
 
 
@@ -53,12 +65,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             { children }
         </Authed>
         <SignedOut>
-            <div>
-                  <h1> It seems you tried entering our bootcamp </h1>
-                  <p> you have tried entering the bootcamp without registering. </p>
-                <Link href={'/register'}> Enroll in the bootcamp </Link>
+            <div className="flex items-center mt-10 flex-col space-y-4">
+                  <Title variant='heading' title='It seems you tried entering our bootcamp' />
+                  <p> you have tried entering the bootcamp without registering. first, sign up with our platform </p>
+                  <SignInButton>
+                      <Button> Sign up to the Platform </Button>
+                  </SignInButton>
             </div>
-       </SignedOut>
+        </SignedOut>
       </>
     );
 }

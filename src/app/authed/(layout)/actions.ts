@@ -11,3 +11,12 @@ export async function action__userRegisteredThroughDbCheck ( userId ) {
         return { message: 'Error fetching user', error: error.message };
     }
 }
+
+export async function action__createUser ( formData ) {
+    try {
+        
+    }
+    catch ( error ) {
+        return { message: 'Error fetching user', error: error.message };
+    }
+}
