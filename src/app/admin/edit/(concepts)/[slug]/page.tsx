@@ -1,34 +1,61 @@
-'use client'
-// Import necessary dependencies and functions.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { action_getTopicById } from "../actions"
 
 import EditDataComponent from "./tabs/data"
+import EditResourcesComponent from "./tabs/resources"
+import Title from "@/app/reusables/content/title"
 
-export default function AdminPage ({ params }: { params: { slug: string } }) {
-  return (
-      <div>
-          <Tabs defaultValue="Data" className="">
-                <TabsList>
-                    <TabsTrigger value="Data">
-                        Concept work
-                    </TabsTrigger>
-                    <TabsTrigger value="Resources">
-                        Resources
-                    </TabsTrigger>
-                    <TabsTrigger value="Analytics">
+
+export default async function AdminPage ({ params }: { params: { slug: string } }) {
+
+    // need an error boundary around this.
+
+    let topic = await action_getTopicById( params.slug );
+
+    if (!topic) {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <div className="p-5">
+                    <Title title="This concept does not exist or no longer exists." variant="subheading2" noMargin={false} />
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <Tabs defaultValue="Data" className="">
+                    <TabsList>
+                        <TabsTrigger value="Data">
+                            Concept work
+                        </TabsTrigger>
+                        <TabsTrigger value="Resources">
+                            Resources
+                        </TabsTrigger>
+                        <TabsTrigger value="Analytics">
+                            Analytics
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="Data" className="p-6 border border-gray-200 mt-4 rounded-lg">
+                        <EditDataComponent 
+                        topicId={ topic.id } 
+                        topicData={ topic.data } 
+                        topicInfo={{ 
+                            title: topic.title , 
+                            description: topic.description 
+                        }} 
+                        />
+                    </TabsContent>
+                    <TabsContent value="Resources">
+                        <EditResourcesComponent 
+                        topicId={ params.slug } 
+                        resources={ topic.resources }
+                        />
+                    </TabsContent>
+                    <TabsContent value="Analytics"> 
                         Analytics
-                    </TabsTrigger>
-                </TabsList>
-                <TabsContent value="Data" className="p-6 border border-gray-200 mt-4 rounded-lg">
-                    <EditDataComponent topicId={ params.slug } />
-                </TabsContent>
-                <TabsContent value="Resources">
-                    Resources
-                </TabsContent>
-                <TabsContent value="Analytics"> 
-                    Analytics
-                </TabsContent>
-           </Tabs>
-      </div>
-  )
+                    </TabsContent>
+            </Tabs>
+        </div>
+    )
 }

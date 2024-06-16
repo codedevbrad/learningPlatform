@@ -58,7 +58,10 @@ const CongratsStep = () => {
         <div className="space-y-4 mb-4">
           <h2 className="text-2xl font-bold">Congratulations!</h2>
           <p>You have successfully completed your profile setup.</p>
-          <p className='mb-5'> As a new user it might be helpful to read the help section on our platform </p> 
+          <p className='mb-5'> 
+            As a new user it might be helpful to read the help 
+            section on our platform 
+          </p> 
         </div>
         <Link href='/authed/content/help/chat'>
             <Button variant={'outline'}> Helpful info </Button>

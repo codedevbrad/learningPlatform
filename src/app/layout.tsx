@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/toaster"
-
+import LoadingBar from "./reusables/usables/pageLoad"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,6 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <ClerkProvider>
       <html className="" lang="en">
         <body className="">
+                <LoadingBar />
                 <div>
                    { children }
                    <Toaster />  

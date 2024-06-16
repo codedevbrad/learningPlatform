@@ -1,8 +1,7 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
 import { 
-  addNewConcept, deleteConceptById,
-  updateTopicData, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
+  addNewConcept, deleteConceptById, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
 } from "@/db_queries/concepts/admin.queries"
 
 // Define a custom error interface.
@@ -37,19 +36,6 @@ export const action_DeleteConcept = async( conceptId : string ) => {
 
 
 // topics...
-
-
-export const action_saveTopicBlock = async(topicId: string, newData: any[]): Promise<any> => {
-    try {
-        let topics = await updateTopicData(topicId, newData);
-        console.log( topics );
-        return topics;
-    } 
-    catch (error) {
-        console.error('Error updating topic data asynchronously:', error);
-        throw new Error('Failed to update topic data asynchronously.');
-    }
-}
 
 export async function action_getTopicById(topicId: string) {
   try {

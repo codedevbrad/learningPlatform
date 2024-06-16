@@ -25,7 +25,6 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
     return (
 
       <div className="border border-gray-200 rounded-lg p-5">
-
           <div className="flex flex-row">
               <div className="w-full">
                   <Title title={ `${ title } block` } variant="subheading1" />

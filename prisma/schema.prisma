@@ -19,20 +19,24 @@ datasource db {
 
 model Users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String 
+  userId     String       @unique
   bio        String 
   questions  Json[]
+  TopicsData UserDataForTopic[]
 }
 
 // ... relations between a user and [ languageUsers ] //
 
-// model LanguagesUsers {
-//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-//   user        Users        @relation(fields: [userId], references: [id])
-//   userId      String       @db.ObjectId
-//   languages   Languages    @relation(fields: [languageId], references: [id])
-//   languageId  String       @db.ObjectId
-// }
+model UserDataForTopic {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  userNotes    Json[]
+  userProgress Boolean
+  user         Users     @relation(fields: [userId], references: [userId])
+  userId       String    @unique
+  topic        Topic     @relation(fields: [topicId], references: [id])
+  topicId      String    @db.ObjectId @unique
+}
+
 
 // ***** Tags ****** //
 
@@ -96,16 +100,8 @@ model LanguagesTopic {
   languageId  String       @db.ObjectId
 }
 
-// ... user content for concepts ... //
 
-model UserDataForTopic {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  userNotes    Json[]
-  userProgress Boolean
-  userId       String
-  topic        Topic     @relation(fields: [topicId], references: [id])
-  topicId      String    @db.ObjectId @unique
-}
+
 
 // **** Courses ***** //
 
@@ -118,7 +114,7 @@ model Courses {
   resources   Json[]
   categories  CategoryCourse[]
   languages   LanguagesCourse[]
-  userDataOnCourse UserDataForCourse?
+  // userDataOnCourse UserDataForCourse?
   active      Boolean
 }
 
@@ -142,11 +138,11 @@ model LanguagesCourse {
 
 // ... user content ... //
 
-model UserDataForCourse {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  userNotes    Json[]
-  userProgress Boolean
-  userId       String
-  course       Courses     @relation(fields: [courseId], references: [id])
-  courseId     String      @db.ObjectId @unique
-}
+// model UserDataForCourse {
+//   id           String      @id @default(auto()) @map("_id") @db.ObjectId
+//   userNotes    Json[]
+//   userProgress Boolean
+//   userId       String
+//   course       Courses     @relation(fields: [courseId], references: [id])
+//   courseId     String      @db.ObjectId @unique
+// }

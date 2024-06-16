@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef } from 'react'
 import { CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,7 +22,7 @@ interface CodeSnippetBlockProps {
 const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<CodeSnippetProps>(data);
   const [savedData, setSavedData] = useState<CodeSnippetProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef(null);
 

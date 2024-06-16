@@ -1,3 +1,4 @@
+'se client'
 import React , { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
@@ -21,7 +22,7 @@ interface ExplanationBlockProps {
 const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<ExplanationProps>( data );
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef(null);
 

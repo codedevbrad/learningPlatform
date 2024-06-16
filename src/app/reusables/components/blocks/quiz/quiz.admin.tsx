@@ -22,7 +22,7 @@ interface QuizAdminBlockProps {
 const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<QuizObjectProps>(data);
   const [savedData, setSavedData] = useState<QuizObjectProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef( null );
 

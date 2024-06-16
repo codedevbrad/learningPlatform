@@ -1,8 +1,6 @@
 'use client'
 import React, { useState, ReactNode, useEffect } from 'react'
-
 import Header from  './parts/header'
-import Sidebar from './parts/sidebar'
 
 import { colors } from "../data"
 import { useUser } from "@clerk/clerk-react"
@@ -12,23 +10,23 @@ import { Button } from '@/components/ui/button'
 import Title from '@/app/reusables/content/title'
 import AuthedButRegister from './register'
 
-
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
 
-function AppLoading ( ) {
+function AuthLoadingScreen ( ) {
   return (
       <div className='flex w-full h-full fixed z-40 justify-center items-center'>
-          loading ...
+          <Title title="Coding Bootcamp" variant="heading" />
       </div>
   )
 }
 
+
 function Authed({ children }) {
   const { user, isLoaded } = useUser();
-  const [isUserRegistered, setIsUserRegistered] = useState(false);
+  const [isUserRegistered, setIsUserRegistered] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,7 +42,7 @@ function Authed({ children }) {
 
   if (loading) {
     return (
-        <AppLoading />
+        <AuthLoadingScreen />
     );
   }
 
@@ -57,8 +55,6 @@ function Authed({ children }) {
               <Header />
               {children}
             </div>
-            {/* right sidebar */}
-            <Sidebar />
           </div>
     </SignedIn>
   );

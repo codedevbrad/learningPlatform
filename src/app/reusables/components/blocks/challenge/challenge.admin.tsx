@@ -20,7 +20,7 @@ interface ChallengeAdminBlockProps {
 const ChallengeAdminBlock: React.FC<ChallengeAdminBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<ChallengeUsageProps>(data);
   const [savedData, setSavedData] = useState<ChallengeUsageProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef<HTMLFormElement>(null);
 

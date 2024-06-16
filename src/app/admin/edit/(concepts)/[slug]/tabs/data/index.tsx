@@ -1,6 +1,7 @@
+'use client'
 import Link from "next/link"
-import { useState, useEffect } from "react"
-import { action_getTopicById , action_saveTopicBlock } from "../../../actions"
+import { useState } from "react"
+import { action_saveTopicBlock } from "./actions"
 import { Button } from "@/components/ui/button"
 
 import PlatformContentBlocks, { DataForBuild } from "@/app/reusables/components/render"
@@ -19,16 +20,29 @@ export type {
   UpdateDataBlockProps
 };
 
-export default function EditDataComponent({ topicId } : { topicId: string }) { 
+
+interface TopicParams {
+  topicId: string; 
+  topicInfo: {
+      title: string, 
+      description: string;
+  }; 
+  topicData: any;
+}
+
+
+export default function EditDataComponent({ topicId , topicData, topicInfo } : TopicParams ) { 
   
-    const [conceptData, setConceptData] = useState<any>({}); 
-    const [ data , setData ] = useState<DataForBuild[]>([]);
+    const [ topicInfoState, setTopicInfoState ] = useState<any>( topicInfo ); 
+    const [ data , setData ] = useState<DataForBuild[]>( topicData );
     const [ inAdminMode , changeAdminView ] = useState(true);
 
     function DataDisplaySwitch ( ) {
         const buttonTitle = inAdminMode ? 'Switch to student mode' : 'View in Admin mode';
         return (
-          <Button variant={'outline'} className="mx-3" onClick={ () => changeAdminView( !inAdminMode ) }> { buttonTitle } </Button>
+          <Button variant={'outline'} className="mx-3" onClick={ () => changeAdminView( !inAdminMode ) }> 
+            { buttonTitle } 
+          </Button>
         )
     }
 
@@ -42,39 +56,20 @@ export default function EditDataComponent({ topicId } : { topicId: string }) {
         else if ( type === 'new' ) {
           arrayCopy.push( blockData );
         }
-        let savedData = await action_saveTopicBlock(topicId, arrayCopy );
+        await action_saveTopicBlock(topicId, arrayCopy );
         setData( arrayCopy );
     }
-  
-    // Define a function to fetch topic data.
-    const fetchTopicData = async (topicId: string) => {
-      try {
-        const topic = await action_getTopicById(topicId);
-        setConceptData(topic); 
-        setData( topic?.data )
-      } 
-      catch (error) {
-        console.error('Failed to fetch topic data:', error);
-      }
-    };
-  
-    // UseEffect hook to fetch topic data when component mounts...
-    useEffect(() => {
-      fetchTopicData( topicId );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Empty dependency array ensures useEffect runs only once when component mounts...
   
     return (
       <div className="flex flex-col">
           <div className="flex-1 p-4 flex-row flex justify-between items-center">
             
-              <div key={conceptData.id}>
-                  <Title variant="heading" title={ conceptData.title } />
-                  <p>{conceptData.description}</p>
+              <div key={topicId}>
+                  <Title variant="heading" title={ topicInfoState.title } />
+                  <p>{topicInfoState.description}</p>
               </div>
 
               <div>
-
                 <DataDisplaySwitch />
                
                 <Link href={`/authed/content/concepts/${topicId}`} rel="noopener noreferrer" target="_blank">

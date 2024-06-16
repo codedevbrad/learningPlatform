@@ -1,6 +1,6 @@
 // next.config.js
 module.exports = {
     images: {
-      domains: ['tailwindui.com'],
+      domains: ['tailwindui.com' , 'images.unsplash.com'],
     },
   };

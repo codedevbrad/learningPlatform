@@ -20,7 +20,7 @@ interface TaskAdminBlockProps {
 const TaskAdminBlock: React.FC<TaskAdminBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<TaskProps>(data);
   const [savedData, setSavedData] = useState<TaskProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef<HTMLFormElement>(null);
 

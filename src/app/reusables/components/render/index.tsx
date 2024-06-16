@@ -81,7 +81,13 @@ export default function PlatformContentBlocks({ data, isInAdminMode = false, adm
         <>
             {data.map((item: DataForBuild, index: number) => (
                 <div className="my-5" key={index}>
-                    <DataChoiceComponent key={ index } blockIndex={index} dataItem={item} isInAdminMode={isInAdminMode} adminTools={adminTools} />
+                    <DataChoiceComponent 
+                        key={ index } 
+                        blockIndex={index} 
+                        dataItem={item} 
+                        isInAdminMode={isInAdminMode} 
+                        adminTools={adminTools} 
+                    />
                 </div>
             ))}
         </>

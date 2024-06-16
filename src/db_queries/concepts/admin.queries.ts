@@ -1,30 +1,7 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
 import { getCategoriesByIds } from '../tags/student.queries'
-import { ExtendedConceptsNotAttached } from '../../../prisma/schema.types'
 
-/*
-[
-  {
-    id: '664893db7ae0a79bf0192a21',
-    title: 'Frontend dev',
-    description: 'learn the concepts of frontend Dev',
-    active: true,
-    imgUrl: "''",
-    topics: [ [Object], [Object], [Object], [Object], [Object] ],
-    categories: [ [Object] ]
-  },
-  {
-    id: '664f9f15010aef9ccb344650',
-    title: 'new concept',
-    description: 'this is a desc',
-    active: true,
-    imgUrl: '',
-    topics: [],
-    categories: [ [Object], [Object] ]
-  }
-]
-*/
 
 export async function getAllConcepts ( ) {
   let concepts = await prisma.concepts.findMany({
