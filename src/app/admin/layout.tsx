@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
-import Header from './(layout)/header'
-  
-// imports ...
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs"
+import AdminAuthCheck from "../authFlows/auth.admin/component"
+import NotAllowedAccessView from "../authFlows/notAllowedView"
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -9,13 +9,21 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div>
-        <Header />
-        <div className="p-8 pt-1">
+    <>
+      <SignedIn>
+        <AdminAuthCheck>
             { children }
-        </div>
-    </div>
+         </AdminAuthCheck>
+      </SignedIn>
+      <SignedOut>
+          <NotAllowedAccessView>
+              <div>
+                  you're not currently signed in.
+              </div>
+          </NotAllowedAccessView>
+      </SignedOut>
+    </>
   );
 }

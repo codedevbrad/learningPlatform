@@ -1,6 +1,21 @@
 import prisma from "../../../prisma/client"
 import { auth, currentUser } from "@clerk/nextjs/server"
 
+export const db_fetchUser = async ( ) => {
+  try {
+      const { userId } = auth()
+      if ( !userId ) throw 'no user logged'
+      return await prisma.users.findFirst({
+          where: { userId }
+      });
+  }
+  catch ( error ) {
+      console.error("Error creating user:", error);
+      throw error;
+  }
+}
+
+
 export async function getUserByUserId(userId) {
   try {
     const user = await prisma.users.findFirst({
@@ -29,6 +44,7 @@ export async function addUser( userObj ) {
     throw error;
   }
 }
+
 
 export async function fetchUserDataOnTopic(topicId: string) {
   try {

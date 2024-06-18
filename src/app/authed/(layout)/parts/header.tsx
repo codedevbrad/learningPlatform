@@ -1,36 +1,18 @@
 'use client'
-import React, { ReactNode } from 'react'
 import { IoSearch } from "react-icons/io5"
 import { MdOutlineNotifications } from "react-icons/md"
 import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { SignedIn, UserButton } from "@clerk/nextjs"
-import Link from 'next/link'
 import { signInRedirect } from "@/app/flows"
-import { usePathname } from 'next/navigation'
-import Image from 'next/image'
-
-
-function HeaderLogo ( ) {
-  return (
-      <div className="flex items-center">
-          <Link href={signInRedirect}>
-              <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt="Your Company"
-                />
-          </Link>
-     </div>  
-  )
-}
+import PageLinkControl from '@/app/reusables/user/linkControl'
+import HeaderLogo from "@/app/reusables/app/headerLogo"
 
 export default function Header() {
     return (
       <header className="text-black py-4 px-6 flex items-center justify-between">
 
-        <HeaderLogo />
-  
+        <HeaderLogo url={ signInRedirect } />
         {/* Navigation */}
         <nav>
           <NavigationMenu>
@@ -57,12 +39,12 @@ export default function Header() {
           </button>
           <button className="text-gray-400 hover:text-white focus:outline-none">
                 <MdOutlineNotifications className="text-2xl text-black"/>
-          </button>
-          <div>
+          </button>            
+          
             <SignedIn>
+              <PageLinkControl />
               <UserButton />
             </SignedIn>
-          </div>
         </div>
       </header>
     );

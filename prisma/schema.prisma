@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// schema.prisma ...
+//////////////// ========= schema.prisma  //////////////// ...
 
 // ***** User ****** //
 
@@ -23,7 +23,15 @@ model Users {
   bio        String 
   questions  Json[]
   TopicsData UserDataForTopic[]
+  role       String @default("USER")
 }
+
+model AdminUsers {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @unique
+  role       String       @default("ADMIN")
+}
+
 
 // ... relations between a user and [ languageUsers ] //
 
@@ -32,7 +40,7 @@ model UserDataForTopic {
   userNotes    Json[]
   userProgress Boolean
   user         Users     @relation(fields: [userId], references: [userId])
-  userId       String    @unique
+  userId       String    // Removed @unique constraint if a user can have multiple topics
   topic        Topic     @relation(fields: [topicId], references: [id])
   topicId      String    @db.ObjectId @unique
 }

@@ -1,5 +1,5 @@
 'use server'
-import { db_fetchUser } from "@/db_queries/user/admin.queries"
+import { db_fetchUser } from "@/db_queries/user/queries"
 
 export const action__getUserData = async ( ) => {
     try {

@@ -3,7 +3,7 @@ import { useState, useRef } from "react"
 import { action__getAllResources, action__addNewResource, action__editResource, action__deleteResource } from "./actions"
 import AdminBlockTemplate from "@/app/reusables/components/templates/admin/admin.block.form"
 import { Button } from "@/components/ui/button"
-import ResourceComponent , { resourceObject } from "@/app/reusables/resources"
+import ResourceComponent , { resourceObject } from "@/app/reusables/components/resources"
 import ImageDisplayAndChange from "@/app/reusables/usables/imageChoice"
 
 
@@ -34,6 +34,7 @@ function AdminEachResourceComponent ({ resourceData, blockIndex }) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log( formData );
         setSavedData(formData);
         setIsSaved(true);
     };

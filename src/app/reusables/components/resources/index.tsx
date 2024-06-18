@@ -1,8 +1,8 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
-import Title from "../content/title"
-import ImageDisplayAndChange from "../usables/imageChoice"
+import Title from "../../content/title"
+import ImageDisplayAndChange from "../../usables/imageChoice"
 
 export const resourceObject = {
     title: '',

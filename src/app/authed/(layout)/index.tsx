@@ -9,22 +9,14 @@ import { action__userRegisteredThroughDbCheck } from "./actions"
 import { Button } from '@/components/ui/button'
 import Title from '@/app/reusables/content/title'
 import AuthedButRegister from './register'
+import AppLoadingScreen from '@/app/reusables/app/loadingScreen'
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
 
-function AuthLoadingScreen ( ) {
-  return (
-      <div className='flex w-full h-full fixed z-40 justify-center items-center'>
-          <Title title="Coding Bootcamp" variant="heading" />
-      </div>
-  )
-}
-
-
-function Authed({ children }) {
+function Authed({ children } : { children: ReactNode }) {
   const { user, isLoaded } = useUser();
   const [isUserRegistered, setIsUserRegistered] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -42,16 +34,16 @@ function Authed({ children }) {
 
   if (loading) {
     return (
-        <AuthLoadingScreen />
+        <AppLoadingScreen />
     );
   }
 
   return (
     <SignedIn>
-          <div className={`h-full flex flex-row ${colors.app_primary_bg} p-5`}>
+          <div className={`h-full flex flex-row ${colors.app_primary_bg} `}>
             { !isUserRegistered ? <AuthedButRegister /> : null }
             {/* left main content */}
-            <div className="flex-grow p-5 mt-4 overflow-hidden pb-20">
+            <div className="flex-grow px-5 overflow-hidden pb-20">
               <Header />
               {children}
             </div>
@@ -68,8 +60,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             { children }
         </Authed>
         <SignedOut>
-            <div className="flex items-center mt-10 flex-col space-y-4">
-                  <Title variant='heading' title='It seems you tried entering our bootcamp' />
+            <div className="flex items-center pt-10 flex-col space-y-4">
+                  <Title variant='heading' title='It seems you tried entering our bootcamp' noMargin={false} />
                   <p> you have tried entering the bootcamp without registering. first, sign up with our platform </p>
                   <SignInButton>
                       <Button> Sign up to the Platform </Button>

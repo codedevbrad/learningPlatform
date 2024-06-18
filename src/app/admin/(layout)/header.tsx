@@ -6,31 +6,20 @@ import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { SignedIn, UserButton } from "@clerk/nextjs"
 import Link from 'next/link'
-import { signInRedirect } from "@/app/flows"
-
-function HeaderLogo ( ) {
-    return (
-        <div className="flex items-center">
-            <Link href={signInRedirect}>
-                <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                  />
-            </Link>
-       </div>  
-    )
-  }
+import { Button } from '@/components/ui/button'
+import { signInRedirect, adminRedirect } from '@/app/flows'
+import HeaderLogo from '@/app/reusables/app/headerLogo'
   
-  export default function Header() {
+
+export default function Header() {
       return (
         <header className="text-black py-4 px-6 flex items-center justify-between">
-          <HeaderLogo />
+          <HeaderLogo url={ adminRedirect } />
           {/* Navigation */}
           <nav>
             <NavigationMenu>
                   <NavigationMenuList>  
-                        <NavMenu link={{ title: 'Dashboard' , href: '/admin/' }} subLinks={ null } />
+                        <NavMenu link={{ title: 'Dashboard'    , href: '/admin/' }} subLinks={ null } />
                         <NavMenu link={{ title: 'content work' , href: '/admin/edit/' }} subLinks={ null } />
                         <NavMenu link={{ title: 'Student area' , href: '/admin/students' }} subLinks={ null } />
                   </NavigationMenuList>
@@ -38,16 +27,18 @@ function HeaderLogo ( ) {
           </nav>
     
           {/* Search and Notifications */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">  
+            <Link href={ signInRedirect }> 
+                  <Button variant={'outline'}> Bootcamp </Button>
+            </Link>
             <button className="text-gray-400 hover:text-white focus:outline-none">
                 <IoSearch className="text-black text-2xl"/>
             </button>
             <button className="text-gray-400 hover:text-white focus:outline-none">
                   <MdOutlineNotifications className="text-2xl text-black"/>
             </button>
-            <div>
+            <div className="flex flex-row space-x-2">
               <SignedIn>
-                {/* Mount the UserButton component */}
                 <UserButton />
               </SignedIn>
             </div>
