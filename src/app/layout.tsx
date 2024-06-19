@@ -4,8 +4,10 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/toaster"
 import LoadingBar from "./reusables/usables/pageLoad"
 import { UserProvider } from "./contexts/context"
+import Footer from "./reusables/app/footer"
 
 import "./globals.css"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +23,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <html className={ inter.className } lang="en">
               <body className="">
                       <LoadingBar />
-                      <>
-                          { children }
-                      </>
                       <Toaster />  
+                      { children }
+                      <Footer />
               </body>
             </html> 
         </UserProvider>

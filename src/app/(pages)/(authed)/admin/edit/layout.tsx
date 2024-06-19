@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import Title from "../../reusables/content/title"
 import NextBreadcrumb from "@/app/reusables/layouts/breadcrumb"
+import Title from "@/app/reusables/content/title";
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -13,7 +13,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
             <div>
             <NextBreadcrumb breadcrumbs={[]}/>
             </div>
-            <Title title="Content Work" variant="heading" />
+            <Title title="Content Work" variant="heading" noMargin={false} />
             <div className="mt-5 flex min-h-screen w-full flex-col">
                { children }
             </div>

@@ -1,6 +1,6 @@
 import Title from "@/app/reusables/content/title"
 import Link from "next/link"
-import { getAllConcepts } from "../../../../db_queries/concepts/student.queries"
+import { getAllConcepts } from "@/db_queries/concepts/student.queries"
 
 // React component to render the learning path ...
 const ConceptsRender = async () => {

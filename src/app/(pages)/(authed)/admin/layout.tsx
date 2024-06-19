@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs"
-import AdminAuthCheck from "../authFlows/auth.admin/component"
-import NotAllowedAccessView from "../authFlows/notAllowedView"
+import AdminAuthCheck from "./auth.flow/component"
+import Header from "./(layout)/header"
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -11,19 +10,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <>
-      <SignedIn>
-        <AdminAuthCheck>
-            { children }
-         </AdminAuthCheck>
-      </SignedIn>
-      <SignedOut>
-          <NotAllowedAccessView>
-              <div>
-                  you're not currently signed in.
-              </div>
-          </NotAllowedAccessView>
-      </SignedOut>
-    </>
+      <AdminAuthCheck>
+         <Header />
+        { children }
+      </AdminAuthCheck>
   );
 }

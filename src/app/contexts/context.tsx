@@ -16,7 +16,7 @@ interface UserProviderProps {
 // Create a Context with a default value
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const useUser = (): UserContextType => {
+export const useUserContext = (): UserContextType => {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a UserProvider');

@@ -6,7 +6,7 @@ export default function HeaderLogo({ url } : { url: string }) {
     <div className="flex items-center">
       <Link href={ url }>
         <div>
-            <AppLogo />
+            <AppLogo size={"small"} />
         </div>
       </Link>
     </div>

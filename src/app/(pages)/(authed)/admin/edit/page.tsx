@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { getAllConcepts } from "../../../db_queries/concepts/student.queries";
+import { getAllConcepts } from "@/db_queries/concepts/student.queries";
 import ConceptsEditPage from "./(concepts)/table"
 
 export default async function EditPage () {

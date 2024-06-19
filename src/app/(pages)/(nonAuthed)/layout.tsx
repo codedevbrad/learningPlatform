@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Header from './(layout)/header'
-import Footer from "./(layout)/footer"
 
 // imports ...
 
@@ -17,7 +16,6 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
         <div className="p-8 pt-1">
             { children }
         </div>
-        <Footer />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/components
 
 import { action__updateTopicProgressForUser , action__updateTopicNotesForUser } from './actions'
 
-import SaveProgressForPageBtn from '@/app/authed/content/concepts/[slug]/savePageProgress'
+import SaveProgressForPageBtn from './savePageProgress/index'
 
 interface InfoProps {
     name: string;
