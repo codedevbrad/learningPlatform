@@ -35,7 +35,7 @@ function Tabbed ( ) {
 export default function LearningPage() {
     return (
         <main className="flex flex-col items-center p-4">
-            <Title title="Your Learning centre . . ." variant="heading" />
+            <Title title="Your Learning centre . . ." variant="heading" noMargin={false} />
             <div className="mt-8 w-full max-w-4xl">
                 <Tabbed />
             </div>

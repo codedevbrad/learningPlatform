@@ -5,7 +5,7 @@ import { action_saveTopicBlock } from "./actions"
 import { Button } from "@/components/ui/button"
 
 import PlatformContentBlocks, { DataForBuild } from "@/app/reusables/components/render"
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
+import { AdminToolsProps } from "@/app/(pages)/(authed)/admin/_types/type.adminTools"
 
 import AddNewDataBlock from "./addNewBlock"
 import Title from "@/app/reusables/content/title"
@@ -65,7 +65,7 @@ export default function EditDataComponent({ topicId , topicData, topicInfo } : T
           <div className="flex-1 p-4 flex-row flex justify-between items-center">
             
               <div key={topicId}>
-                  <Title variant="heading" title={ topicInfoState.title } />
+                  <Title variant="heading" title={topicInfoState.title} noMargin={false} />
                   <p>{topicInfoState.description}</p>
               </div>
 

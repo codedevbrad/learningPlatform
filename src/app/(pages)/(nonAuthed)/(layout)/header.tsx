@@ -5,7 +5,7 @@ import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-m
 import Link from 'next/link';
 import { Button } from '@/components/ui/button'
 import PageLinkControl from '@/app/reusables/user/linkControl'
-import HeaderLogo from '@/app/reusables/app/headerLogo';
+import HeaderLogo from '@/app/reusables/app/headerLogo'
 import { bootcampRedirect  } from '@/app/flows'
 
 export default function Header() {
@@ -32,6 +32,7 @@ export default function Header() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavMenu link={{ title: 'Learning with us', href: '/' }} subLinks={null} />
+            <NavMenu link={{ title: 'Blog', href: '/' }} subLinks={null} />
             <NavMenu link={{ title: 'Our Company', href: '/' }} subLinks={null} />
             <NavMenu link={{ title: 'Faqs', href: '/' }} subLinks={null} />
           </NavigationMenuList>

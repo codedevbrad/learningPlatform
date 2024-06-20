@@ -21,7 +21,6 @@ export default function AuthedLayout({ children }: Readonly<{ children: React.Re
                     { children }
                 </AuthedFlow>
           </SignedIn>
-        
        </>
     );
 }

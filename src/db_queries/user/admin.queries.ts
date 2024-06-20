@@ -1,18 +1,15 @@
-import prisma from "../../../prisma/client"
-import { auth, currentUser } from "@clerk/nextjs/server"
+import prisma from "../../../prisma/client";
+import { auth } from "@clerk/nextjs/server";
 
-
-export const db_userOrAdmin = async ( ) => {
+export const db_userOrAdmin = async () => {
     try {
-        const { userId } = auth()
-        if ( !userId ) throw 'no user logged'
+        const { userId } = auth();
+        if (!userId) throw new Error('No user logged in');
         let adminFound = await prisma.adminUsers.findFirst({
             where: { userId }
         });
         return adminFound !== null;
-    }
-    catch ( error ) {
-        console.error("Error creating user:", error);
+    } catch (error) {
         throw error;
     }
-}
+};

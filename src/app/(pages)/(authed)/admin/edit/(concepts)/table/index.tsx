@@ -2,7 +2,7 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { action_updateTopicStatus, action_updateTopicDetails } from "../actions"
-import { ExtendedConcepts } from '../../../../../../prisma/schema.types'
+import { ExtendedConcepts } from '@/../prisma/schema.types'
 
 import AddConceptPopup  from './ui/concept.popup.add'
 import DeleteConceptModal from './ui/concept.popup.del'
@@ -117,7 +117,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
                             <p className="text-md mb-4">{concept.description}</p>
                         </div>
                         <div>
-                              <DeleteConceptModal updateTable={ updateTableFunction } conceptId={ concept.id } />
+                            <DeleteConceptModal updateTable={ updateTableFunction } conceptId={ concept.id } />
                         </div>
                     </div>
 
@@ -173,7 +173,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
 
                             <TableCell className="font-medium" onClick={() => handleStatusCellClick(topic.id, topic.active)}>
                                 <div className="flex mt-2">
-                                  <div className={`border px-2 py-1 rounded border-${topic.active ? 'black bg-black text-white' : 'gray-300'}`}>
+                                  <div className={` cursor-pointer border px-2 py-1 rounded border-${topic.active ? 'black bg-black text-white' : 'gray-300'}`}>
                                     {topic.active ? 'Active' : 'Inactive'}
                                   </div>
                                 </div>
@@ -182,7 +182,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
                             <TableCell className="font-medium">
                               <div className="flex mt-2">
                                 <Link href={`/admin/edit/${topic.id}`}>
-                                    <div className={`border px-2 py-1 rounded border-gray-200`}>
+                                    <div className={`border px-2 py-1 rounded border-gray-200 hover:bg-black hover:text-white`}>
                                       edit topic
                                     </div>
                                 </Link>
@@ -196,7 +196,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
                         ))}
                       </TableBody>
                     </Table>
-                    <div className="flex mt-2">
+                    <div className="flex mt-2 justify-end">
                         <AddTopicModal updateTable={ updateTableFunction } conceptId={ concept.id } />
                     </div>
                   </div>

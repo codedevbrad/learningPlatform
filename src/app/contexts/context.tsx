@@ -1,6 +1,6 @@
 'use client';
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react'
-import { action__checkRole } from './actions'
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { action__checkRole } from './actions';
 
 // Define the context types
 interface UserContextType {
@@ -30,12 +30,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // FETCH USER ROLE OF LOGGED IN USER...
+    console.log('fetching user')
     action__checkRole()
       .then((adminCheck) => {
         setRole(adminCheck);
       })
       .catch((err) => {
-        console.log(err);
+        console.error('Error fetching user based on logged user:');
       });
   }, []);
 

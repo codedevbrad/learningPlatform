@@ -1,13 +1,13 @@
 'use client'
 import { useState, useRef } from "react"
-import { action__getAllResources, action__addNewResource, action__editResource, action__deleteResource } from "./actions"
+import { action__editNewResource } from "./actions"
 import AdminBlockTemplate from "@/app/reusables/components/templates/admin/admin.block.form"
 import { Button } from "@/components/ui/button"
 import ResourceComponent , { resourceObject } from "@/app/reusables/components/resources"
 import ImageDisplayAndChange from "@/app/reusables/usables/imageChoice"
 
 
-function AdminEachResourceComponent ({ resourceData, blockIndex }) {
+function AdminEachResourceComponent ({ updateResource, topicId, resourceData , blockIndex }) {
     const [formData, setFormData] = useState(resourceData);
     const [savedData, setSavedData] = useState(resourceData);
     const [isSaved, setIsSaved] = useState(true);
@@ -32,11 +32,16 @@ function AdminEachResourceComponent ({ resourceData, blockIndex }) {
         console.log( 'image changed' , imageUrl );
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log( formData );
-        setSavedData(formData);
-        setIsSaved(true);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault();
+            updateResource( formData , blockIndex );
+            setSavedData(formData);
+            setIsSaved(true);
+        }
+        catch ( error ) {
+            console.log('error saving resource')
+        }
     };
 
 
@@ -105,8 +110,7 @@ function AdminEachResourceComponent ({ resourceData, blockIndex }) {
 
 
 export default function EditResourcesComponent({ topicId, resources }) {
-    const [resourcesState, updateResources] = useState([]);
-
+    const [resourcesState, updateResources] = useState(resources);
 
     const addNewResourceFunction = () => {
         let resourcesCopy = [...resourcesState];
@@ -114,8 +118,12 @@ export default function EditResourcesComponent({ topicId, resources }) {
         updateResources(resourcesCopy);
     };
 
-    const updateAResource = ( ) => {
-
+    const updateAResource = async (resource, index) => {
+        let resourcesCopy = [...resourcesState];
+        resourcesCopy[index] = resource;
+        await action__editNewResource( topicId , resourcesCopy );
+        // needs to check if this went through correctly... errors shouldnt go past this...
+        updateResources(resourcesCopy);
     }
 
     const removeResource = () => {
@@ -127,7 +135,7 @@ export default function EditResourcesComponent({ topicId, resources }) {
             <div className="space-y-4">
                 { resourcesState.map((resource, index) => (
                     <div key={index}>
-                        <AdminEachResourceComponent resourceData={resource} blockIndex={index} />
+                        <AdminEachResourceComponent updateResource={ updateAResource } topicId={ topicId } resourceData={resource} blockIndex={index} />
                     </div>
                 ))}
             </div>

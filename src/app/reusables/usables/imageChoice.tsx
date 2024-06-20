@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
+import { buttonVariants } from "@/components/ui/button"
 
 const imageUrls = [
   'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
@@ -77,7 +78,7 @@ export default function ImageDisplayAndChange({ imageUrl, returnImageChosen, isI
         />
         {isHovered && (
           <div className="absolute inset-0 bg-gray-100 bg-opacity-75 backdrop-blur-sm flex justify-center items-center">
-            <Button variant={'outline'}>Change</Button>
+            <div className={`cursor-pointer ${ buttonVariants({ variant: "outline" }) }`}>Change</div>
           </div>
         )}
       </div>
