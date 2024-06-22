@@ -9,7 +9,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TaskComponent, { TaskProps } from './task'
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
+
+import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
+
 
 interface TaskAdminBlockProps {
   data: TaskProps;
@@ -70,6 +72,11 @@ const TaskAdminBlock: React.FC<TaskAdminBlockProps> = ({ data, adminTools, block
     setIsSaved(true); // Set the save status to true
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
+
+  const handleDelete = ( ) => {
+    console.log('clicked to delete' , blockIndex );
+    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  }
 
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
@@ -201,6 +208,7 @@ const TaskAdminBlock: React.FC<TaskAdminBlockProps> = ({ data, adminTools, block
       savedData={preview}
       formRef={formRef}
       isSaved={isSaved}
+      removeItem={ handleDelete }
     />
   );
 };

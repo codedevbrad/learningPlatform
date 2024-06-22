@@ -67,6 +67,11 @@ const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, block
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
 
+  const handleDelete = ( ) => {
+    console.log('clicked to delete explanation' , blockIndex );
+    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  }
+
   const handleAddQuestion = () => {
     const newQuestion = {
       title: `Question ${formData.quizData.length + 1}`,
@@ -170,6 +175,7 @@ const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, block
       savedData={preview}
       formRef={ formRef }
       isSaved={ isSaved }
+      removeItem={ handleDelete }
     />
   );
 };

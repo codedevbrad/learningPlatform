@@ -20,7 +20,7 @@ export const explanationObject = {
 const ExplanationComponent: React.FC<ExplanationUsageProps> = ({ data }) => {
   return (
     <div className="mt-4">
-       <Title title={ data.title } variant='subheading1' />
+       <Title title={data.title} variant='subheading1' noMargin={false} />
        <p className="leading-8">
           { data.content }
        </p>

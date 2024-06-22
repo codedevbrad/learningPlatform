@@ -11,13 +11,16 @@ export const resourceObject = {
     imgUrl: 'https://images.unsplash.com/photo-1558244661-d248897f7bc4'
 };
 
+interface resourceObjectType {
+    id: number;
+    title: string;
+    url: string;
+    description: string;
+    imgUrl: string;
+  }
+
 interface ResourceType {
-    resource: {
-        title: string;
-        description: string;
-        url: string;
-        imgUrl: string;
-    };
+    resource: resourceObjectType;
     isInAdminMode: boolean;
     handleImageChange?: any;
 }
@@ -45,7 +48,8 @@ function ResourceComponent({ resource , isInAdminMode = false, handleImageChange
 }
 
 export type {
-    ResourceType
+    ResourceType, 
+    resourceObjectType
 }
 
 

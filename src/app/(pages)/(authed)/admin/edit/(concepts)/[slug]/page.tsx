@@ -16,7 +16,7 @@ export default async function AdminPage ({ params }: { params: { slug: string } 
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <div className="p-5">
-                    <Title title="This concept does not exist or no longer exists." variant="subheading2" noMargin={false} />
+                    <Title title="This Topic does not exist or no longer exists." variant="subheading2" noMargin={false} />
                 </div>
             </div>
         );
@@ -27,7 +27,7 @@ export default async function AdminPage ({ params }: { params: { slug: string } 
             <Tabs defaultValue="Data" className="">
                     <TabsList>
                         <TabsTrigger value="Data">
-                            Concept work
+                            Topic work
                         </TabsTrigger>
                         <TabsTrigger value="Resources">
                             Resources

@@ -42,6 +42,11 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
 
+  const handleDelete = ( ) => {
+    console.log('clicked to delete explanation' , blockIndex );
+    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  }
+
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
       <CardContent className="space-y-2 px-0">
@@ -85,6 +90,7 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
       savedData={preview}
       formRef={formRef}
       isSaved={isSaved}
+      removeItem={ handleDelete }
     />
   );
 }

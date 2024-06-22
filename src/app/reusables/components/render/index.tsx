@@ -16,7 +16,7 @@ import TaskAdminBlock from '../blocks/task/task.admin'
 import TaskComponent, { TaskProps } from '@/app/reusables/components/blocks/task/task'
 
 
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
+import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 
 
 export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps;
@@ -28,6 +28,7 @@ interface DataChoiceComponentProps {
     key: React.Key | null | undefined;
     blockIndex: number;
 }
+
 
 const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, dataItem, isInAdminMode, adminTools }) => {
     if (isInAdminMode) {
@@ -55,7 +56,8 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
             default:
                 return <div>Could not render course Item...</div>;
         }
-    } else {
+    } 
+    else {
         switch (dataItem.type) {
             case 'explanation':
                 return <ExplanationComponent data={dataItem as ExplanationProps} />;
