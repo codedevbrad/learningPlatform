@@ -4,24 +4,6 @@ import { getCategoriesByIds } from '../tags/student.queries'
 
 // *** CONCEPTS *** //
 
-export const addNewConcept = async (title: string = "", description: string = "", imgUrl: string = "", active: boolean = true) => {
-  try {
-    const newConcept = await prisma.concepts.create({
-      data: {
-        title,
-        description,
-        imgUrl,
-        active,
-      },
-    });
-    return await getAllConcepts();
-  } 
-  catch (error) {
-    throw new Error(`Failed to create a new concept: ${ error.message }`);
-  }
-};
-
-
 export async function getAllConcepts ( ) {
     let concepts = await prisma.concepts.findMany({
         include: { topics: true , categories: true }

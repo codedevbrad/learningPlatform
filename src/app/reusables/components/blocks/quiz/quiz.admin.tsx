@@ -22,7 +22,7 @@ interface QuizAdminBlockProps {
 const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<QuizObjectProps>(data);
   const [savedData, setSavedData] = useState<QuizObjectProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef( null );
 
@@ -66,6 +66,11 @@ const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, block
     setIsSaved(true);
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
+
+  const handleDelete = ( ) => {
+    console.log('clicked to delete explanation' , blockIndex );
+    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  }
 
   const handleAddQuestion = () => {
     const newQuestion = {
@@ -170,6 +175,7 @@ const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, block
       savedData={preview}
       formRef={ formRef }
       isSaved={ isSaved }
+      removeItem={ handleDelete }
     />
   );
 };

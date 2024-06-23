@@ -1,30 +1,49 @@
 "use client"
-import Title from "@/app/reusables/content/title";
+import { useEffect , useRef } from "react"
+import Title from "@/app/reusables/content/title"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
-import { FaRegFile } from "react-icons/fa";
-import { FaBookOpenReader } from "react-icons/fa6";
+import { FaRegFile } from "react-icons/fa"
+import { FaBookOpenReader } from "react-icons/fa6"
+import React, { useState } from "react"
+import Editor from "@/app/reusables/usables/editorjs"
+import ResourceComponent from "@/app/reusables/components/resources"
 
-function Notes({ }) {
+const Notes: React.FC = () => {
+    const [data, setData] = useState({});
+
+    const saveDataToTb = ( data ) => {
+        console.log( data );
+        setData( data );
+    }
+  
+    const saveEditorDataOnClose = (state: boolean) => {
+      if (!state) {
+        console.log(data, state);
+        saveDataToTb( data );
+      }
+    };
+  
     return (
-        <Sheet>
-            <SheetTrigger>
-                <div className="border p-5 m-4 rounded-md bg-white">
-                    <FaBookOpenReader />
-                </div> 
-            </SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <Title variant="subheading1" title="Notes you've made for this course" />
-                </SheetHeader>
-                <SheetDescription>
-                    
-                </SheetDescription>
-            </SheetContent>
-        </Sheet>
+      <Sheet onOpenChange={saveEditorDataOnClose}>
+        <SheetTrigger>
+          <div className="border p-5 m-4 rounded-md bg-white">
+            <FaBookOpenReader />
+          </div>
+        </SheetTrigger>
+        <SheetContent className="w-[700px] flex flex-col h-full">
+          <SheetHeader>
+            <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
+          </SheetHeader>
+          <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
+            <Editor data={data} onSave={ saveDataToTb }/>
+          </SheetDescription>
+        </SheetContent>
+      </Sheet>
     );
-}
+};
 
-function Resources({ }) {
+function Resources({ resources }) {
+    console.log( 'resources: ', resources  )
     return (
         <Sheet>
             <SheetTrigger>
@@ -34,31 +53,25 @@ function Resources({ }) {
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>
-                    <Title variant="subheading1" title="Resources for this course" />
+                    <Title variant="subheading1" title="Resources for this course" noMargin={false} />
                 </SheetHeader>
                 <SheetDescription>
-                    {/* Your resources content here */}
+                    {  resources.map( ( resource , index ) => 
+                        <ResourceComponent key={ `resource_${ index }`} resource={ resource } isInAdminMode={ false } />
+                    )}
                 </SheetDescription>
             </SheetContent>
         </Sheet>
     );
 }
 
-function Completed({  }) {
-    return (
-        <div className="border p-5 m-4 rounded-md bg-white"> 
-            <p className="text-sm"> completed 👍 </p>
-        </div> 
-    );
-}
 
-export default function CourseExtraExpandable() {
+export default function PageWorkExtraExpandable({ resources , completed , notes }) {
 
     return (
         <div className="flex justify-center items-center">
             <Notes />
-            <Resources  />
-            <Completed  />
+            <Resources resources={ resources } />
         </div>
     );
 }

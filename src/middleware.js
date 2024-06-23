@@ -1,7 +1,7 @@
-import { authMiddleware } from "@clerk/nextjs";
- 
-export default authMiddleware();
- 
+import { clerkMiddleware } from "@clerk/nextjs/server";
+
+export default clerkMiddleware();
+
 export const config = {
-  matcher: ["/authed"],
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };

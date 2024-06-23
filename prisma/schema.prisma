@@ -13,7 +13,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// schema.prisma ...
+//////////////// ========= schema.prisma  //////////////// ...
+
+// ***** User ****** //
+
+model Users {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @unique
+  bio        String 
+  questions  Json[]
+  TopicsData UserDataForTopic[]
+  role       String @default("USER")
+}
+
+model AdminUsers {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @unique
+  role       String       @default("ADMIN")
+}
+
+
+// ... relations between a user and [ languageUsers ] //
+
+model UserDataForTopic {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  userNotes    Json[]
+  userProgress Boolean
+  user         Users     @relation(fields: [userId], references: [userId])
+  userId       String    // Removed @unique constraint if a user can have multiple topics
+  topic        Topic     @relation(fields: [topicId], references: [id])
+  topicId      String    @db.ObjectId @unique
+}
 
 
 // ***** Tags ****** //
@@ -59,6 +89,7 @@ model Topic {
   userDataOnCourse UserDataForTopic?
 }
 
+
 // ... relations between a topic and tags ... //
 
 model CategoriesConcept {
@@ -77,16 +108,7 @@ model LanguagesTopic {
   languageId  String       @db.ObjectId
 }
 
-// ... user content for concepts ... //
 
-model UserDataForTopic {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  userNotes    Json[]
-  userProgress Boolean
-  userId       String
-  topic        Topic     @relation(fields: [topicId], references: [id])
-  topicId      String    @db.ObjectId @unique
-}
 
 
 // **** Courses ***** //
@@ -100,10 +122,9 @@ model Courses {
   resources   Json[]
   categories  CategoryCourse[]
   languages   LanguagesCourse[]
-  userDataOnCourse UserDataForCourse?
+  // userDataOnCourse UserDataForCourse?
   active      Boolean
 }
-
 
 // ... relations between course and tags ... //
 
@@ -125,11 +146,11 @@ model LanguagesCourse {
 
 // ... user content ... //
 
-model UserDataForCourse {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  userNotes    Json[]
-  userProgress Boolean
-  userId       String
-  course       Courses     @relation(fields: [courseId], references: [id])
-  courseId     String      @db.ObjectId @unique
-}
+// model UserDataForCourse {
+//   id           String      @id @default(auto()) @map("_id") @db.ObjectId
+//   userNotes    Json[]
+//   userProgress Boolean
+//   userId       String
+//   course       Courses     @relation(fields: [courseId], references: [id])
+//   courseId     String      @db.ObjectId @unique
+// }

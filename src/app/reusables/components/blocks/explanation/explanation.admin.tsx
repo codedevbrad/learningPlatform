@@ -1,14 +1,12 @@
+'use client'
 import React , { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ExplanationComponent, { ExplanationProps } from './explanation'
 
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
-
-
+import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 import { useRef } from 'react'
 
 interface ExplanationBlockProps {
@@ -17,11 +15,15 @@ interface ExplanationBlockProps {
     adminTools: AdminToolsProps;
 }
 
+// BlockTemplate ...
+
+
+// Block ...
 
 const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminTools, blockIndex }) => {
   const [formData, setFormData] = useState<ExplanationProps>( data );
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef(null);
 
@@ -40,6 +42,11 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
     setIsSaved(true);  // Set the save status to true
     adminTools.updateDataBlock({ type: 'update', blockData: formData , blockIndex });
   };
+
+  const handleDelete = ( ) => {
+    console.log('clicked to delete explanation' , blockIndex );
+    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  }
 
   const form = (
     <form onSubmit={handleSubmit} ref={ formRef }>
@@ -82,6 +89,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({ data, adminToo
         savedData={preview}
         formRef={ formRef }
         isSaved={ isSaved }
+        removeItem={ handleDelete }
       />
   );
 }

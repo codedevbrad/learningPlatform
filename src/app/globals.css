@@ -2,8 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-2;
+}
 
-width
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

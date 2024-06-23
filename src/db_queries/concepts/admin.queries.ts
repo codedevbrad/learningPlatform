@@ -1,30 +1,7 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
 import { getCategoriesByIds } from '../tags/student.queries'
-import { ExtendedConceptsNotAttached } from '../../../prisma/schema.types'
-
-/*
-[
-  {
-    id: '664893db7ae0a79bf0192a21',
-    title: 'Frontend dev',
-    description: 'learn the concepts of frontend Dev',
-    active: true,
-    imgUrl: "''",
-    topics: [ [Object], [Object], [Object], [Object], [Object] ],
-    categories: [ [Object] ]
-  },
-  {
-    id: '664f9f15010aef9ccb344650',
-    title: 'new concept',
-    description: 'this is a desc',
-    active: true,
-    imgUrl: '',
-    topics: [],
-    categories: [ [Object], [Object] ]
-  }
-]
-*/
+import { Prisma, Topic } from '@prisma/client';
 
 export async function getAllConcepts ( ) {
   let concepts = await prisma.concepts.findMany({
@@ -44,6 +21,7 @@ export async function getAllConcepts ( ) {
   });
   return Promise.all(mappedConcepts);
 }
+
 
 export async function deleteConceptById(conceptId: string) {
   try {
@@ -217,4 +195,25 @@ export const updateTopicDetails = async (topicId: string, data: object ) => {
   catch (error) {
       throw new Error(`Failed to update topic details: ${error.message}`);
   }
+};
+
+
+
+export const updateTopicResources = async (topicId, resources) => {
+    try {
+
+      // Perform the update operation with the updated resources array
+      await prisma.topic.update({
+        where: { id: topicId },
+        data: {
+          resources
+        }
+      });
+
+      // Optionally, return updated concepts
+      return await getAllConcepts();
+    } 
+    catch (error) {
+      throw new Error(`Failed to update topic resources: ${error.message}`);
+    }
 };

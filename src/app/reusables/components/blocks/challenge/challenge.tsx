@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import React from 'react';
-import Title from "@/app/reusables/content/title";
+import React from 'react'
+import Title from "@/app/reusables/content/title"
 
 // Define the type for a single challenge
 interface ChallengeProps {
@@ -12,6 +12,7 @@ interface ChallengeProps {
 interface ChallengeUsageProps {
   content: ChallengeProps[];
   type: string;
+  id?: string;
 }
 
 // Define the props for the ChallengeComponent
@@ -19,12 +20,21 @@ interface ChallengeComponentProps {
   data: ChallengeUsageProps;
 }
 
+export const ChallengeComponentObject: ChallengeUsageProps = {
+  type: 'challenge',
+  content: [
+      { 
+          title: '', showcase: ''
+      }
+  ],
+}
+
 // Annotate the function with the defined props type
 const ChallengeComponent: React.FC<ChallengeComponentProps> = ({ data }) => {
   const { content } = data;
   return (
     <div className="my-3">
-      <Title title={ 'Challenge yourself' } variant='subheading1' />
+      <Title title={'Challenge yourself'} variant='subheading1' noMargin={false} />
       {content.map( ( challenge ) => (
         <Accordion type="single" collapsible key={ challenge.title }>
           <AccordionItem value="item-1">
@@ -42,4 +52,4 @@ const ChallengeComponent: React.FC<ChallengeComponentProps> = ({ data }) => {
 }
 
 export default ChallengeComponent;
-export type {ChallengeUsageProps }
+export type {ChallengeUsageProps , ChallengeProps }

@@ -4,9 +4,11 @@ import React from 'react';
 interface TitleProps {
   title: string;
   variant?: 'heading' | 'subheading1' | 'subheading2';
+  noMargin: boolean;
+  styling?: string;
 }
 
-const Title: React.FC<TitleProps> = ({ title, variant = 'heading' }) => {
+const Title: React.FC<TitleProps> = ({ title = 'set a titile', variant = 'heading' , noMargin = false , styling }) => {
   // Function to determine the className based on the variant
   const getFontSize = (): string => {
     switch (variant) {
@@ -22,7 +24,7 @@ const Title: React.FC<TitleProps> = ({ title, variant = 'heading' }) => {
   };
 
   return (
-    <h2 className={ `${getFontSize()} my-3 `}>{title}</h2>
+    <h2 className={ `${getFontSize()} ${ noMargin ? 'py-1' : 'py-3'} ${ styling }`}>{title}</h2>
   );
 };
 
