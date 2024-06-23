@@ -16,7 +16,7 @@ export default function ContentHeader ( { courseInfo , completed , notes } ) {
                
             </div>
             <div className="mb-10 flex-grow">
-                <Title title={ courseInfo.name } variant='heading' />
+                <Title title={courseInfo.name} variant='heading' noMargin={false} />
                 <p> { courseInfo.description } </p>    
             </div>
             <PageWorkExtraExpandable 

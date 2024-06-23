@@ -5,13 +5,14 @@ interface ExplanationProps {
   content: string;
   title: string;
   type: 'explanation';
+  id?: string;
 }
 
 interface ExplanationUsageProps {
     data: ExplanationProps
 }
 
-export const explanationObject = {
+export const explanationObject: ExplanationProps = {
   content: '',
   title: '',
   type: 'explanation'

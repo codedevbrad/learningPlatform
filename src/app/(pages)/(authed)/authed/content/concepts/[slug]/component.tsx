@@ -34,7 +34,7 @@ const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoPro
         changeCompleted( !completed );
     }
 
-    const updateTheNotes = async ( notesData ) => {
+    const updateTheNotes = async ( notesData: any ) => {
         await action__updateTopicNotesForUser( topicId , notesData )
     }
 
@@ -43,7 +43,7 @@ const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoPro
             <ContentHeader 
                  courseInfo={ courseInfo } 
                  completed={ { state: completed , updateProgressToDb: updateTheProgress } } 
-                 notes={ {state: notes , updateNotesToDb: updateTheNotes }} />
+                 notes={ { state: notes , updateNotesToDb: updateTheNotes }} />
             
             <DividerWithText className="">
                 enjoy the content 🙂

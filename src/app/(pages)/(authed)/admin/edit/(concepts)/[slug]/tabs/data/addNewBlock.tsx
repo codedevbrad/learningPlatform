@@ -1,21 +1,27 @@
 import { 
-    DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
-    DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuGroup, 
+  DropdownMenuItem, DropdownMenuLabel, 
+  DropdownMenuSeparator, DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-
 import { Button } from "@/components/ui/button"
 
-import { explanationObject } from "@/app/reusables/components/blocks/explanation/explanation"
-import { quizObject } from "@/app/reusables/components/blocks/quiz/quiz"
-import { codeSnippetObject } from "@/app/reusables/components/blocks/snippet/snippet"
-import { ChallengeComponentObject } from "@/app/reusables/components/blocks/challenge/challenge"
-import { taskObject } from "@/app/reusables/components/blocks/task/task"
+import { explanationObject, ExplanationProps } from "@/app/reusables/components/blocks/explanation/explanation"
+import { quizObject, QuizObjectProps } from "@/app/reusables/components/blocks/quiz/quiz"
+import { codeSnippetObject, CodeSnippetProps } from "@/app/reusables/components/blocks/snippet/snippet"
+import { ChallengeComponentObject, ChallengeUsageProps } from "@/app/reusables/components/blocks/challenge/challenge"
+import { taskObject, TaskProps } from "@/app/reusables/components/blocks/task/task"
+import { v4 as uuidv4 } from 'uuid'
 
-import { UpdateDataBlockProps } from "./index"
-
+// create props for UpdateDataBlockProps.
+// import { props__AdminTool_UpdateDataBlock } from "@/app/(pages)/(authed)/admin/_types/type.adminTools"
+interface addDataToBlockProps {
+   type: 'new';
+   blockData: ExplanationProps | QuizObjectProps | CodeSnippetProps | ChallengeUsageProps | TaskProps;
+   blockIndex: number;
+}
 
 interface AddNewDataBlockProps {
-    addDataToBlock: (props: UpdateDataBlockProps) => void;
+    addDataToBlock: (props: addDataToBlockProps  ) => void;
 }
   
 export default function AddNewDataBlock ({ addDataToBlock }: AddNewDataBlockProps ) {
@@ -36,31 +42,31 @@ export default function AddNewDataBlock ({ addDataToBlock }: AddNewDataBlockProp
           <DropdownMenuGroup>
 
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                      type: 'new', blockData: explanationObject, blockIndex: 0 
+                      type: 'new', blockData: {...explanationObject, id: uuidv4() }, blockIndex: 0 
                   }) }>
                     <div> Explanation </div>
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                      type: 'new', blockData: quizObject, blockIndex: 0 
+                      type: 'new', blockData: {...quizObject, id: uuidv4() }, blockIndex: 0 
                   }) }>
                     <div> Quiz </div>
                   </DropdownMenuItem>
 
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                      type: 'new', blockData: codeSnippetObject, blockIndex: 0 
+                      type: 'new', blockData: {...codeSnippetObject, id: uuidv4() }, blockIndex: 0 
                   }) }>
                     <div> Code snippet </div>
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                      type: 'new', blockData: ChallengeComponentObject, blockIndex: 0 
+                      type: 'new', blockData: {...ChallengeComponentObject, id: uuidv4()} , blockIndex: 0 
                   }) }>
                     <div> Challenge </div>
                   </DropdownMenuItem>
 
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
-                      type: 'new', blockData: taskObject, blockIndex: 0 
+                      type: 'new', blockData: {...taskObject, id: uuidv4() }, blockIndex: 0 
                   }) }>
                     <div> Task </div>
                   </DropdownMenuItem>

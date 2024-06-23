@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return (
         <div className="h-full flex flex-row">
             <ConceptTopicMainComponent 
-                  courseInfo={{ name: title , description , imgUrl, resources: 'resource data' }}
+                  courseInfo={{ name: title , description , imgUrl, resources }}
                          data={ data } 
                  userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
                       topicId={ topicId }

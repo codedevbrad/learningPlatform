@@ -13,6 +13,7 @@ import Title from "@/app/reusables/content/title"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import SortableList from "@/app/reusables/usables/sortable"
 
+
 interface TopicParams {
   topicId: string; 
   topicInfo: {
@@ -21,7 +22,6 @@ interface TopicParams {
   }; 
   topicData: any;
 }
-
 
 export default function EditDataComponent({ topicId, topicData, topicInfo } : TopicParams ) { 
   
@@ -37,7 +37,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
           </Button>
         )
     }
-
 
     const updateDataBlock = async ( { type = 'update', blockData, blockIndex } : props__AdminTool_UpdateDataBlock ) => {
 
@@ -56,23 +55,31 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
           console.log('deleting block at', blockIndex );
           arrayCopy.splice( blockIndex , 1 );
         };
-
         await action_saveTopicBlock( topicId, arrayCopy );
         setData( arrayCopy );
+    }
+
+    const updateSortableChange = async ( dataAltered : DataForBuild[]) => {
+        await action_saveTopicBlock( topicId, dataAltered );        
+        setData( dataAltered );
     }
   
     return (
       <div className="flex flex-col">
         
-          <div>
-            <Popover>
-              <PopoverTrigger> 
-                  Organise 
-              </PopoverTrigger>
-              <PopoverContent className="h-[400px] overflow-y-scroll rounded-lg p-3">
-                <SortableList data={ data }/>
-              </PopoverContent>
-            </Popover>
+          <div className="flex justify-end">
+              <Popover>
+                <PopoverTrigger> 
+                    <div className={`${ buttonVariants({ variant: 'outline'}) }`}> 
+                      Organise 
+                    </div>
+                </PopoverTrigger>
+                <PopoverContent className="h-[400px] w-[400px] overflow-hidden rounded-lg p-3" align={'end'} sideOffset={ 10 }>
+                    <div className="overflow-y-scroll h-full px-3 scroll">
+                        <SortableList data={ data } onSortableChange={ updateSortableChange }/>
+                    </div>
+                </PopoverContent>
+              </Popover>
           </div>
 
           <div className="flex-1 p-4 flex-row flex justify-between items-center">
@@ -84,7 +91,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
 
               <div>
                 <DataDisplaySwitch />
-               
                 <Link href={`/authed/content/concepts/${topicId}`} rel="noopener noreferrer" target="_blank">
                     <Button>
                         View page
@@ -95,9 +101,9 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
 
           <div>
               {/* render blocks based on data. */}
-              <PlatformContentBlocks data={ data } isInAdminMode={ inAdminMode } adminTools={{
-                  updateDataBlock
-              } as AdminToolsProps } />
+              <PlatformContentBlocks data={ data } isInAdminMode={ inAdminMode } adminTools={
+              { updateDataBlock } as AdminToolsProps } 
+              />
               {/* add new blocks to data. */}
               <div className="flex justify-center fixed bottom-0 bg-white h-20 left-0 w-full items-center">
                   <AddNewDataBlock addDataToBlock={ updateDataBlock } />

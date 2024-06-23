@@ -6,7 +6,7 @@ import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import React, { useState } from "react"
 import Editor from "@/app/reusables/usables/editorjs"
-import ButtonSaving from "@/app/reusables/themes/saveButton"
+import ResourceComponent from "@/app/reusables/components/resources"
 
 const Notes: React.FC = () => {
     const [data, setData] = useState({});
@@ -32,7 +32,7 @@ const Notes: React.FC = () => {
         </SheetTrigger>
         <SheetContent className="w-[700px] flex flex-col h-full">
           <SheetHeader>
-            <Title variant="subheading1" title="Notes you've made for this course" />
+            <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
           </SheetHeader>
           <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
             <Editor data={data} onSave={ saveDataToTb }/>
@@ -42,7 +42,8 @@ const Notes: React.FC = () => {
     );
 };
 
-function Resources({ data }) {
+function Resources({ resources }) {
+    console.log( 'resources: ', resources  )
     return (
         <Sheet>
             <SheetTrigger>
@@ -52,22 +53,15 @@ function Resources({ data }) {
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>
-                    <Title variant="subheading1" title="Resources for this course" />
+                    <Title variant="subheading1" title="Resources for this course" noMargin={false} />
                 </SheetHeader>
                 <SheetDescription>
-                    { data }
+                    {  resources.map( ( resource , index ) => 
+                        <ResourceComponent key={ `resource_${ index }`} resource={ resource } isInAdminMode={ false } />
+                    )}
                 </SheetDescription>
             </SheetContent>
         </Sheet>
-    );
-}
-
-
-function Completed({ completed }) {
-    return (
-       <div className="border p-5 m-4 rounded-md bg-white"> 
-            <p className="text-sm"> completed 👍 </p>
-        </div> 
     );
 }
 
@@ -77,8 +71,7 @@ export default function PageWorkExtraExpandable({ resources , completed , notes 
     return (
         <div className="flex justify-center items-center">
             <Notes />
-            <Resources data={ resources } />
-            <Completed state={ completed } />
+            <Resources resources={ resources } />
         </div>
     );
 }

@@ -1,19 +1,20 @@
 import React from 'react'
 import Title from '@/app/reusables/content/title'
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 interface CodeSnippetProps {
   code: string;
   title: string;
   type: 'codeSnippet';
+  id?: string;
 }
 
 interface CodeSnippetUsageProps {
   data: CodeSnippetProps;
 }
 
-export const codeSnippetObject = {
+export const codeSnippetObject: CodeSnippetProps = {
   code: '',
   title: '',
   type: 'codeSnippet'

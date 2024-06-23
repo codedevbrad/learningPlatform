@@ -1,6 +1,15 @@
 'use client' 
 import React, { useState } from 'react'
 
+
+interface QuizObjectProps {
+  type: 'quiz';
+  title: string;
+  quizData: QuizType[];
+  id?: string;
+}
+
+
 interface QuizType {
   title: string;
   content: {
@@ -10,7 +19,11 @@ interface QuizType {
   };
 }
 
-export const quizObject = {
+interface QuizDataProps {
+  data: QuizObjectProps;
+}
+
+export const quizObject: QuizObjectProps = {
   type: 'quiz',
   title: 'React.js Quiz',
   quizData: [
@@ -28,16 +41,6 @@ export const quizObject = {
         }
       }
   ]
-}
-
-interface QuizObjectProps {
-  type: 'quiz';
-  title: string;
-  quizData: QuizType[];
-}
-
-interface QuizDataProps {
-  data: QuizObjectProps;
 }
 
 const QuizComponent: React.FC<QuizDataProps> = ({ data }) => {
