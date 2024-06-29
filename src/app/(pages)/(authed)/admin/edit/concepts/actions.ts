@@ -1,8 +1,9 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
 import { 
-  addNewConcept, deleteConceptById, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
+  addNewConcept, getAllConcepts, deleteConceptById, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
 } from "@/db_queries/concepts/admin.queries"
+import { get } from "http";
 
 // Define a custom error interface.
 interface CustomError extends Error {
@@ -10,6 +11,16 @@ interface CustomError extends Error {
 }
 
 // concept ...
+
+export const action__getConcepts = async( ) => {
+    try {
+      return await getAllConcepts();
+    }
+    catch( error ) {
+      console.error('Error fetching concepts asynchronously:', error);
+      throw new Error('Failed to fetch concepts asynchronously.');
+    }
+}
 
 export const action_addNewConcept = async( concept ) => {
     try {

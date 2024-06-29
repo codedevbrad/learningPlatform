@@ -18,13 +18,11 @@ interface CategoriesChosenProps {
 }
 
 export default function CategoriesChosen({ selectedCategories, setSelectedCategories }: CategoriesChosenProps) {
-    const [categories, setCategories] = useState<Category[]>([]);
     const [categoryOptions, setCategoryOptions] = useState<Option[]>([]);
 
     useEffect(() => {
         async function fetchCategories() {
             const categoriesData: Category[] = await action_getCategories();
-            setCategories(categoriesData);
             setCategoryOptions(categoriesData.map(category => ({
                 value: category.id,
                 label: category.name

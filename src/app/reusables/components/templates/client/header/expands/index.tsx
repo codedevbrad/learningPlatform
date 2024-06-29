@@ -1,27 +1,33 @@
 "use client"
-import { useEffect , useRef } from "react"
+import React, { useEffect , useState , useRef } from "react"
 import Title from "@/app/reusables/content/title"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
 import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
-import React, { useState } from "react"
-import Editor from "@/app/reusables/usables/editorjs"
+import Editor from "@/app/reusables/usables/editorJs/index"
 import ResourceComponent from "@/app/reusables/components/resources"
 
-const Notes: React.FC = () => {
-    const [data, setData] = useState({});
 
-    const saveDataToTb = ( data ) => {
-        console.log( data );
-        setData( data );
+const Notes: React.FC = ({ notes }) => {
+    const { state , updateNotesToDb } = notes;
+    const [data, setData] = useState( state );
+
+    const saveDataToState = ( noteObj ) => {
+        console.log( 'saving notes to state', noteObj  );
+        setData( noteObj );
     }
   
     const saveEditorDataOnClose = (state: boolean) => {
       if (!state) {
-        console.log(data, state);
-        saveDataToTb( data );
+        updateNotesToDb( data );
       }
-    };
+    };3
+
+
+    const saveEditorDataOnBtnClick = ( ) => {
+        console.log( data , 'clicked to save editor...');
+        updateNotesToDb( data );
+    }
   
     return (
       <Sheet onOpenChange={saveEditorDataOnClose}>
@@ -35,7 +41,7 @@ const Notes: React.FC = () => {
             <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
           </SheetHeader>
           <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
-            <Editor data={data} onSave={ saveDataToTb }/>
+            <Editor data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
           </SheetDescription>
         </SheetContent>
       </Sheet>
@@ -66,11 +72,11 @@ function Resources({ resources }) {
 }
 
 
-export default function PageWorkExtraExpandable({ resources , completed , notes }) {
+export default function PageWorkExtraExpandable({ resources , notes }) {
 
     return (
         <div className="flex justify-center items-center">
-            <Notes />
+            <Notes notes={ notes } />
             <Resources resources={ resources } />
         </div>
     );

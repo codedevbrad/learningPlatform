@@ -1,11 +1,14 @@
 'use client'
-import React, { useState, useRef } from 'react'
-import { CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import AdminBlockTemplate from '../../templates/admin/admin.block.form'
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
-import CodeSnippetComponent from './snippet'
+import React, { useState, useRef } from 'react';
+import { CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import AdminBlockTemplate from '../../templates/admin/admin.block.form';
+import { AdminToolsProps } from '@/app/admin/_types/type.adminTools';
+import CodeSnippetComponent from './snippet';
+import CodeMirror from '@uiw/react-codemirror';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { javascript } from '@codemirror/lang-javascript';
 
 interface CodeSnippetProps {
   title: string;
@@ -35,6 +38,14 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
     setIsSaved(false);  // Reset the save status when the form changes
   };
 
+  const handleCodeChange = (value: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      code: value,
+    }));
+    setIsSaved(false);  // Reset the save status when the form changes
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSavedData(formData);
@@ -42,9 +53,9 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
 
-  const handleDelete = ( ) => {
-    console.log('clicked to delete explanation' , blockIndex );
-    adminTools.updateDataBlock({ type: 'delete', blockData: null , blockIndex });
+  const handleDelete = () => {
+    console.log('clicked to delete explanation', blockIndex);
+    adminTools.updateDataBlock({ type: 'delete', blockData: null, blockIndex });
   }
 
   const form = (
@@ -61,13 +72,11 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
         </div>
         <div className="space-y-1">
           <Label htmlFor="code">Code</Label>
-          <textarea
-            rows={10}
-            id="code"
-            name="code"
+          <CodeMirror
             value={formData.code}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            theme={oneDark}
+            extensions={[javascript()]}
+            onChange={(value) => handleCodeChange(value)}
           />
         </div>
       </CardContent>
@@ -76,7 +85,7 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
 
   const preview = savedData ? (
     <>
-        <CodeSnippetComponent data={savedData} />
+      <CodeSnippetComponent data={savedData} />
     </>
   ) : (
     <p>No data available. Please fill out the form.</p>
@@ -90,7 +99,7 @@ const CodeSnippetAdminBlock: React.FC<CodeSnippetBlockProps> = ({ data, adminToo
       savedData={preview}
       formRef={formRef}
       isSaved={isSaved}
-      removeItem={ handleDelete }
+      removeItem={handleDelete}
     />
   );
 }

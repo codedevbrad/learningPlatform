@@ -1,7 +1,7 @@
 'use client'
-import React, { useState, ChangeEvent, KeyboardEvent } from 'react'
+import React, { useState, ChangeEvent, KeyboardEvent, useEffect } from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { action_updateTopicStatus, action_updateTopicDetails } from "../actions"
+import { action__getConcepts, action_updateTopicStatus, action_updateTopicDetails } from "../actions"
 import { ExtendedConcepts } from '@/../prisma/schema.types'
 
 import AddConceptPopup  from './ui/concept.popup.add'
@@ -15,20 +15,22 @@ import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast"
 
 
- // Define interface for ConceptsTableProps
-interface ConceptsTableProps {
-  conceptsState: ExtendedConcepts[];
-}
-
 // Define ConceptsTable functional component.
-const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
+const ConceptsTable = () => {
 
   const { toast } = useToast()
   
   // State hooks
-  const [concepts, setConcepts] = useState<ExtendedConcepts[]>(conceptsState);
+  const [concepts, setConcepts] = useState<ExtendedConcepts[]>([]);
   const [editingCell, setEditingCell] = useState<{ conceptId: string | null; topicId: string | null; field: string | null }>({ conceptId: null, topicId: null, field: null });
   const [editInputValue, setEditInputValue] = useState<string>("");
+
+  useEffect( ( ) => {
+     (async( ) => {
+        let concepts = await action__getConcepts();
+        setConcepts( concepts );
+     })();
+  }, [ ] );
 
   const updateTableFunction = ( array: React.SetStateAction<ExtendedConcepts[]> , toastMessage : string ) => {
     setConcepts( array );
@@ -181,7 +183,7 @@ const ConceptsTable: React.FC<ConceptsTableProps> = ({ conceptsState }) => {
 
                             <TableCell className="font-medium">
                               <div className="flex mt-2">
-                                <Link href={`/admin/edit/${topic.id}`}>
+                                <Link href={`/admin/edit/concepts/${topic.id}`}>
                                     <div className={`border px-2 py-1 rounded border-gray-200 hover:bg-black hover:text-white`}>
                                       edit topic
                                     </div>

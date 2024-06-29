@@ -1,19 +1,11 @@
 'use server'
-import { updateUserProgressForTopic, updateUserNotesForTopic } from "@/db_queries/user/queries"
+import { updateUserNotesForTopic } from "@/db_queries/user/queries"
 
-export const action__updateTopicProgressForUser = async ( state, topicId ) => {
+
+export const action__updateTopicNotesForUser = async (  topicId: string, notesData: object , ) => {
     try {
-        return await updateUserProgressForTopic(state, topicId );
-    }
-    catch ( error ) {
-        console.error("Error creating user:", error);
-    }
-}
-
-
-export const action__updateTopicNotesForUser = async ( notesData , topicId ) => {
-    try {
-        return await updateUserProgressForTopic( notesData , topicId );
+        console.log( 'nnotes:', notesData, topicId )
+        return await updateUserNotesForTopic( notesData , topicId );
     }
     catch ( error ) {
         console.error("Error creating user:", error);

@@ -5,9 +5,10 @@ import DividerWithText from '@/app/reusables/layouts/divider'
 import ContentHeader from '@/app/reusables/components/templates/client/header/index'
 import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/components/render/index"
 
-import { action__updateTopicProgressForUser , action__updateTopicNotesForUser } from './actions'
+import { action__updateTopicNotesForUser } from './actions'
 
 import SaveProgressForPageBtn from './savePageProgress/index'
+import Title from '@/app/reusables/content/title'
 
 interface InfoProps {
     name: string;
@@ -29,11 +30,6 @@ const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoPro
     const { progress , notes } = userProgress;
     const [ completed , changeCompleted ] = useState( progress );
 
-    const updateTheProgress = async ( ) => {
-        await action__updateTopicProgressForUser( completed, topicId );
-        changeCompleted( !completed );
-    }
-
     const updateTheNotes = async ( notesData: any ) => {
         await action__updateTopicNotesForUser( topicId , notesData )
     }
@@ -42,7 +38,6 @@ const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoPro
         <div className="w-full overflow-x-hidden px-3">
             <ContentHeader 
                  courseInfo={ courseInfo } 
-                 completed={ { state: completed , updateProgressToDb: updateTheProgress } } 
                  notes={ { state: notes , updateNotesToDb: updateTheNotes }} />
             
             <DividerWithText className="">
@@ -53,6 +48,13 @@ const ConceptTopicMainComponent: React.FC<{ data: DataProps, courseInfo: InfoPro
 
             <div className="flex fixed bottom-0 left-0 justify-center p-5 my-7 items-center bg-white w-full">
                 <SaveProgressForPageBtn topicId={ topicId } completedState={ completed } updateLocally={ changeCompleted }/>
+            </div>
+
+            <div className=" p-4 fixed bottom-5 right-5 w-[350px] h-[300px] bg-white rounded-md shadow-lg">
+                <Title title={'Table of contents'} variant='subheading1' noMargin={false} />
+                <div>
+                    
+                </div>
             </div>
         </div>
     );

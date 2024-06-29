@@ -1,6 +1,8 @@
 'use client'
 import React from 'react';
 import { RiFileTextLine } from 'react-icons/ri'; // Importing FileTextLine icon from React Icons
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function TutorSessionsTable() {
     const sessionObject = {
@@ -11,13 +13,16 @@ export default function TutorSessionsTable() {
                 date: "2024-04-21",
                 time: "10:00 AM",
                 notes: "Session went well, covered topics A, B, and C",
-                sessionDocuments: ["document1.pdf", "document2.pdf"]
+                sessionDocuments: ["document1.pdf", "document2.pdf"],
+                id: '1234'
             },
             {
                 date: "2024-04-28",
                 time: "11:00 AM",
                 notes: "Reviewed topic D in detail, started on topic E",
-                sessionDocuments: ["document3.pdf"]
+                sessionDocuments: ["document3.pdf"],
+                id: '1345'
+
             },
             // Add more sessions as needed
         ]
@@ -34,6 +39,11 @@ export default function TutorSessionsTable() {
                         <div className="absolute top-4 right-6">
                           <RiFileTextLine size={20} />
                         </div>
+                        <Link href={ `/authed/user/home/tutor/sessions/${ session.id }` }>
+                                <Button> 
+                                    view session
+                                </Button>
+                        </Link>
                     </div>
                 ))}
             </div>

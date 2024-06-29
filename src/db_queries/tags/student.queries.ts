@@ -5,7 +5,8 @@ export async function getLanguages ( ) {
       return await prisma.languages.findMany({});
     }
     catch ( error ) {
-
+      console.error('Error fetching languages: ', error);
+      throw error;
     }
 }
 

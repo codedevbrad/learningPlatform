@@ -39,3 +39,4 @@ export async function findTopicById(topicId: string) {
     throw new Error(`Failed to find topic by ID: ${error.message}`);
   }
 }
+

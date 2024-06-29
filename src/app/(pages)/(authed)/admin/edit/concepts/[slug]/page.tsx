@@ -6,7 +6,7 @@ import EditResourcesComponent from "./tabs/resources"
 import Title from "@/app/reusables/content/title"
 
 
-export default async function AdminPage ({ params }: { params: { slug: string } }) {
+export default async function AdminConceptPage ({ params }: { params: { slug: string } }) {
 
     // need an error boundary around this.
 

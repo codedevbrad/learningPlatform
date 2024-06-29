@@ -1,7 +1,6 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
 import { getCategoriesByIds } from '../tags/student.queries'
-import { Prisma, Topic } from '@prisma/client';
 
 export async function getAllConcepts ( ) {
   let concepts = await prisma.concepts.findMany({
@@ -105,6 +104,7 @@ export async function deleteTopicAndRemoveConnections(topicId: string) {
   }
 }
 
+
 export async function updateTopicData(topicId: string, newData: any[]): Promise<any> {
     try {
         await prisma.topic.update({
@@ -141,6 +141,7 @@ export const addNewConcept = async (data ) => {
         categories: true
       }
     });
+
     let concepts = await getAllConcepts();
     console.log( concepts );
     return concepts;

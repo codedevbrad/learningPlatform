@@ -1,5 +1,5 @@
 'use server'
-import { getCategories,  } from "@/db_queries/tags/student.queries"
+import { getCategories,getLanguages  } from "@/db_queries/tags/student.queries"
 
 export async function action_getCategories ( ) {
     try {
@@ -15,8 +15,7 @@ export async function action_getCategories ( ) {
 
 export async function action_getLanguages ( ) {
     try {
-
-
+        return await getLanguages();
     }
     catch ( error ) {
         console.error('Error getting languages asynchronously:', error);

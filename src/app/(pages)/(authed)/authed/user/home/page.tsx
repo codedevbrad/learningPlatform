@@ -7,17 +7,11 @@ import TutorSessions from "./tutor"
 
 function Tabbed ( ) {
     return (
-        <Tabs defaultValue="about" className="">
+        <Tabs defaultValue="about">
             <TabsList>
-                <TabsTrigger value="about">
-                    about you
-                </TabsTrigger>
-                <TabsTrigger value="record">
-                    your record
-                </TabsTrigger>
-                <TabsTrigger value="tutor">
-                    Your tutor
-                </TabsTrigger>
+                <TabsTrigger value="about"> about you </TabsTrigger>
+                <TabsTrigger value="record">  your record </TabsTrigger>
+                <TabsTrigger value="tutor">  Your tutor </TabsTrigger>
             </TabsList>
             <TabsContent value="about">
                 <AboutUser />
@@ -34,9 +28,9 @@ function Tabbed ( ) {
 
 export default function LearningPage() {
     return (
-        <main className="flex flex-col items-center p-4">
+        <main className="flex flex-col p-4 items-center">
             <Title title="Your Learning centre . . ." variant="heading" noMargin={false} />
-            <div className="mt-8 w-full max-w-4xl">
+            <div className="mt-8 w-full ">
                 <Tabbed />
             </div>
         </main>

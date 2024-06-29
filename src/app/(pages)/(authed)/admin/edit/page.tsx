@@ -1,34 +1,33 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs"
 
-import { getAllConcepts } from "@/db_queries/concepts/student.queries";
-import ConceptsEditPage from "./(concepts)/table"
+import ConceptsEditTable from "./concepts/table"
+import ChallengesEditTable from "./challenges/table"
 
-export default async function EditPage () {
+import TabQueryChange from "@/app/reusables/usables/tabQueryChange"
 
-  let conceptsState = await getAllConcepts();
+
+export default async function EditContentPage (
+    { searchParams }: { searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+
+  console.log( searchParams?.tab )
 
   return (
         <div>
-            <Tabs defaultValue="Concepts" className="">
+            <Tabs defaultValue={searchParams?.tab || 'concepts' } className="">
                 <TabsList>
-                    <TabsTrigger value="Concepts">
-                        Concepts
-                    </TabsTrigger>
-                    <TabsTrigger value="Courses">
-                        Courses
-                    </TabsTrigger>
-                    <TabsTrigger value="Challenges">
-                        Challenges
-                    </TabsTrigger>
+                    <TabQueryChange tabName={'concepts'} />
+                    <TabQueryChange tabName={'courses'} />
+                    <TabQueryChange tabName={'challenges'} />
                 </TabsList>
-                <TabsContent value="Concepts">
-                    <ConceptsEditPage conceptsState={ conceptsState } />
+                <TabsContent value="concepts">
+                    <ConceptsEditTable />
                 </TabsContent>
-                <TabsContent value="Courses">
+                <TabsContent value="courses">
                     Courses
                 </TabsContent>
-                <TabsContent value="Challenges"> 
-                    challenges
+                <TabsContent value="challenges"> 
+                    <ChallengesEditTable />
                 </TabsContent>
            </Tabs>
         </div>

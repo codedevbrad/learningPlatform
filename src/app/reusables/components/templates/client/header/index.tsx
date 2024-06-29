@@ -2,7 +2,9 @@ import Title from "../../../../content/title"
 import PageWorkExtraExpandable from "./expands"
 import Image from "next/image"
 
-export default function ContentHeader ( { courseInfo , completed , notes } ) {
+// describe notes stae and func
+
+export default function ContentHeader ( { courseInfo , notes } ) {
     return (
         <div className="flex flex-row"> 
             <div className="w-29 h-24 mr-3">
@@ -21,7 +23,6 @@ export default function ContentHeader ( { courseInfo , completed , notes } ) {
             </div>
             <PageWorkExtraExpandable 
                 resources={ courseInfo.resources } 
-                completed={ completed } 
                 notes={ notes }
             />
         </div>

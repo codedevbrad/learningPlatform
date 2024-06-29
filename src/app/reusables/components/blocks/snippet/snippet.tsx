@@ -23,7 +23,7 @@ export const codeSnippetObject: CodeSnippetProps = {
 const CodeSnippetComponent: React.FC<CodeSnippetUsageProps> = ({ data }) => {
   return (
     <div className="mt-4">
-        <Title title={data.title} variant="subheading1" />
+        <Title title={data.title} variant="subheading1" noMargin={false} />
         <div className="border-gray-200 rounded-md border p-5">
           <SyntaxHighlighter language="javascript" style={docco}>
           {data.code}
