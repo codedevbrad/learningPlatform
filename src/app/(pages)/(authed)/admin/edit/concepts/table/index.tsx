@@ -5,18 +5,19 @@ import { action__getConcepts, action_updateTopicStatus, action_updateTopicDetail
 import { ExtendedConcepts } from '@/../prisma/schema.types'
 
 import AddConceptPopup  from './ui/concept.popup.add'
-import DeleteConceptModal from './ui/concept.popup.del'
+import ConceptControlDropdown from './ui/concept.popup.control'
 
 import AddTopicModal    from './ui/topic.popup.add'
-import DeleteTopicPopup from './ui/topic.popup.del'
+import TopicControlModal from './ui/topic.popup.control'
+import EditConceptModal from './ui/concept.modal.edit'
 
 import Link from 'next/link'
-
 import { useToast } from "@/components/ui/use-toast"
 
 
 // Define ConceptsTable functional component.
 const ConceptsTable = () => {
+
 
   const { toast } = useToast()
   
@@ -24,6 +25,8 @@ const ConceptsTable = () => {
   const [concepts, setConcepts] = useState<ExtendedConcepts[]>([]);
   const [editingCell, setEditingCell] = useState<{ conceptId: string | null; topicId: string | null; field: string | null }>({ conceptId: null, topicId: null, field: null });
   const [editInputValue, setEditInputValue] = useState<string>("");
+  const [conceptModalState , setConceptModalState ] = useState( false );
+  const [conceptInEdit, changeConceptInEdit ] = useState<ExtendedConcepts | {}>({});
 
   useEffect( ( ) => {
      (async( ) => {
@@ -90,6 +93,7 @@ const ConceptsTable = () => {
 
   return (
     <div>
+
         <div>
           <div className="flex mt-2">
               <div className="flex justify-center fixed bottom-0 bg-white h-20 left-0 w-full items-center z-50">
@@ -99,6 +103,14 @@ const ConceptsTable = () => {
         </div>
 
         <div className="mb-20">
+
+              <EditConceptModal 
+                    state={ conceptModalState }
+                    modalAction={ setConceptModalState } 
+                    concept={ conceptInEdit } 
+                    editStateHelper={ updateTableFunction }
+              />
+
               { concepts.map( ( concept ) => (
                   <div key={concept.id} className="my-4 p-4 border border-gray-200 rounded-lg">
 
@@ -119,7 +131,15 @@ const ConceptsTable = () => {
                             <p className="text-md mb-4">{concept.description}</p>
                         </div>
                         <div>
-                            <DeleteConceptModal updateTable={ updateTableFunction } conceptId={ concept.id } />
+                            <ConceptControlDropdown updateTable={ updateTableFunction } conceptId={ concept.id }>
+                                <span onClick={ () => {
+                                  setConceptModalState( true );
+                                  changeConceptInEdit( concept );
+
+                                }}> 
+                                  edit 
+                                </span>
+                            </ConceptControlDropdown>
                         </div>
                     </div>
 
@@ -192,7 +212,7 @@ const ConceptsTable = () => {
                             </TableCell>
 
                             <TableCell className="cursor-pointer">
-                                <DeleteTopicPopup topicId={ topic.id } updateTable={ updateTableFunction }/>
+                                <TopicControlModal topicId={ topic.id } updateTable={ updateTableFunction }/>
                             </TableCell>
                           </TableRow>
                         ))}

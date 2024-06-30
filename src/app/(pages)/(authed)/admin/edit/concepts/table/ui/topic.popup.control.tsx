@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button"
 import { action_deleteTopic } from "../../actions"
 import { ExtendedConcepts } from "../../../../../../../prisma/schema.types"
 
-interface DeleteTopicModalProps {
+interface TopicModalProps {
   topicId: string; 
   updateTable: (topics: ExtendedConcepts[], message: string) => void;
 }
 
 
-const DeleteTopicModal: React.FC<DeleteTopicModalProps> = ({ updateTable, topicId }) => {
+const TopicControlModal: React.FC<TopicModalProps> = ({ updateTable, topicId }) => {
     const deleteTopic = async ( ) => {
         try {
             let tableData = await action_deleteTopic( topicId );
@@ -26,7 +26,7 @@ const DeleteTopicModal: React.FC<DeleteTopicModalProps> = ({ updateTable, topicI
         <DropdownMenuTrigger asChild>
           <Button variant="outline"> ... </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="w-56" align="end">
           <DropdownMenuLabel>
               Topic Control 
           </DropdownMenuLabel>
@@ -41,4 +41,4 @@ const DeleteTopicModal: React.FC<DeleteTopicModalProps> = ({ updateTable, topicI
     )
   }
 
-  export default DeleteTopicModal;
+  export default TopicControlModal;

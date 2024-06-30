@@ -2,6 +2,7 @@
 import prisma from '../../../prisma/client'
 import { getCategoriesByIds } from '../tags/student.queries'
 
+
 export async function getAllConcepts ( ) {
   let concepts = await prisma.concepts.findMany({
       include: {
@@ -21,6 +22,47 @@ export async function getAllConcepts ( ) {
   return Promise.all(mappedConcepts);
 }
 
+
+
+export async function editConceptById( { conceptId, conceptData } :
+  { 
+    conceptId: string; conceptData:{ title: string; selectedCategories: string[]}
+  }) {
+  try {
+    let { title, selectedCategories } = conceptData;
+
+    // Delete existing categories relationships
+    await prisma.categoriesConcept.deleteMany({
+      where: {
+        conceptId: conceptId,
+      },
+    });
+
+    // Update the concept and create new categories relationships
+    await prisma.concepts.update({
+      where: {
+        id: conceptId,
+      },
+      data: {
+        title,
+        categories: {
+          create: selectedCategories.map((categoryId) => ({
+            categoryId,
+          })),
+        },
+      },
+    });
+
+    return await getAllConcepts();
+  } catch (error) {
+    console.error('Error when editing current concept', error);
+    throw new Error('Failed to edit current concept.');
+  }
+}
+
+
+
+// we may need to delete relations between a topic and the TopicToUserDataForTopic too.
 
 export async function deleteConceptById(conceptId: string) {
   try {
@@ -68,6 +110,7 @@ export async function deleteConceptById(conceptId: string) {
   }
 }
 
+
 export async function deleteTopicAndRemoveConnections(topicId: string) {
   try {
     // Fetch the topic to get the associated conceptId
@@ -87,6 +130,9 @@ export async function deleteTopicAndRemoveConnections(topicId: string) {
         topicId: topicId,
       },
     });
+
+    // remove all TopicToUserDataForTopic rows for that topic. this will delete any user progress 
+    // and notes for that topic.
 
     // Delete the topic
     await prisma.topic.delete({
@@ -168,7 +214,7 @@ export const addNewTopic = async (conceptId: string, title: string, description:
       throw new Error(`Failed to create a new topic: ${error.message}`);
     }
 };
-  
+
 export const updateTopicStatus = async (topicId: string, status: boolean) => {
     try {
       const updatedTopic = await prisma.topic.update({
@@ -197,8 +243,6 @@ export const updateTopicDetails = async (topicId: string, data: object ) => {
       throw new Error(`Failed to update topic details: ${error.message}`);
   }
 };
-
-
 
 export const updateTopicResources = async (topicId, resources) => {
     try {

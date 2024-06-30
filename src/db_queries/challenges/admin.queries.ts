@@ -66,38 +66,57 @@ export async function db__addChallenge( challengeObj : {
 }
 
 
-export async function db__editChallenge({ challengeId, challengeObj } : {
-    challengeId: string; challengeObj: {
-         title: string , selectedCategories: string[], selectedLanguages: string[]
-    }
+export async function db__editChallenge({ challengeId, challengeObj }: {
+    challengeId: string;
+    challengeObj: {
+        title: string;
+        selectedCategories: string[];
+        selectedLanguages: string[];
+    };
 }) {
     try {
-        const { title, selectedCategories , selectedLanguages } = challengeObj;
+        const { title, selectedCategories, selectedLanguages } = challengeObj;
+
+        // Delete existing categories and languages relationships
+        await prisma.categoriesChallenge.deleteMany({
+            where: {
+                challengeId: challengeId,
+            },
+        });
+
+        await prisma.languagesChallenge.deleteMany({
+            where: {
+                challengeId: challengeId,
+            },
+        });
+
+        // Update the challenge and create new categories and languages relationships
         await prisma.challenges.update({
             where: {
-                id: challengeId
+                id: challengeId,
             },
             data: {
                 title,
-                languages: {
-                    create: selectedLanguages.map( languageId => ({
-                        languageId
-                    }))
-                },
                 categories: {
-                    create: selectedCategories.map(categoryId => ({
-                        categoryId
-                    }))
-                }
-            }
+                    create: selectedCategories.map((categoryId) => ({
+                        categoryId,
+                    })),
+                },
+                languages: {
+                    create: selectedLanguages.map((languageId) => ({
+                        languageId,
+                    })),
+                },
+            },
         });
+
         return await db__getAllChallenges();
-    }
-    catch ( error ) {
-        console.error('Error editing existing challenge in db', error );
+    } catch (error) {
+        console.error('Error editing existing challenge in db', error);
         throw new Error('Failed to edit existing challenge.');
     }
 }
+
 
 
 // Function to delete a challenge and its related CategoriesChallenge and LanguagesChallenge

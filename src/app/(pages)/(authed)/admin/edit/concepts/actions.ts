@@ -1,9 +1,9 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
-import { 
-  addNewConcept, getAllConcepts, deleteConceptById, updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections
-} from "@/db_queries/concepts/admin.queries"
-import { get } from "http";
+
+import { addNewConcept, getAllConcepts, deleteConceptById, editConceptById } from "@/db_queries/concepts/admin.queries"
+import { updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections } from "@/db_queries/concepts/admin.queries"
+
 
 // Define a custom error interface.
 interface CustomError extends Error {
@@ -30,6 +30,17 @@ export const action_addNewConcept = async( concept ) => {
     catch ( error ) {
         console.error('Error creating concept asynchronously:', error);
         throw new Error('Failed to create concept asynchronously.');
+    }
+}
+
+
+export const action_editConcept = async ({ conceptId, conceptData }) => {
+    try {
+      return await editConceptById({ conceptId, conceptData });
+    }
+    catch ( error ) {
+      console.error('Error editing concept asynchronously:', error);
+      throw new Error('Failed to edit concept asynchronously.');
     }
 }
 

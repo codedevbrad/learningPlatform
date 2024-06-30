@@ -39,7 +39,7 @@ export default function EditChallengeDialog({ challenge, state, editStateHelper,
             console.log( challengesUpdated );
 
             editStateHelper( challengesUpdated );
-            modalAction();
+            modalAction(false);
         } 
         catch (error) {
             console.error(error);
@@ -47,7 +47,7 @@ export default function EditChallengeDialog({ challenge, state, editStateHelper,
     }
 
     return (
-        <Dialog open={state} onOpenChange={editStateHelper}>
+        <Dialog open={state} onOpenChange={ modalAction }>
             <DialogContent className="sm:max-w-[525px]">
                 <DialogHeader>
                     <DialogTitle> Edit challenge </DialogTitle>
