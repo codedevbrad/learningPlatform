@@ -93,7 +93,7 @@ model Topic {
 }
 
 
-// ... relations between a topic and tags ... //
+// ... relations between a category / topic and tags ... //
 
 model CategoriesConcept {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId

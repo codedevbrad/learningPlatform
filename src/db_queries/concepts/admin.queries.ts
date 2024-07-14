@@ -1,26 +1,61 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
-import { getCategoriesByIds } from '../tags/student.queries'
+import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
 
 
-export async function getAllConcepts ( ) {
+// export async function getAllConceptsPlain ( ) {
+//   let concepts = await prisma.concepts.findMany({
+//       include: {
+//         topics: {
+//           include: {
+//               languages: true
+//           }
+//         },
+//         categories: true 
+//       }
+//   });
+
+//   // Map courses and replace categories and languages with fetched data.
+//   const mappedConcepts = concepts.map( async (concept) => {
+//       // Fetch categories and languages for this course
+//       const categories = await getCategoriesByIds(concept.categories.map(cat => cat.categoryId));
+//       console.log( concept.topics )
+//       // Replace category and language IDs with actual data.
+//       return { ...concept, categories };
+//   });
+//   return Promise.all(mappedConcepts);
+// }
+
+export async function getAllConcepts() {
   let concepts = await prisma.concepts.findMany({
-      include: {
-        topics: true , categories: true 
-      }
-  });
+    include: {
+        topics: {
+            include: {
+                languages: true
+            }
+        },
+        categories: true
+    }
+});
 
   // Map courses and replace categories and languages with fetched data.
-  const mappedConcepts = concepts.map( async (concept) => {
-      // Fetch categories and languages for this course
+  const mappedConcepts = await Promise.all(concepts.map(async (concept) => {
+      // Fetch categories for this concept
       const categories = await getCategoriesByIds(concept.categories.map(cat => cat.categoryId));
-      // const userData = await getUserDataForCourse()
-      console.log( categories );
+
+      // Fetch languages for each topic
+      const topicsWithLanguages = await Promise.all(concept.topics.map(async (topic) => {
+          const languageIds = topic.languages ? topic.languages.map(lang => lang.languageId) : [];
+          const languages = await getLanguagesByIds(languageIds);
+          return { ...topic, languages };
+      }));
+
       // Replace category and language IDs with actual data
-      return { ...concept, categories };
-  });
-  return Promise.all(mappedConcepts);
+      return { ...concept, categories, topics: topicsWithLanguages };
+  }));
+
+  return mappedConcepts;
 }
 
 
@@ -180,17 +215,50 @@ export async function updateTopicData(topicId: string, newData: any[]): Promise<
     }
 }
 
+
+
+export async function db__updateTopicLanguages({ topicId, languages } : { topicId: string; languages: any[] }): Promise<any> {
+  try {
+       // Delete existing categories relationships
+       await prisma.languagesTopic.deleteMany({
+        where: {
+          topicId
+        }
+      });
+  
+      // Update the concept and create new categories relationships
+      await prisma.topic.update({
+        where: {
+          id: topicId,
+        },
+        data: {
+          languages: {
+            create: languages.map((languageId) => ({
+              languageId,
+            })),
+          },
+        },
+      });
+      console.log('Topic Languages updated successfully.');
+  } 
+  catch (error) {
+      console.error('Error updating topic data:', error);
+      throw new Error('Failed to update topic data.');
+  }
+}
+
+
 export const addNewConcept = async (data ) => {
   const { title, description, active, imgUrl = "", categories : categoryIds } = data;
   try {
-    const newConcept = await prisma.concepts.create({
+    await prisma.concepts.create({
       data: {
         title,
         description,
         active,
         imgUrl,
         categories: {
-          create: categoryIds.map(categoryId => ({
+          create: categoryIds.map( ( categoryId : string ) => ({
             categoryId
           }))
         }
@@ -210,14 +278,20 @@ export const addNewConcept = async (data ) => {
   } 
 };
 
-export const addNewTopic = async (conceptId: string, title: string, description: string, active: boolean = false ) => {
+
+export const addNewTopic = async ({conceptId, title, description, active = false , selectedLanguages }) => {
     try {
-      const newTopic = await prisma.topic.create({
+      await prisma.topic.create({
         data: {
           title,
           description,
           conceptId,
           active,
+          languages: {
+              create: selectedLanguages.map( ( languageId : string )  => ({
+                  languageId
+              }))
+          }
         },
       });
       return await getAllConcepts();
@@ -226,6 +300,7 @@ export const addNewTopic = async (conceptId: string, title: string, description:
       throw new Error(`Failed to create a new topic: ${error.message}`);
     }
 };
+
 
 export const updateTopicStatus = async (topicId: string, status: boolean) => {
     try {

@@ -10,6 +10,7 @@ import TopicControlModal from './ui/topic.popup.control';
 import Link from 'next/link';
 import { useToast } from "@/components/ui/use-toast";
 import useSWR, { mutate } from 'swr';
+import TopicLanguagesControlDropdown from './ui/topic.languages.popup.edit';
 
 const ConceptsTable = () => {
   const { toast } = useToast();
@@ -134,7 +135,7 @@ const ConceptsTable = () => {
               <TableHeader className="bg-gray-100">
                 <TableRow>
                   <TableHead className="">Topic</TableHead>
-                  <TableHead className="w-auto">Description</TableHead>
+                  <TableHead className="">Description</TableHead>
                   <TableHead className="">Status</TableHead>
                   <TableHead className="">Edit your page</TableHead>
                   <TableHead className=""> </TableHead>
@@ -191,7 +192,7 @@ const ConceptsTable = () => {
                       <div className="flex mt-2">
                         <Link href={`/admin/edit/concepts/${topic.id}`}>
                           <div className="border px-2 py-1 rounded border-gray-200 hover:bg-black hover:text-white">
-                            edit topic
+                            edit page
                           </div>
                         </Link>
                       </div>

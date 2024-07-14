@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import Select, { MultiValue } from 'react-select'
-import { action_getLanguages } from './actions'
+import { useEffect, useState } from 'react';
+import Select, { MultiValue, StylesConfig } from 'react-select';
+import { action_getLanguages } from './actions';
 
 interface Language {
     id: string; // Change id to string
@@ -15,9 +15,53 @@ interface Option {
 interface LanguagesChosenProps {
     selectedLanguages: string[]; // Change to string array
     setSelectedLanguages: (languages: string[]) => void;
+    showTitle?: boolean;
 }
 
-export default function LanguagesChosen({ selectedLanguages, setSelectedLanguages }: LanguagesChosenProps) {
+// Custom styles for the react-select component
+const customStyles: StylesConfig<Option, true> = {
+    control: (provided) => ({
+        ...provided,
+        backgroundColor: 'white',
+        color: 'white'
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        backgroundColor:'white',
+        color: 'bg-gray-100',
+        paddingLeft: '10px',
+        borderRadius: '8px',
+        ':hover': {
+            backgroundColor: 'black',
+            color: 'white',
+            cursor: 'pointer'
+        },
+    }),
+    multiValue: (provided) => ({
+        ...provided,
+        backgroundColor: 'black',
+        color: 'white',
+        borderRadius: '4px',
+    }),
+    multiValueLabel: (provided) => ({
+        ...provided,
+        color: 'white',
+    }),
+    multiValueRemove: (provided) => ({
+        ...provided,
+        color: 'white',
+        ':hover': {
+            backgroundColor: 'red',
+            color: 'white',
+        },
+    }),
+    menu: (provided) => ({
+        ...provided,
+        padding: '5px'
+    }),
+};
+
+export default function LanguagesChosen({ selectedLanguages, setSelectedLanguages, showTitle = true }: LanguagesChosenProps) {
     const [languages, setLanguages] = useState<Language[]>([]);
     const [languageOptions, setLanguageOptions] = useState<Option[]>([]);
 
@@ -46,9 +90,11 @@ export default function LanguagesChosen({ selectedLanguages, setSelectedLanguage
 
     return (
         <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="languages" className="text-right">
-                Languages
-            </label>
+            { showTitle &&
+                <label htmlFor="languages" className="text-right">
+                   Languages
+                </label>
+            }
             <Select
                 id="languages"
                 className="col-span-3"
@@ -56,6 +102,7 @@ export default function LanguagesChosen({ selectedLanguages, setSelectedLanguage
                 isMulti
                 value={languageOptions.filter((option) => selectedLanguages.includes(option.value))}
                 onChange={handleLanguageChange}
+                styles={customStyles} // Apply custom styles here
             />
         </div>
     );

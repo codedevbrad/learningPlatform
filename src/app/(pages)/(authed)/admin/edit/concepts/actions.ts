@@ -85,9 +85,9 @@ export async function action_deleteTopic ( topicId : string ) {
 
 
 // Update function signatures with explicit return types
-export async function action_addNewTopic(conceptId: string, title: string, description: string, active: boolean = true): Promise<any> {
+export async function action_addNewTopic({conceptId, title, description, selectedLanguages }) : Promise<any> {
   try {
-    const updatedTopics = await addNewTopic(conceptId, title, description, active);
+    const updatedTopics = await addNewTopic({conceptId, title, description, selectedLanguages });
     return updatedTopics;
   } 
   catch (error: unknown) {
