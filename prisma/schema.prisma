@@ -1,0 +1,179 @@
+// This is your Prisma schema file..
+// learn more about it in the docs: https://pris.ly/d/prisma-schema.
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?.
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+//////////////// ========= schema.prisma  //////////////// ...
+
+// ***** User ****** //
+
+model Users {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @unique
+  bio        String 
+  questions  Json[]
+  TopicsData UserDataForTopic[]
+  role       String @default("USER")
+}
+
+model AdminUsers {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String       @unique
+  role       String       @default("ADMIN")
+}
+
+
+// ... relations between a user and [ languages, Users ] //
+
+model UserDataForTopic {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  userNotes    Json
+  userProgress Boolean   @default(false)
+  user         Users     @relation(fields: [userId], references: [userId])
+  userId       String    // Removed @unique constraint if a user can have multiple topics
+  topic        Topic     @relation(fields: [topicId], references: [id])
+  topicId      String    @db.ObjectId @unique
+}
+
+
+// ***** Tags ****** //
+
+model Categories {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  color       String
+  courses     CategoryCourse[]
+  concepts    CategoriesConcept[]
+  challenges  CategoriesChallenge[]
+}
+
+model Languages {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  color       String
+  courses     LanguagesCourse[]
+  concepts    LanguagesTopic[]
+  challenges  LanguagesChallenge[]
+}
+
+
+// ****** CONCEPTS ****** // 
+
+model Concepts {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  topics      Topic[]   // Define a one-to-many relationship with the Topic model.
+  active      Boolean
+  imgUrl      String  @default("")
+  categories  CategoriesConcept[]
+}
+
+model Topic {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  concept     Concepts @relation(fields: [conceptId], references: [id], onDelete: Cascade ) 
+  conceptId   String   @db.ObjectId
+  active      Boolean 
+  data        Json[]
+  resources   Json[]
+  languages   LanguagesTopic[]
+  userDataOnCourse UserDataForTopic?
+}
+
+
+// ... relations between a topic and tags ... //
+
+model CategoriesConcept {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  concept     Concepts     @relation(fields: [conceptId], references: [id], onDelete: Cascade )
+  conceptId   String       @db.ObjectId
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  categoryId  String       @db.ObjectId
+}
+
+model LanguagesTopic {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Topic        @relation(fields: [topicId], references: [id])
+  topicId     String       @db.ObjectId
+  language    Languages    @relation(fields: [languageId], references: [id], onDelete: Cascade )
+  languageId  String       @db.ObjectId
+}
+
+
+// **** Courses ***** //
+
+model Courses {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String 
+  imgUrl      String  @default("")
+  data        Json[]
+  resources   Json[]
+  categories  CategoryCourse[]
+  languages   LanguagesCourse[]
+  active      Boolean
+}
+
+// ... relations between course and tags ... //
+
+model CategoryCourse {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Courses      @relation(fields: [courseId], references: [id])
+  courseId    String       @db.ObjectId
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  categoryId  String       @db.ObjectId
+}
+
+model LanguagesCourse {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  course      Courses      @relation(fields: [courseId], references: [id])
+  courseId    String       @db.ObjectId
+  language    Languages    @relation(fields: [languageId], references: [id])
+  languageId  String       @db.ObjectId
+}
+
+
+// ****** Challenges ****** //
+
+model Challenges {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String 
+  categories  CategoriesChallenge[]    
+  languages   LanguagesChallenge[]    
+  description Json[]  
+  tasks       Json         
+  notes       Json
+  resources   Json[]
+  active      Boolean      @default(true)
+}
+
+
+// ... relations between challenges and tags ... //
+
+model CategoriesChallenge {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  challenge   Challenges   @relation(fields: [challengeId], references: [id], onDelete: Cascade )
+  challengeId String       @db.ObjectId
+  category    Categories   @relation(fields: [categoryId], references: [id])
+  categoryId  String       @db.ObjectId
+}
+
+model LanguagesChallenge {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  challenge   Challenges   @relation(fields: [challengeId], references: [id])
+  challengeId String       @db.ObjectId
+  language    Languages    @relation(fields: [languageId], references: [id], onDelete: Cascade )
+  languageId  String       @db.ObjectId
+}

@@ -1,0 +1,8 @@
+{
+    type: 'challenge',
+    content: [
+        { 
+            title: 'How to add components', showcase: 'something'
+        }
+    ]
+}

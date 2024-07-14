@@ -1,0 +1,24 @@
+/* customEditorStyles.css */
+.editor {
+    height: 100%; /* Ensure the editor takes up the full height of its container */
+    padding: 0 !important; /* Override padding */
+}
+  
+.editor-read-true .codex-editor__redactor {
+  height: 100% !important;
+  padding: 0 !important;
+}
+
+.editor-read-true .ce-block__content, .editor-read-true .ce-toolbar__content, .editor-read-true .ce-inline-toolbar__content {
+  padding: 0 !important;
+}
+
+.editor-read-true .ce-block__content {
+  margin: 0 !important;
+  width: 100% !important; /* Ensure width is 100% */
+  max-width: none !important; /* Remove max-width */
+}
+
+.editor-read-true .ce-block__content:focus-within {
+  outline: none !important;
+}
