@@ -90,6 +90,7 @@ model Topic {
   resources   Json[]
   languages   LanguagesTopic[]
   userDataOnCourse UserDataForTopic?
+  order       Int @unique
 }
 
 

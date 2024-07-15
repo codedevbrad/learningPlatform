@@ -1,5 +1,6 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
+import { TopicType } from '../../../prisma/schema.types';
 import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
 
@@ -58,6 +59,35 @@ export async function getAllConcepts() {
   return mappedConcepts;
 }
 
+export const addNewConcept = async (data ) => {
+  const { title, description, active, imgUrl = "", categories : categoryIds } = data;
+  try {
+    await prisma.concepts.create({
+      data: {
+        title,
+        description,
+        active,
+        imgUrl,
+        categories: {
+          create: categoryIds.map( ( categoryId : string ) => ({
+            categoryId
+          }))
+        }
+      },
+      include: {
+        categories: true
+      }
+    });
+
+    let concepts = await getAllConcepts();
+    console.log( concepts );
+    return concepts;
+  } 
+  catch (error) {
+    console.error("Error adding new concept:", error);
+    throw new Error(`Failed to create a new concept: ${error.message}`);
+  } 
+};
 
 
 export async function editConceptById( { conceptId, conceptData } :
@@ -248,63 +278,62 @@ export async function db__updateTopicLanguages({ topicId, languages } : { topicI
 }
 
 
-export const addNewConcept = async (data ) => {
-  const { title, description, active, imgUrl = "", categories : categoryIds } = data;
+
+export const addNewTopic = async (
+  { conceptId, title, description, active = false, selectedLanguages } : 
+  { conceptId: string; title: string; description: string; active: boolean; selectedLanguages: any } 
+) => {
   try {
-    await prisma.concepts.create({
+    // Determine the maximum order value for the topics within the same concept
+    const maxOrder = await prisma.topic.aggregate({
+      _max: {
+        order: true,
+      },
+      where: {
+        conceptId: conceptId,
+      },
+    });
+
+    // Calculate the new order value
+    const newOrder = (maxOrder._max.order || 0) + 1;
+
+    // Create the new topic with the incremented order value
+    await prisma.topic.create({
       data: {
         title,
         description,
+        conceptId,
         active,
-        imgUrl,
-        categories: {
-          create: categoryIds.map( ( categoryId : string ) => ({
-            categoryId
-          }))
-        }
+        order: newOrder, // Set the order to next order incremented...
+        languages: {
+          create: selectedLanguages.map((languageId: string ) => ({
+            languageId,
+          })),
+        },
       },
-      include: {
-        categories: true
-      }
     });
 
-    let concepts = await getAllConcepts();
-    console.log( concepts );
-    return concepts;
-  } 
-  catch (error) {
-    console.error("Error adding new concept:", error);
-    throw new Error(`Failed to create a new concept: ${error.message}`);
-  } 
+    return await getAllConcepts();
+  } catch (error) {
+    throw new Error(`Failed to create a new topic: ${error.message}`);
+  }
 };
 
 
-export const addNewTopic = async ({conceptId, title, description, active = false , selectedLanguages }) => {
+
+export const updateTopicOrder = async ( ) => {
     try {
-      await prisma.topic.create({
-        data: {
-          title,
-          description,
-          conceptId,
-          active,
-          languages: {
-              create: selectedLanguages.map( ( languageId : string )  => ({
-                  languageId
-              }))
-          }
-        },
-      });
-      return await getAllConcepts();
-    } 
-    catch (error) {
-      throw new Error(`Failed to create a new topic: ${error.message}`);
+      
     }
-};
+    catch ( error ) {
+      throw new Error(`Failed to update topic item order: ${error.message}`);
+    }
+}
 
 
 export const updateTopicStatus = async (topicId: string, status: boolean) => {
     try {
-      const updatedTopic = await prisma.topic.update({
+      await prisma.topic.update({
         where: { id: topicId },
         data: { active: status },
       });
