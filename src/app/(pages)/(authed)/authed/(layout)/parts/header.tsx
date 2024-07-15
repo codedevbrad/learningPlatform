@@ -4,7 +4,7 @@ import { MdOutlineNotifications } from "react-icons/md"
 import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { SignedIn, UserButton } from "@clerk/nextjs"
-import { signInRedirect } from "@/app/flows"
+import { bootcampLogoRedirect } from "@/app/flows"
 import PageLinkControl from '@/app/reusables/user/linkControl'
 import HeaderLogo from "@/app/reusables/app/headerLogo"
 
@@ -12,7 +12,7 @@ export default function Header() {
     return (
       <header className="text-black py-4 px-6 flex items-center justify-between">
 
-        <HeaderLogo url={ signInRedirect } />
+        <HeaderLogo url={ bootcampLogoRedirect } />
         {/* Navigation */}
         <nav>
           <NavigationMenu>
@@ -31,8 +31,7 @@ export default function Header() {
                 </NavigationMenuList>
           </NavigationMenu>
         </nav>
-  
-        {/* Search and Notifications */}
+   
         <div className="flex items-center space-x-4">
           <button className="text-gray-400 hover:text-white focus:outline-none">
               <IoSearch className="text-black text-2xl"/>

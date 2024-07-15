@@ -132,7 +132,7 @@ export default function AuthedButRegister() {
 
         {currentStep < 3 && 
             <DialogHeader>
-              <Title title='We need a few things first' variant={'heading'} />
+              <Title title='We need a few things first' variant={'heading'} noMargin={true} />
               <DialogDescription>
                 Make changes to your profile here. Click save when you're done.
               </DialogDescription>

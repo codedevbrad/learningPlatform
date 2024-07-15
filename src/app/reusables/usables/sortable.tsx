@@ -95,7 +95,7 @@ const Sortable = ({ data, onSortableChange }) => {
   );
 };
 
-const DraggablePopoverContent = ({ children, sortTitle }) => {
+const DraggablePopoverContent = ({ closePopover, children, sortTitle }) => {
   const containerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 30, y: 30 });
@@ -155,6 +155,9 @@ const DraggablePopoverContent = ({ children, sortTitle }) => {
         <div className="border border-gray-200 px-2 py-1 rounded-md hover:bg-gray-100 cursor-grab" onMouseDown={onMouseDown} >
           <span> &#x2630; </span>
         </div>
+        <div className="border ml-3 border-gray-200 px-2 py-1 rounded-md hover:bg-gray-100 cursor-pointer" onClick={ closePopover }>
+          <span> close </span>
+        </div>
       </div>
       {children}
     </div>
@@ -176,7 +179,7 @@ export default function SortableList({ data, onSortableChange, sortTitle = 'bloc
         Organise
       </div>
       {isDropdownOpen && (
-        <DraggablePopoverContent sortTitle={sortTitle}>
+        <DraggablePopoverContent sortTitle={sortTitle} closePopover={ () => setDropdownOpen( false ) }>
           <Sortable data={data} onSortableChange={onSortableChange} />
         </DraggablePopoverContent>
       )}

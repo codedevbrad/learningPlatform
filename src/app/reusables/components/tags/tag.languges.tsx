@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import Select, { MultiValue, StylesConfig } from 'react-select';
-import { action_getLanguages } from './actions';
+import { useEffect, useState } from 'react'
+import Select, { MultiValue, StylesConfig } from 'react-select'
+import { action_getLanguages } from './actions'
 
 interface Language {
     id: string; // Change id to string

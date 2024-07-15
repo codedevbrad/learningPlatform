@@ -71,9 +71,10 @@ const QuizComponent: React.FC<QuizDataProps> = ({ data }) => {
     const currentQuestion = quizData[currentQuestionIndex];
     return (
       <div className="mb-4">
-        <div className="flex justify-center pb-4">
+        <div className="flex justify-center py-6">
           <h2 className="text-white mb-2">
-            question { currentQuestionIndex + 1 }: {currentQuestion.content.question}
+            <span className='bg-white px-1 py-0.5 text-black mr-3 rounded-md'> Question { currentQuestionIndex + 1 } </span> 
+            {currentQuestion.content.question}
           </h2>
         </div>
         <div className="grid grid-cols-2 gap-4">
