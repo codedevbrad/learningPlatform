@@ -5,8 +5,8 @@ import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } 
 import { buttonVariants } from "@/components/ui/button";
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Title from "../content/title";
+
 
 const SortableItem = ({ id, content }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });

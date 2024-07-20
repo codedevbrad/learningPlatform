@@ -1,8 +1,14 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
 
-import { addNewConcept, getAllConcepts, deleteConceptById, editConceptById } from "@/db_queries/concepts/admin.queries"
-import { updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections } from "@/db_queries/concepts/admin.queries"
+import { 
+  addNewConcept, getAllConcepts, deleteConceptById, editConceptById, 
+} from "@/db_queries/concepts/admin.queries"
+
+import {
+   updateTopicDetails, updateTopicStatus, addNewTopic, deleteTopicAndRemoveConnections,
+   db__updateTopicOrder, db__updateConceptOrder
+} from "@/db_queries/concepts/admin.queries"
 
 
 // Define a custom error interface.
@@ -57,6 +63,16 @@ export const action_DeleteConcept = async( conceptId : string ) => {
 }
 
 
+export const action_updateConceptPositions = async ( { conceptPositions }) => {
+  try {
+    await db__updateConceptOrder({ conceptPositions });
+  }
+  catch ( error ) {
+      console.error('Error updating topic positions:', error );
+      throw new Error('Failed to update topic positions.');
+  }
+}
+
 // topics...
 
 export async function action_getTopicById(topicId: string) {
@@ -74,13 +90,25 @@ export async function action_getTopicById(topicId: string) {
 
 export async function action_deleteTopic ( topicId : string ) {
   try {
-     console.log('deleting')
      return await deleteTopicAndRemoveConnections( topicId );
   }
   catch ( error ) {
       console.error('Error deleting topic data asynchronously:', error);
       throw new Error('Failed to delete topic data asynchronously.');
    }
+}
+
+
+export async function action__updateTopicPositions ( { conceptId , topicPositions } ) {
+  try {
+      console.log( topicPositions );
+      let topicsUpdated = await db__updateTopicOrder({ conceptId, topicPositions });
+      return topicsUpdated;
+  }
+  catch ( error ) {
+      console.error('Error updating topic positions:', error );
+      throw new Error('Failed to update topic positions.');
+  }
 }
 
 

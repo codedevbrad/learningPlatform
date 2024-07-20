@@ -6,7 +6,20 @@ import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 
 export async function getAllConcepts ( ) {
     let concepts = await prisma.concepts.findMany({
-        include: { topics: true , categories: true }
+        include: { 
+          topics: {
+            include: {
+                languages: true
+            },
+            orderBy: {
+              position: 'asc'
+            }
+          },
+          categories: true 
+        },
+        orderBy: {
+          position: 'asc'
+        }
     });
 
     // Map courses and replace categories and languages with fetched data
