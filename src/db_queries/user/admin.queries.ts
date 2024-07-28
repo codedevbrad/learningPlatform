@@ -1,5 +1,7 @@
-import prisma from "../../../prisma/client";
-import { auth } from "@clerk/nextjs/server";
+'use server'
+
+import prisma from "../../../prisma/client"
+import { auth } from "@clerk/nextjs/server"
 
 export const db_userOrAdmin = async () => {
     try {
@@ -13,3 +15,15 @@ export const db_userOrAdmin = async () => {
         throw error;
     }
 };
+
+
+export const db__getAllStudents = async ( ) => {
+    try {
+        const { userId } = auth();
+        if (!userId) throw new Error('No user logged in');
+        return await prisma.users.findMany();
+    }
+    catch ( error ) {
+        throw error;
+    }
+}

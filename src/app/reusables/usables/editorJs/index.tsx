@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import './index.css'; // Import the custom CSS file
 
 import { Loader2 } from "lucide-react"
-import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button";
 
 function EditorButtonSavePlain ({ onSave, canSave }) {

@@ -1,8 +1,3 @@
-// This is your Prisma schema file..
-// learn more about it in the docs: https://pris.ly/d/prisma-schema.
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?.
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init.
 
 generator client {
   provider = "prisma-client-js"
@@ -13,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//////////////// ========= schema.prisma  //////////////// ...
+//////////////// ========= schema.prisma  ///////////////////
 
 // ***** User ****** //
 
@@ -24,12 +19,38 @@ model Users {
   questions  Json[]
   TopicsData UserDataForTopic[]
   role       String @default("USER")
+  status     UserStatus
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PAUSED
+  COMPLETED
+  INACTIVE
 }
 
 model AdminUsers {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   userId     String       @unique
   role       String       @default("ADMIN")
+}
+
+
+// *** CHAT Between student and teacher *** //
+enum SenderType {
+  STUDENT
+  TEACHER
+}
+
+
+model Messages {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  sender    SenderType
+  text      String
+  timestamp DateTime @default(now())
+  studentId String   @unique 
+  @@index([sender])
 }
 
 
