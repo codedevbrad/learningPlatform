@@ -11,6 +11,14 @@ datasource db {
 //////////////// ========= schema.prisma  ///////////////////
 
 // ***** User ****** //
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PAUSED
+  COMPLETED
+  INACTIVE
+}
+
 
 model Users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
@@ -22,13 +30,6 @@ model Users {
   status     UserStatus
 }
 
-enum UserStatus {
-  ACTIVE
-  SUSPENDED
-  PAUSED
-  COMPLETED
-  INACTIVE
-}
 
 model AdminUsers {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
