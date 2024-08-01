@@ -63,7 +63,7 @@ export default function UsersList() {
         ) : (
           users.map((user) => (
             <Link href={`/admin/students/student/${user.id}`} key={user.id} passHref>
-              <div 
+              <Card 
                 className={`py-5 px-4 rounded-md flex items-center gap-4 cursor-pointer ${selectedUser === user.id ? 'bg-gray-100' : ''}`} 
                 onClick={() => handleUserClick(user.id)}
               >
@@ -91,7 +91,7 @@ export default function UsersList() {
                         <span className="bg-gray-500 text-white px-2 py-1 rounded">Inactive</span>
                       )}
                 </div>
-              </div>
+              </Card>
             </Link>
           ))
         )}

@@ -27,8 +27,10 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { formatDistance, parseISO } from 'date-fns';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
+import SessionProposal from "./client.proposeSession";
+import Title from "@/app/reusables/content/title";
 
 const data = [
   { id: 1, title: 'Math Tutoring', amount: 50, status: 'upcoming', date: '2024-08-01T10:00:00Z', length: '60' },
@@ -48,7 +50,7 @@ export type Session = {
 };
 
 
-export const columns: ColumnDef<Session>[] = [
+const columns: ColumnDef<Session>[] = [
   {
     accessorKey: "title",
     header: 'Session Name',
@@ -153,7 +155,9 @@ export const columns: ColumnDef<Session>[] = [
   },
 ];
 
-export default function DataTable() {
+
+
+export default function DataTable({ studentId }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
@@ -193,11 +197,15 @@ export default function DataTable() {
   }, [filteredData]);
 
   return (
+
     <TabsContent value="tutoring" className="h-full">
-      <div className="flex flex-row justify-end py-3">
-        <Button> Propose a new Session </Button>
-      </div>
-      <div className="w-full flex flex-col">
+
+      <SessionProposal studentId={studentId } />
+
+      <div className="w-full flex flex-col my-5">
+
+        <Title variant="heading" title="Sessions with Student" noMargin={false} />
+
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter by session name..."

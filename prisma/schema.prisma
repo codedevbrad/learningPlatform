@@ -45,14 +45,26 @@ enum SenderType {
 }
 
 
+// how do i enforce uniquness here?
 model Messages {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   sender    SenderType
   text      String
   timestamp DateTime @default(now())
-  studentId String   @unique 
+  studentId String    
   @@index([sender])
 }
+
+// ... Sessions between a Student and Teacher ... //
+
+model ProposedSession {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    title      String
+    date       DateTime
+    length     Int
+    studentId  String @unique
+}
+
 
 
 // ... relations between a user and [ languages, Users ] //
