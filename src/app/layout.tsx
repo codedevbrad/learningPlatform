@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <ClerkProvider>
         <UserProvider>
             <html className={`${inter.className} h-full`} lang="en">
-              <body className="flex flex-col h-full">
+              <body className="flex flex-col h-full overflow-x-hidden">
                       <LoadingBar />
                       <Toaster />  
                       <CookiesToast />

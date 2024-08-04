@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
+}
+
+/* Add this CSS to your global stylesheet */
+.push-body-right {
+  margin-left: 75%;
+  transition: margin 0.3s ease-in-out;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   @apply w-2;
 }

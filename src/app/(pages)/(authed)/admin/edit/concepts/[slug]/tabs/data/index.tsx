@@ -43,7 +43,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
         )
     }
 
-
     const updateDataBlock = async ( { type = 'update', blockData, blockIndex } : props__AdminTool_UpdateDataBlock ) => {
         try {
           let arrayCopy = [...data];

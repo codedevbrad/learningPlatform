@@ -1,12 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button } from "@/components/ui/button"
 import { Bot } from 'lucide-react'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import BlockSelector from "./part.blockSelector"
 import { useState } from "react"
 import axios from 'axios'
 import { DataForBuild } from "@/app/reusables/components/render"
 import { useToast } from "@/components/ui/use-toast"
+
+import {   
+  PushSheet, PushSheetTrigger, PushSheetContent, PushSheetClose, PushSheetHeader,
+  PushSheetFooter, PushSheetTitle, PushSheetDescription, 
+} from "@/components/custom/sheetPush"
  
 
 import promptCreator from './prompt'
@@ -65,24 +69,22 @@ export default function AI_BlockGenerator({ title , description , updateTableWit
 
   return (
     <div className="mx-2">
-      <Dialog open={dialogState} onOpenChange={setDialogState}>
-        <DialogTrigger asChild>
+      <PushSheet side="right" className={'p-5'}>
+        <PushSheetTrigger className="" isOpen={dialogState} onToggle={setDialogState} >
           <Button>
-            <Bot  className="hover:animate-bounce"/>
+              <Bot className="hover:animate-bounce"/>
           </Button>
-        </DialogTrigger>
+        </PushSheetTrigger>
+        <PushSheetHeader className={undefined}>
+          <PushSheetTitle className={undefined}>
+             Generate the content using a.i
+          </PushSheetTitle>
+          <PushSheetDescription className={undefined}>
+            Using chatGTP 4.0 we'll generate content blocks for { title } 
+          </PushSheetDescription>
+        </PushSheetHeader>
         
-        <DialogContent className="sm:max-w-[525px]">
-          <DialogHeader>
-            <DialogTitle> 
-              Generate the content using a.i
-            </DialogTitle>
-            <DialogDescription className="pt-2">
-              Using chatGTP 4.0 we'll generate content blocks for { title } 
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="py-4 flex flex-col">
+        <div className="py-4 flex flex-col">
             <BlockSelector updatedBlocks={setBlocksChosen} />
             <div className="gap-4">
               <p className="my-4 text-sm text-slate-500"> 
@@ -97,17 +99,61 @@ export default function AI_BlockGenerator({ title , description , updateTableWit
             </div>
           </div>
         
-          <DialogFooter>
+        <PushSheetFooter>
+            <div className="flex justify-end">
             <Button onClick={() => generateBlocks()} disabled={isLoading}> 
               <span className="mr-2"> { isLoading ? "Generating..." : "Generate" } </span> 
               <div className={ isLoading ? "animate-bounce" : "" }>
                 <Bot /> 
               </div>
             </Button>
-          </DialogFooter>
-
-        </DialogContent>
-      </Dialog>     
+            </div>
+        </PushSheetFooter>
+      </PushSheet>
     </div>
   );
 }
+
+    /* <Dialog open={dialogState} onOpenChange={setDialogState}>
+      <DialogTrigger asChild>
+        <Button>
+          <Bot  className="hover:animate-bounce"/>
+        </Button>
+      </DialogTrigger>
+      
+      <DialogContent className="sm:max-w-[525px]">
+        <DialogHeader>
+          <DialogTitle> 
+            Generate the content using a.i
+          </DialogTitle>
+          <DialogDescription className="pt-2">
+            Using chatGTP 4.0 we'll generate content blocks for { title } 
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="py-4 flex flex-col">
+          <BlockSelector updatedBlocks={setBlocksChosen} />
+          <div className="gap-4">
+            <p className="my-4 text-sm text-slate-500"> 
+              Provide some explanation on what you'd like to generate. 
+            </p>
+            <textarea 
+              className="border border-gray-200 w-full text-gray-600 p-2 text-sm" 
+              rows={4} 
+              value={explanation} 
+              onChange={(event) => setExplanation(event.target.value)}
+            />
+          </div>
+        </div>
+      
+        <DialogFooter>
+          <Button onClick={() => generateBlocks()} disabled={isLoading}> 
+            <span className="mr-2"> { isLoading ? "Generating..." : "Generate" } </span> 
+            <div className={ isLoading ? "animate-bounce" : "" }>
+              <Bot /> 
+            </div>
+          </Button>
+        </DialogFooter>
+
+      </DialogContent>
+      </Dialog>      */

@@ -28,6 +28,7 @@ model Users {
   TopicsData UserDataForTopic[]
   role       String @default("USER")
   status     UserStatus
+  nickname   String
 }
 
 
@@ -38,8 +39,8 @@ model AdminUsers {
 }
 
 
-// *** CHAT Between student and teacher *** //
-enum SenderType {
+// *** CHAT / Session ENUM Between student and teacher *** //
+enum USERTYPE {
   STUDENT
   TEACHER
 }
@@ -48,12 +49,13 @@ enum SenderType {
 // how do i enforce uniquness here?
 model Messages {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  sender    SenderType
+  sender    USERTYPE
   text      String
   timestamp DateTime @default(now())
   studentId String    
   @@index([sender])
 }
+
 
 // ... Sessions between a Student and Teacher ... //
 
@@ -63,8 +65,8 @@ model ProposedSession {
     date       DateTime
     length     Int
     studentId  String @unique
+    proposer   USERTYPE
 }
-
 
 
 // ... relations between a user and [ languages, Users ] //
