@@ -1,12 +1,25 @@
 // *** CONCEPTS *** ///
 import prisma from '../../../prisma/client'
-import { getCategoriesByIds } from '../tags/student.queries'
+import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 
 // *** CONCEPTS *** //
 
 export async function getAllConcepts ( ) {
     let concepts = await prisma.concepts.findMany({
-        include: { topics: true , categories: true }
+        include: { 
+          topics: {
+            include: {
+                languages: true
+            },
+            orderBy: {
+              position: 'asc'
+            }
+          },
+          categories: true 
+        },
+        orderBy: {
+          position: 'asc'
+        }
     });
 
     // Map courses and replace categories and languages with fetched data
@@ -31,12 +44,26 @@ export async function findTopicById(topicId: string) {
       where: {
         id: topicId,
       },
+      include: {
+        languages: true
+      }
     });
-    return topic;
+
+    if (!topic) {
+      throw new Error(`Topic with ID ${topicId} not found`);
+    }
+
+    // Fetch languages for the topic using getLanguagesByIds
+    const languageIds = topic.languages.map(lang => lang.languageId);
+    const languages = await getLanguagesByIds(languageIds);
+
+    // Replace language IDs with actual language data
+    const topicWithLanguages = { ...topic, languages };
+
+    return topicWithLanguages;
   } 
   catch (error) {
     console.error(`Failed to find topic by ID: ${error.message}`);
     throw new Error(`Failed to find topic by ID: ${error.message}`);
   }
 }
-

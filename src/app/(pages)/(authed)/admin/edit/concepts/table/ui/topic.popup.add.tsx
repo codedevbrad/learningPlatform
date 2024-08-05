@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { action_addNewTopic } from '../../actions'
 import { ExtendedConcepts } from '@/../prisma/schema.types'
+import LanguagesChosen from '@/app/reusables/components/tags/tag.languges'
 
 interface AddTopicModalProps {
   updateTable: (topics: ExtendedConcepts[], message: string) => void;
@@ -15,14 +16,16 @@ const AddTopicModal: React.FC<AddTopicModalProps> = ({ updateTable, conceptId })
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [open, setOpen] = useState(false);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const topicsUpdated = await action_addNewTopic(conceptId, title, description);
+      const topicsUpdated = await action_addNewTopic({conceptId, title, description, selectedLanguages});
       setTitle('');
       setDescription('');
+      setSelectedLanguages([]);
       updateTable(topicsUpdated, 'created topic successfully'); // Refresh the table to reflect the new topic
       setOpen(false);
     } 
@@ -69,6 +72,10 @@ const AddTopicModal: React.FC<AddTopicModalProps> = ({ updateTable, conceptId })
                 required
               />
             </div>
+            <LanguagesChosen 
+                    selectedLanguages={ selectedLanguages }
+                    setSelectedLanguages={ setSelectedLanguages }
+            />
           </div>
           <DialogFooter>
             <Button type="submit">Save changes</Button>

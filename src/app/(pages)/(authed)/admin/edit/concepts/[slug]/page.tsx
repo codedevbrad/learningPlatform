@@ -42,7 +42,8 @@ export default async function AdminConceptPage ({ params }: { params: { slug: st
                         topicData={ topic.data } 
                         topicInfo={{ 
                             title: topic.title , 
-                            description: topic.description 
+                            description: topic.description  , 
+                            languages: topic.languages
                         }} 
                         />
                     </TabsContent>

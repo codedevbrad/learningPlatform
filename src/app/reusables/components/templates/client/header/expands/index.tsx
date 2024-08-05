@@ -2,6 +2,11 @@
 import React, { useEffect , useState , useRef } from "react"
 import Title from "@/app/reusables/content/title"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
+import {   
+  PushSheet, PushSheetTrigger, PushSheetContent, PushSheetClose, PushSheetHeader,
+  PushSheetFooter, PushSheetTitle, PushSheetDescription, 
+} from "@/components/custom/sheetPush"
+
 import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import Editor from "@/app/reusables/usables/editorJs/index"
@@ -29,7 +34,49 @@ const Notes: React.FC = ({ notes }) => {
     }
   
     return (
-      <Sheet onOpenChange={saveEditorDataOnClose}>
+      <PushSheet side="right">
+          <PushSheetTrigger className="" isOpen={undefined} onToggle={undefined} >
+            <div className="border p-5 m-4 rounded-md bg-white">
+                <FaBookOpenReader />
+              </div>
+          </PushSheetTrigger>
+          <PushSheetHeader className={undefined}>
+            <PushSheetTitle className={undefined}>
+              <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
+            </PushSheetTitle>
+            <PushSheetDescription className={undefined}>
+              Here is the description of the navigation menu.
+            </PushSheetDescription>
+          </PushSheetHeader>
+
+          <div className="flex flex-col">
+             <div className="p-4 grow flex flex-col text-black overflow-auto">
+                  <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
+              </div>
+          </div>
+             
+      </PushSheet>
+    //   <Sheet onOpenChange={saveEditorDataOnClose}>
+    //   <SheetTrigger>
+    //     <div className="border p-5 m-4 rounded-md bg-white">
+    //       <FaBookOpenReader />
+    //     </div>
+    //   </SheetTrigger>
+    //   <SheetContent className="w-[700px] flex flex-col h-full">
+    //     <SheetHeader>
+    //       <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
+    //     </SheetHeader>
+    //     <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
+    //       <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
+    //     </SheetDescription>
+    //   </SheetContent>
+    // </Sheet>
+    );
+};
+
+
+/* 
+     <Sheet onOpenChange={saveEditorDataOnClose}>
         <SheetTrigger>
           <div className="border p-5 m-4 rounded-md bg-white">
             <FaBookOpenReader />
@@ -44,8 +91,7 @@ const Notes: React.FC = ({ notes }) => {
           </SheetDescription>
         </SheetContent>
       </Sheet>
-    );
-};
+*/
 
 function Resources({ resources }) {
     console.log( 'resources: ', resources  )
@@ -53,7 +99,7 @@ function Resources({ resources }) {
         <Sheet>
             <SheetTrigger>
                 <div className="border p-5 m-4 rounded-md bg-white"> 
-                    <FaRegFile />
+                    <FaRegFile />  
                 </div> 
             </SheetTrigger>
             <SheetContent>
@@ -61,7 +107,7 @@ function Resources({ resources }) {
                     <Title variant="subheading1" title="Resources for this course" noMargin={false} />
                 </SheetHeader>
                 <SheetDescription>
-                    {  resources.map( ( resource , index ) => 
+                    { resources.map( ( resource , index ) => 
                         <ResourceComponent key={ `resource_${ index }`} resource={ resource } isInAdminMode={ false } />
                     )}
                 </SheetDescription>

@@ -13,12 +13,15 @@ import SortableList from "@/app/reusables/usables/sortable"
 
 import AI_BlockGenerator from "../../../../../../../../reusables/components/creator/ai.dataCreator"
 
+import TopicLanguagesControl from "./topic.languages.popup.edit"
+
 
 interface TopicParams {
   topicId: string; 
   topicInfo: {
       title: string, 
       description: string;
+      languages: any[]
   }; 
   topicData: any;
 }
@@ -39,7 +42,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
           </Button>
         )
     }
-
 
     const updateDataBlock = async ( { type = 'update', blockData, blockIndex } : props__AdminTool_UpdateDataBlock ) => {
         try {
@@ -76,7 +78,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
         }
     }
   
-    
     return (
       <div className="flex flex-col">
           <div className="flex justify-end">
@@ -87,6 +88,9 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
               <div key={topicId}>
                   <Title variant="heading" title={topicInfoState.title} noMargin={false} />
                   <p>{topicInfoState.description}</p>
+                  <div className="my-4">
+                    <TopicLanguagesControl languages={ topicInfoState.languages } topicId={ topicId }  />
+                  </div>
               </div>
 
               <div>

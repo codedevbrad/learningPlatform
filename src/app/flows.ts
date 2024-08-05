@@ -1,7 +1,8 @@
-export const signInRedirect  = '/authed/user/home'
-export const appLogoRedirect = '/authed/user/home'
-export const bootcampRedirect = '/authed/user/home'
-
-export const registerDirect  = '/'
 export const nonAuthedRoute  = '/' 
+
+export const signInRedirect  = '/authed/content/concepts'
+export const bootcampLogoRedirect  = '#'
+export const bootcampRedirect = '/authed/content/concepts'
+
+export const authedAdminLogoRedirect = '#'
 export const adminRedirect   = '/admin/'

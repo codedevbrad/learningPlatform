@@ -13,6 +13,7 @@ interface TopicModalProps {
 const TopicControlModal: React.FC<TopicModalProps> = ({ updateTable, topicId }) => {
     const deleteTopic = async ( ) => {
         try {
+           console.log('deleting')
             let tableData = await action_deleteTopic( topicId );
             console.log( tableData );
             updateTable( tableData, 'Successfully deleted topic' );

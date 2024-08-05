@@ -1,13 +1,18 @@
 // *** CONCEPTS & TOPICS *** ///
 import prisma from '../../../prisma/client'
-import { getCategoriesByIds } from '../tags/student.queries'
+import { TopicType } from '../../../prisma/schema.types';
+import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
 
-
-export async function getAllConcepts ( ) {
+export async function getAllConceptsPlain ( ) {
   let concepts = await prisma.concepts.findMany({
       include: {
-        topics: true , categories: true 
+        topics: {
+          include: {
+              languages: true
+          }
+        },
+        categories: true 
       }
   });
 
@@ -15,14 +20,116 @@ export async function getAllConcepts ( ) {
   const mappedConcepts = concepts.map( async (concept) => {
       // Fetch categories and languages for this course
       const categories = await getCategoriesByIds(concept.categories.map(cat => cat.categoryId));
-      // const userData = await getUserDataForCourse()
-      console.log( categories );
-      // Replace category and language IDs with actual data
+      console.log( concept.topics )
+      // Replace category and language IDs with actual data.
       return { ...concept, categories };
   });
   return Promise.all(mappedConcepts);
 }
 
+
+export async function getAllConcepts() {
+    let concepts = await prisma.concepts.findMany({
+      include: {
+          topics: {
+              include: {
+                  languages: true
+              },
+              orderBy: {
+                position: 'asc'
+              }
+          },
+          categories: true
+      },
+      orderBy: {
+        position: 'asc'
+      }
+  });
+
+  // Map courses and replace categories and languages with fetched data.
+  const mappedConcepts = await Promise.all(concepts.map(async (concept) => {
+      // Fetch categories for this concept
+      const categories = await getCategoriesByIds(concept.categories.map(cat => cat.categoryId));
+
+      // Fetch languages for each topic
+      const topicsWithLanguages = await Promise.all(concept.topics.map(async (topic) => {
+          const languageIds = topic.languages ? topic.languages.map(lang => lang.languageId) : [];
+          const languages = await getLanguagesByIds(languageIds);
+          return { ...topic, languages };
+      }));
+
+      // Replace category and language IDs with actual data
+      return { ...concept, categories, topics: topicsWithLanguages };
+  }));
+  return mappedConcepts;
+}
+
+
+export const addNewConcept = async (data) => {
+  const { title, description, active, imgUrl = "", categories: categoryIds } = data;
+  try {
+    // Find the current largest position
+    const maxPosition = await prisma.concepts.aggregate({
+      _max: {
+        position: true
+      }
+    });
+
+    // Calculate the next position
+    const nextPosition = (maxPosition._max.position || 0) + 1;
+
+    // Create the new concept with the calculated position
+    await prisma.concepts.create({
+      data: {
+        title,
+        description,
+        active,
+        imgUrl,
+        position: nextPosition,
+        categories: {
+          create: categoryIds.map((categoryId: string ) => ({
+            categoryId
+          }))
+        }
+      },
+      include: {
+        categories: true
+      }
+    });
+
+    // Fetch all concepts after the new one has been added...
+    let concepts = await getAllConcepts();
+    console.log(concepts);
+    return concepts;
+  } 
+  catch (error) {
+    console.error("Error adding new concept:", error);
+    throw new Error(`Failed to create a new concept: ${error.message}`);
+  }
+};
+
+
+export const db__updateConceptOrder = async ({ conceptPositions }) => {
+  try {
+    // Iterate over each item in the conceptPositions array and update the concept position
+    for (const { conceptId, position } of conceptPositions) {
+      await prisma.concepts.update({
+        where: {
+          id: conceptId,
+        },
+        data: {
+          position: position,
+        },
+      });
+    }
+    console.log('Concept positions were successfully updated.');
+    return await getAllConcepts();
+  } 
+  catch (error) {
+    console.error('Failed to update concepts order:', error);
+    throw new Error(`Failed to update concepts order: ${error.message}`);
+  }
+};
 
 
 export async function editConceptById( { conceptId, conceptData } :
@@ -62,12 +169,11 @@ export async function editConceptById( { conceptId, conceptData } :
 }
 
 
-
-// we may need to delete relations between a topic and the TopicToUserDataForTopic too.
+// we'll need to delete relations between a topic and the TopicToUserDataForTopic too.
 
 export async function deleteConceptById(conceptId: string) {
   try {
-    // Fetch the concept to ensure it exists
+    // Fetch the concept to ensure it exists and get its position
     const concept = await prisma.concepts.findUnique({
       where: {
         id: conceptId,
@@ -81,6 +187,9 @@ export async function deleteConceptById(conceptId: string) {
     if (!concept) {
       throw new Error('Concept not found');
     }
+
+    // Store the position of the concept to be deleted
+    const deletedConceptPosition = concept.position;
 
     // Delete all related categories
     await prisma.categoriesConcept.deleteMany({
@@ -102,6 +211,21 @@ export async function deleteConceptById(conceptId: string) {
         id: conceptId,
       },
     });
+
+    // Update the positions of the other concepts
+    await prisma.concepts.updateMany({
+      where: {
+        position: {
+          gt: deletedConceptPosition,
+        },
+      },
+      data: {
+        position: {
+          decrement: 1,
+        },
+      },
+    });
+
     console.log(`Concept with ID ${conceptId}, all related topics, and categories were successfully deleted.`);
     return await getAllConcepts();
   } 
@@ -109,6 +233,21 @@ export async function deleteConceptById(conceptId: string) {
     console.error('Error deleting concept and removing all related topics and categories:', error);
     throw new Error('Failed to delete concept and remove all related topics and categories.');
   }
+}
+
+
+export async function db__getNextTopic ( { position } ) {
+   try {
+      return await prisma.topic.findFirst({
+          where: {
+             position: position + 1
+          }
+      })
+   }
+   catch ( error ) {
+      console.error('Error getting next topic in reading:', error);
+      throw new Error('Failed to get next topic in reading.');
+   }
 }
 
 
@@ -131,6 +270,9 @@ export async function deleteTopicAndRemoveConnections(topicId: string) {
       throw new Error('Topic not found');
     }
 
+     // Store the position of the topic to be deleted
+     const deletedTopicPosition = topic.position;
+
     // Remove all LanguagesTopic entries associated with the topic
     await prisma.languagesTopic.deleteMany({
       where: {
@@ -152,6 +294,21 @@ export async function deleteTopicAndRemoveConnections(topicId: string) {
         id: topicId,
       },
     });
+
+    // update all topic positions after... 
+      // Update the positions of the other topics
+      await prisma.topic.updateMany({
+        where: {
+          position: {
+            gt: deletedTopicPosition,
+          },
+        },
+        data: {
+          position: {
+            decrement: 1,
+          },
+        },
+      });
 
     console.log(`Topic with ID ${topicId} and its references were successfully deleted.`);
     return await getAllConcepts();
@@ -180,56 +337,104 @@ export async function updateTopicData(topicId: string, newData: any[]): Promise<
     }
 }
 
-export const addNewConcept = async (data ) => {
-  const { title, description, active, imgUrl = "", categories : categoryIds } = data;
+
+export async function db__updateTopicLanguages({ topicId, languages } : { topicId: string; languages: any[] }): Promise<any> {
   try {
-    const newConcept = await prisma.concepts.create({
+       // Delete existing categories relationships
+       await prisma.languagesTopic.deleteMany({
+        where: {
+          topicId
+        }
+      });
+  
+      // Update the concept and create new categories relationships
+      await prisma.topic.update({
+        where: {
+          id: topicId,
+        },
+        data: {
+          languages: {
+            create: languages.map((languageId) => ({
+              languageId,
+            })),
+          },
+        },
+      });
+      console.log('Topic Languages updated successfully.');
+  } 
+  catch (error) {
+      console.error('Error updating topic data:', error);
+      throw new Error('Failed to update topic data.');
+  }
+}
+
+
+export const addNewTopic = async (
+  { conceptId, title, description, active = false, selectedLanguages } : 
+  { conceptId: string; title: string; description: string; active: boolean; selectedLanguages: any } 
+) => {
+  try {
+    // Fetch the current maximum position
+    const maxPosition = await prisma.topic.aggregate({
+      _max: {
+        position: true,
+      },
+    });
+
+    // Determine the new position
+    const newPosition = (maxPosition._max.position ?? 0) + 1;
+
+    // Create the new topic with the incremented order value
+    await prisma.topic.create({
       data: {
         title,
         description,
+        conceptId,
         active,
-        imgUrl,
-        categories: {
-          create: categoryIds.map(categoryId => ({
-            categoryId
-          }))
-        }
+        position: newPosition,
+        languages: {
+          create: selectedLanguages.map((languageId: string ) => ({
+            languageId,
+          })),
+        },
       },
-      include: {
-        categories: true
-      }
     });
 
-    let concepts = await getAllConcepts();
-    console.log( concepts );
-    return concepts;
+    return await getAllConcepts();
   } 
   catch (error) {
-    console.error("Error adding new concept:", error);
-    throw new Error(`Failed to create a new concept: ${error.message}`);
-  } 
+    throw new Error(`Failed to create a new topic: ${error.message}`);
+  }
 };
 
-export const addNewTopic = async (conceptId: string, title: string, description: string, active: boolean = false ) => {
-    try {
-      const newTopic = await prisma.topic.create({
+
+export const db__updateTopicOrder = async ({ conceptId, topicPositions }) => {
+  try {
+    // Iterate over each item in the topicPositions array and update the topic position
+    for (const { topicId, position } of topicPositions) {
+      await prisma.topic.update({
+        where: {
+          id: topicId,
+          conceptId
+        },
         data: {
-          title,
-          description,
-          conceptId,
-          active,
+          position: position,
         },
       });
-      return await getAllConcepts();
-    } 
-    catch (error) {
-      throw new Error(`Failed to create a new topic: ${error.message}`);
     }
+    console.log('Topic positions were successfully updated.');
+    return await getAllConcepts();
+  } 
+  catch (error) {
+    console.error('Failed to update topic item order:', error);
+    throw new Error(`Failed to update topic item order: ${error.message}`);
+  }
 };
+
 
 export const updateTopicStatus = async (topicId: string, status: boolean) => {
     try {
-      const updatedTopic = await prisma.topic.update({
+      await prisma.topic.update({
         where: { id: topicId },
         data: { active: status },
       });
@@ -240,10 +445,11 @@ export const updateTopicStatus = async (topicId: string, status: boolean) => {
     }
 };
 
+
 export const updateTopicDetails = async (topicId: string, data: object ) => {
   try {
       // Perform the update operation with the constructed data object
-      const updatedTopic = await prisma.topic.update({
+      await prisma.topic.update({
           where: { id: topicId },
           data
       });
@@ -255,6 +461,7 @@ export const updateTopicDetails = async (topicId: string, data: object ) => {
       throw new Error(`Failed to update topic details: ${error.message}`);
   }
 };
+
 
 export const updateTopicResources = async (topicId, resources) => {
     try {

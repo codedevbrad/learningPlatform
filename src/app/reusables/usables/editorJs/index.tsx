@@ -2,9 +2,53 @@
 import React, { useEffect, useRef, useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./tools";
-import EditorButtonSavePlain from "../../themes/saveButtonPlain";
 import { v4 as uuidv4 } from 'uuid';
 import './index.css'; // Import the custom CSS file
+
+import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button";
+
+function EditorButtonSavePlain ({ onSave, canSave }) {
+    const [isSaving, setIsSaving] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    let timer: string | number | NodeJS.Timeout | undefined;
+  
+    const handleSave = async () => {
+      setIsSaving(true);
+      setIsSaved(false);
+      await onSave();
+      timer = setTimeout(() => {
+        setIsSaving(false);
+        setIsSaved(true);
+        clearTimeout(timer);
+      }, 3000); // Simulate saving delay of 3 seconds
+    };
+  
+    useEffect(() => {
+      if (canSave) {
+        setIsSaved(false);
+      }
+    }, [canSave]);
+  
+    useEffect(() => {
+      return () => clearTimeout(timer);
+    }, []);
+  
+    return (
+      <Button onClick={handleSave} disabled={isSaving || !canSave}>
+        {isSaving ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Saving ...
+          </>
+        ) : isSaved || !canSave ? (
+          'Saved.'
+        ) : (
+          'Save'
+        )}
+      </Button>
+    );
+}
 
 
 const Editor = ({ notesMode = false, data, onSaveToState, saveByButton, inReadMode = true, showSaveButn = true }) => {
