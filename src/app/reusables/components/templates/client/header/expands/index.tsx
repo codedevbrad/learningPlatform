@@ -56,42 +56,24 @@ const Notes: React.FC = ({ notes }) => {
           </div>
              
       </PushSheet>
-    //   <Sheet onOpenChange={saveEditorDataOnClose}>
-    //   <SheetTrigger>
-    //     <div className="border p-5 m-4 rounded-md bg-white">
-    //       <FaBookOpenReader />
-    //     </div>
-    //   </SheetTrigger>
-    //   <SheetContent className="w-[700px] flex flex-col h-full">
-    //     <SheetHeader>
-    //       <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
-    //     </SheetHeader>
-    //     <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
-    //       <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
-    //     </SheetDescription>
-    //   </SheetContent>
-    // </Sheet>
+      //   <Sheet onOpenChange={saveEditorDataOnClose}>
+      //   <SheetTrigger>
+      //     <div className="border p-5 m-4 rounded-md bg-white">
+      //       <FaBookOpenReader />
+      //     </div>
+      //   </SheetTrigger>
+      //   <SheetContent className="w-[700px] flex flex-col h-full">
+      //     <SheetHeader>
+      //       <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
+      //     </SheetHeader>
+      //     <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
+      //       <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
+      //     </SheetDescription>
+      //   </SheetContent>
+      // </Sheet>
     );
 };
 
-
-/* 
-     <Sheet onOpenChange={saveEditorDataOnClose}>
-        <SheetTrigger>
-          <div className="border p-5 m-4 rounded-md bg-white">
-            <FaBookOpenReader />
-          </div>
-        </SheetTrigger>
-        <SheetContent className="w-[700px] flex flex-col h-full">
-          <SheetHeader>
-            <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
-          </SheetHeader>
-          <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
-            <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
-          </SheetDescription>
-        </SheetContent>
-      </Sheet>
-*/
 
 function Resources({ resources }) {
     console.log( 'resources: ', resources  )

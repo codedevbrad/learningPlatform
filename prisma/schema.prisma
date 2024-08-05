@@ -29,6 +29,7 @@ model Users {
   role       String @default("USER")
   status     UserStatus
   nickname   String
+  sessions   Sessions[]
 }
 
 
@@ -60,16 +61,27 @@ model Messages {
 // ... Sessions between a Student and Teacher ... //
 
 model ProposedSession {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    title      String
-    date       DateTime
-    length     Int
-    studentId  String @unique
-    proposer   USERTYPE
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  date       DateTime
+  length     Int
+  studentId  String @unique
+  proposer   USERTYPE
+}
+
+model Sessions {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String 
+  date         DateTime
+  length       Int
+  student      Users    @relation(fields: [userId], references: [userId])
+  userId       String
+  sessionNotes Json 
+  sessionVideo String 
 }
 
 
-// ... relations between a user and [ languages, Users ] //
+// ... relations between a user and [ languages, Users ] ... //
 
 model UserDataForTopic {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId

@@ -13,6 +13,9 @@ export async function getAllConcepts ( ) {
             },
             orderBy: {
               position: 'asc'
+            },
+            where: {
+              active: true
             }
           },
           categories: true 
