@@ -1,34 +1,18 @@
 'use server'
 import Title from "@/app/reusables/content/title"
-import Link from "next/link"
 import { getAllConcepts } from "@/db_queries/concepts/student.queries"
-
+import TopicsPushSheetRender from "./client.topicDisplay"
 
 // React component to render the learning path ...
 const ConceptsRender = async () => {
-
   const concepts = await getAllConcepts();
-  console.log( 'concepts: ', concepts );
+  console.log('concepts: ', concepts);
 
   return (
-    <div className="w-full flex flex-wrap -m-2"> 
+    <div className="w-full flex flex-nowrap flex-row space-x-3 text-white">
       { concepts.map((area, index) => (
-        <div key={index} className="p-2 w-1/3"> 
-          <div className="flex items-start p-2">
-            <div>
-              <Title title={area.title} variant="subheading2" noMargin={false} />
-              <ul>
-                { area.topics.map((topic, topicIndex) => (
-                  <li key={topicIndex} className="p-3 border border-gray-200 rounded-lg my-4">
-                    <Link href={`/authed/content/concepts/${ topic.id }`} className="text-md">
-                        <Title title={topic.title} variant="subheading2" noMargin={false} /> 
-                        <p> { topic.description }  </p>  
-                    </Link>
-                  </li>
-                )) }
-              </ul>
-            </div>
-          </div>
+        <div key={index} className="shadow-xl rounded-2xl p-2 w-1/3 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600">
+           <TopicsPushSheetRender topics={ area.topics } conceptTitle={ area.title }/>
         </div>
       ))}
     </div>

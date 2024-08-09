@@ -11,20 +11,17 @@ import HeaderLogo from "@/app/reusables/app/headerLogo"
 export default function Header() {
     return (
       <header className="text-black py-4 px-6 flex items-center justify-between">
-
         <HeaderLogo url={ bootcampLogoRedirect } />
-        {/* Navigation */}
         <nav>
           <NavigationMenu>
                 <NavigationMenuList>  
                       <NavMenu link={{ title: 'explore' , href: '#' }} subLinks={[
-                        { title: 'courses' , href: '/authed/content/courses' },
-                        { title: 'concepts' , href: '/authed/content/concepts' },
-                        { title: 'challenge me' , href: '/authed/content/challenges' }
+                        { title: 'concepts' , href: '/authed/content/concepts' , colorChosen: 'purple', emoji: '👹' },
+                        { title: 'challenge me' , href: '/authed/content/challenges', colorChosen: 'red' , emoji: '👊' }
                       ]} />
                       <NavMenu link={{ title: 'help with' , href: '#' }} subLinks={[
-                        { title: 'figuring problems out' , href: '/authed/content/help/chat' },
-                        { title: 'creating ...' , href: '/authed/content/help/build' },
+                        { title: 'figuring problems out' , href: '/authed/content/help/chat' , colorChosen: 'emerald' },
+                        { title: 'creating' , href: '/authed/content/help/build', colorChosen: 'purple' },
                         { title: 'resources to help' , href: '/authed/content/help/resources' }
                       ]} />
                       <NavMenu link={{ title: 'my learning' , href: '/authed/user/home' }} subLinks={ null } />
@@ -37,7 +34,7 @@ export default function Header() {
               <IoSearch className="text-black text-2xl"/>
           </button>
           <button className="text-gray-400 hover:text-white focus:outline-none">
-                <MdOutlineNotifications className="text-2xl text-black"/>
+              <MdOutlineNotifications className="text-2xl text-black"/>
           </button>            
           
             <SignedIn>

@@ -19,7 +19,7 @@ function PushNav(trigger, side) {
   }
 }
 
-const PushSheet = ({ className, children, side = 'right' }) => {
+const PushSheet = ({ className, children, side = 'right', showTrigger = true }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -58,7 +58,9 @@ const PushSheet = ({ className, children, side = 'right' }) => {
 
   return (
     <>
-      {trigger ? React.cloneElement(trigger, { isOpen, onToggle: toggleSheet }) : <PushSheetTrigger isOpen={isOpen} onToggle={toggleSheet} />}
+      {showTrigger && trigger
+        ? React.cloneElement(trigger, { isOpen, onToggle: toggleSheet })
+        : showTrigger && <PushSheetTrigger isOpen={isOpen} onToggle={toggleSheet} />}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -69,7 +71,7 @@ const PushSheet = ({ className, children, side = 'right' }) => {
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
             />
-            <PushSheetContent isOpen={isOpen} onClose={handleClose} side={side} className={ className }>
+            <PushSheetContent isOpen={isOpen} onClose={handleClose} side={side} className={className}>
               {otherChildren}
             </PushSheetContent>
           </>
@@ -90,7 +92,6 @@ const PushSheetTrigger = ({ isOpen, onToggle, className, children, ...props }) =
     </button>
   );
 };
-
 
 const PushSheetContent = React.forwardRef(
   ({ children, isOpen, onClose, side = 'right', className, ...props }, ref) => {
@@ -171,6 +172,7 @@ export {
   PushSheetTitle,
   PushSheetDescription,
 };
+
 
 /*
   <PushSheet side="right">
