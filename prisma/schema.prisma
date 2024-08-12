@@ -26,8 +26,9 @@ model Users {
   bio        String 
   questions  Json[]
   TopicsData UserDataForTopic[]
+  sessions   Sessions[]
   role       String @default("USER")
-  status     UserStatus
+  status     UserStatus @default(ACTIVE)
   nickname   String
 }
 
@@ -68,6 +69,18 @@ model ProposedSession {
     proposer   USERTYPE
 }
 
+
+model Sessions {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    title      String
+    date       DateTime
+    length     Int
+    student    Users    @relation(fields: [userId], references: [userId])
+    userId     String   // Removed @unique constraint if a user can have multiple topics
+    proposer   USERTYPE
+    notes      Json 
+    preSessionNotes Json 
+}
 
 // ... relations between a user and [ languages, Users ] //
 

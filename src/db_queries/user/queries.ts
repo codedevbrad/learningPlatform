@@ -16,7 +16,7 @@ export const db_fetchUser = async ( ) => {
 }
 
 
-export async function getUserByUserId(userId) {
+export async function getUserByUserId(userId:string) {
   try {
     const user = await prisma.users.findFirst({
       where: {
@@ -32,10 +32,11 @@ export async function getUserByUserId(userId) {
 }
 
 
+
 export async function addUser( userObj ) {
   try {
     const newUser = await prisma.users.create({
-      data: userObj
+      data: {...userObj, status: 'ACTIVE' }
     });
     return newUser;
   } 

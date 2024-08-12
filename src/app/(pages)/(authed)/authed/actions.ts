@@ -24,6 +24,7 @@ export async function action__createUser ( newUser ) {
         console.log( { ...newUser , userId: userId } );
     }
     catch ( error ) {
-        return { message: 'Error fetching user', error: error.message };
+        console.error( 'couldnt save user', error );
+        throw error;
     }
 }

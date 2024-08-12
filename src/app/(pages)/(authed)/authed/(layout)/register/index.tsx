@@ -11,7 +11,19 @@ import { action__createUser } from '../../actions'
 import JSConfetti from 'js-confetti'
 import Link from 'next/link'
 
-const BioStep = ({ aboutState, setAboutState, nickname, setNickname }) => (
+interface Question {
+  question: string;
+  answer: string;
+}
+
+interface BioStepProps {
+  aboutState: string;
+  setAboutState: (value: string) => void;
+  nickname: string;
+  setNickname: (value: string) => void;
+}
+
+const BioStep: React.FC<BioStepProps> = ({ aboutState, setAboutState, nickname, setNickname }) => (
   <div className="space-y-4">
     <Label htmlFor="nickname" className="text-left">
       Nickname
@@ -33,12 +45,17 @@ const BioStep = ({ aboutState, setAboutState, nickname, setNickname }) => (
       rows={4}
       value={aboutState}
       onChange={(e) => setAboutState(e.target.value)}
-      placeholder='I would like to learn / get better at ...'
+      placeholder="I would like to learn / get better at ..."
     />
   </div>
 );
 
-const QuestionsStep = ({ questions, handleQuestionChange }) => (
+interface QuestionsStepProps {
+  questions: Question[];
+  handleQuestionChange: (index: number, value: string) => void;
+}
+
+const QuestionsStep: React.FC<QuestionsStepProps> = ({ questions, handleQuestionChange }) => (
   <Accordion type="single" collapsible>
     {questions.map((question, index) => (
       <AccordionItem key={index} value={`question${index + 1}`}>
@@ -64,36 +81,34 @@ const QuestionsStep = ({ questions, handleQuestionChange }) => (
   </Accordion>
 );
 
-const CongratsStep = () => { 
-    return (
-      <div className="text-center">
-        <div className="space-y-4 mb-4">
-          <h2 className="text-2xl font-bold">Congratulations!</h2>
-          <p>You have successfully completed your profile setup.</p>
-          <p className='mb-5'> 
-            As a new user it might be helpful to read the help 
-            section on our platform 
-          </p> 
-        </div>
-        <Link href='/authed/content/help/chat'>
-            <Button variant={'outline'}> Helpful info </Button>
-        </Link>
-      </div>
-    )
-};
+const CongratsStep: React.FC = () => (
+  <div className="text-center">
+    <div className="space-y-4 mb-4">
+      <h2 className="text-2xl font-bold">Congratulations!</h2>
+      <p>You have successfully completed your profile setup.</p>
+      <p className="mb-5">
+        As a new user it might be helpful to read the help
+        section on our platform
+      </p>
+    </div>
+    <Link href="/authed/content/help/chat">
+      <Button variant="outline">Helpful info</Button>
+    </Link>
+  </div>
+);
 
-export default function AuthedButRegister() {
+const AuthedButRegister: React.FC = () => {
   const [modalState, changeModalState] = useState(true);
-  const [aboutState, setAboutState] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [questions, setQuestions] = useState([
+  const [aboutState, setAboutState] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [questions, setQuestions] = useState<Question[]>([
     { question: 'Why do you want to join our platform?', answer: '' },
     { question: 'What are your learning goals?', answer: '' }
   ]);
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(false);
 
-  const handleOpenChange = useCallback((isOpen) => {
+  const handleOpenChange = useCallback((isOpen: boolean) => {
     if (!isOpen) {
       changeModalState(true);
     }
@@ -113,59 +128,57 @@ export default function AuthedButRegister() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const newUser = { nickname, bio: aboutState, questions }
+      const newUser = { nickname, bio: aboutState, questions };
       console.log(newUser);
       await action__createUser(newUser);
       setCurrentStep(3);
-    } 
-    catch (err) {
-      console.error('couldn\'t save user');
+    } catch (err) {
+      console.error("couldn't save user");
     }
   }, [nickname, aboutState, questions]);
 
   const handleClose = useCallback(() => {
     changeModalState(false);
-    const jsConfetti = new JSConfetti()
-    jsConfetti.addConfetti()
+    const jsConfetti = new JSConfetti();
+    jsConfetti.addConfetti();
   }, []);
 
-  const handleQuestionChange = useCallback((index, value) => {
+  const handleQuestionChange = useCallback((index: number, value: string) => {
     const newQuestions = [...questions];
     newQuestions[index].answer = value;
     setQuestions(newQuestions);
   }, [questions]);
 
   useEffect(() => {
-    setIsButtonEnabled(nickname && aboutState && questions.every(question => question.answer));
+    setIsButtonEnabled(
+      !!nickname &&
+      !!aboutState &&
+      questions.every(question => question.answer)
+    );
   }, [nickname, aboutState, questions]);
 
   return (
     <Dialog open={modalState} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[825px]">
-
-        {currentStep < 3 && 
-            <DialogHeader>
-              <Title title='We need a few things first' variant={'heading'} noMargin={true} />
-              <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
-              </DialogDescription>
-            </DialogHeader>
-        }
-
+        {currentStep < 3 && (
+          <DialogHeader>
+            <Title title="We need a few things first" variant="heading" noMargin={true} />
+            <DialogDescription>
+              Make changes to your profile here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+        )}
         <div className="space-y-6">
           {currentStep === 1 && (
             <BioStep aboutState={aboutState} setAboutState={setAboutState} nickname={nickname} setNickname={setNickname} />
           )}
-
           {currentStep === 2 && (
             <QuestionsStep questions={questions} handleQuestionChange={handleQuestionChange} />
           )}
-
           {currentStep === 3 && (
             <CongratsStep />
           )}
         </div>
-
         <DialogFooter>
           {currentStep > 1 && currentStep < 3 && (
             <Button onClick={handlePreviousStep}>Previous step</Button>
@@ -179,13 +192,17 @@ export default function AuthedButRegister() {
             <Button onClick={handleSubmit} disabled={!isButtonEnabled}>Start Learning</Button>
           )}
           {currentStep === 3 && (
-            <Button onClick={handleClose}> Start your learning journey </Button>
+            <Button onClick={handleClose}>Start your learning journey</Button>
           )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
+
+export default AuthedButRegister;
+
+
 
 
 
