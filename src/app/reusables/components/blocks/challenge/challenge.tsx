@@ -15,11 +15,6 @@ interface ChallengeUsageProps {
   id?: string;
 }
 
-// Define the props for the ChallengeComponent
-interface ChallengeComponentProps {
-  data: ChallengeUsageProps;
-}
-
 export const ChallengeComponentObject: ChallengeUsageProps = {
   type: 'challenge',
   content: [
@@ -27,6 +22,11 @@ export const ChallengeComponentObject: ChallengeUsageProps = {
           title: '', showcase: ''
       }
   ],
+}
+
+// Define the props for the ChallengeComponent
+interface ChallengeComponentProps {
+  data: ChallengeUsageProps;
 }
 
 // Annotate the function with the defined props type

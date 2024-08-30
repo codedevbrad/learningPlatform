@@ -32,9 +32,15 @@ interface AdminBlockTemplateProps {
   removeItem?: () => void | null;
 }
 
+
 const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, savedData, formRef , isSaved, removeItem = null }) => {
 
+  const [ savedDataObject , updateSavedDataObject ] = useState( savedData.props.data );
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect( ( ) => {
+     console.log( savedData.props.data )
+  }, [ savedData ] );
 
   const triggerFormSubmit = () => {
     if (formRef.current) {
@@ -77,9 +83,11 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
 
         <div className="flex-1  flex flex-col overflow-hidden">
           <Tabs defaultValue="form" className="px-2 flex flex-col h-full overflow-hidden">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="form">Form</TabsTrigger>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
+
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="form">       Form        </TabsTrigger>
+              <TabsTrigger value="preview">    Preview     </TabsTrigger>
+              <TabsTrigger value="raw object"> Raw object  </TabsTrigger>
             </TabsList>
 
             <TabsContent value="form" className={`${isFullScreen ? 'py-3 flex-grow overflow-hidden' : ''}`}>
@@ -94,12 +102,28 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
               <Card className="border-none h-full">
                 <CardHeader>
                   <CardTitle>Preview</CardTitle>
-                  <CardDescription>View the saved data below.</CardDescription>
+                  <CardDescription className="py-3">
+                     View the saved data below.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="h-full">
-                  {savedData}
+                  {savedData} 
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="raw object" className="flex-grow overflow-auto">
+                <Card className="border-none h-full">
+                    <CardHeader>
+                      <CardTitle> View your block as a raw object. </CardTitle>
+                      <CardDescription> This is how it's saved as an object. </CardDescription>
+                    </CardHeader>
+                    <CardContent className="h-full">
+                        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto h-full">
+                          {JSON.stringify(savedDataObject, null, 2)}
+                        </pre>
+                      </CardContent>
+                </Card>
             </TabsContent>
           </Tabs>
         </div>
