@@ -4,9 +4,10 @@ import Image from "next/image"
 
 // describe notes stae and func
 
-export default function ContentHeader ( { courseInfo , notes } ) {
+export default function ContentHeader ( { courseInfo , notes , triggerResourceVideoDisplay } ) {
     return (
         <div className="flex flex-row"> 
+
             <div className="w-29 h-24 mr-3">
                 { courseInfo.imgUrl ? (
                     <Image src={ courseInfo.imgUrl } alt={courseInfo.name}  className="w-29 h-24 mr-4 rounded-xl" />
@@ -24,6 +25,7 @@ export default function ContentHeader ( { courseInfo , notes } ) {
             <PageWorkExtraExpandable 
                 resources={ courseInfo.resources } 
                 notes={ notes }
+                triggerResourceVideoDisplay={ triggerResourceVideoDisplay }
             />
         </div>
     )

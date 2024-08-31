@@ -9,6 +9,8 @@ import { action__updateTopicNotesForUser } from './actions'
 
 import SaveProgressForPageBtn from './savePageProgress/index'
 
+import EmbeddedVideoDisplay from '@/app/reusables/components/resources/resource'
+
 interface InfoProps {
     name: string;
     description: string;
@@ -30,16 +32,31 @@ const ConceptTopicMainComponent: React.FC<
     const { progress , notes } = userProgress;
     const [ completed , changeCompleted ] = useState( progress );
 
+    const [ displayResource , setResourceDisplay ] = useState({ state: false , url: false });
+
+    function OpenResourceDisplay ( url ) {
+        setResourceDisplay({ state: true , url });
+    }
+
+    function CloseResourceDisplay ( ) {
+        setResourceDisplay({ state: false , url: false })
+    }
+
     const updateTheNotes = async ( notesData: any ) => {
         await action__updateTopicNotesForUser( topicId , notesData )
     }
 
     return (
-        <div className="w-full overflow-x-hidden px-3 flex flex-col min-h-screen">
+        <div className="w-3/5 overflow-x-hidden px-3 flex flex-col min-h-screen relative ">
+            { displayResource.state && 
+             <EmbeddedVideoDisplay url={ displayResource.url } closeDisplay={ CloseResourceDisplay } />
+            }
+          
             <div className='flex flex-col flex-1'>
                 <ContentHeader 
                     courseInfo={courseInfo} 
                     notes={{ state: notes, updateNotesToDb: updateTheNotes }} 
+                    triggerResourceVideoDisplay={ OpenResourceDisplay }
                 />
                 
                 <DividerWithText className="">

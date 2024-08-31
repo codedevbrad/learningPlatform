@@ -106,7 +106,7 @@ export default function AnimatedCodeChallengev0 ({ title = 'title not set' , cod
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 m-5 bg-gray-200 py-8 p-5 rounded-xl">
+    <div className="flex flex-col items-center space-y-4bg-gray-200 py-8 p-5 rounded-xl">
           {currentStep < codeSteps.length && (
             <div className="text-lg text-black font-bold">
               <h1 className="text-3xl text-center text-black mb-3"> { title } </h1>

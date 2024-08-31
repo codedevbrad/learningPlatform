@@ -156,9 +156,9 @@ const PushSheetTitle = ({ children, className, ...props }) => {
 
 const PushSheetDescription = ({ children, className, ...props }) => {
   return (
-    <p className={cn("text-sm text-gray-600", className)} {...props}>
+    <div className={cn("text-sm text-gray-600", className)} {...props}>
       {children}
-    </p>
+    </div>
   );
 };
 

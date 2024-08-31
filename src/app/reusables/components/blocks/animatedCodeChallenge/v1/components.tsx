@@ -156,7 +156,7 @@ export const CodeDisplay = ({ displayedCode, previousCode , codeType = 'jsx' }) 
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.6, delay: i * 0.05 }}
                           {...tokenProps}
-                          className={isTokenNewOrEdited ? ' py-1 bg-gray-800' : 'py-1'}
+                          className={isTokenNewOrEdited ? ' py-1' : 'py-1'}
                           >
                             {tokenContent}
                           </motion.span>

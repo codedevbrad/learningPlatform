@@ -277,137 +277,140 @@ const AnimatedCodeChallengeAdminBlock: React.FC<AnimatedCodeChallengeAdminBlockP
                 <AccordionContent>
                   <Card className="space-y-5 px-5 py-5 bg-gray-100">
 
-                    <Card className="p-5 flex flex-col space-y-2 mt-4">
-                      <div className="flex flex-row space-x-4 items-end">
-                          <div className='flex flex-col grow'>
-                              <Label htmlFor={`step-appendType-${stepIndex}`} className="my-2">
-                                Append Type
-                              </Label>
-                              <Select
-                                onValueChange={(value) =>
-                                  handleChange(
-                                    { target: { name: `step-appendType-${stepIndex}`, value } } as React.ChangeEvent<HTMLInputElement>,
-                                    stepIndex
-                                  )
-                                }
-                                value={step.appendType.type}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Append Type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="new">New</SelectItem>
-                                  <SelectItem value="edit">Edit</SelectItem>
-                                </SelectContent>
-                          </Select>  
-                          </div>
-
-                          {step.appendType.type === 'edit' && (
-                            <div className="flex flex-col space-y-2 mt-2">
-                              <Label htmlFor={`step-append-step-${stepIndex}`}>Edit Step Number</Label>
-                              <Input
-                                id={`step-append-step-${stepIndex}`}
-                                name={`step-append-step-${stepIndex}`}
-                                type="number"
-                                min="1"
-                                max={step.step - 1}
-                                value={step.appendType.step || ''}
-                                onChange={(e) => handleAppendStepChange(e, stepIndex)}
-                              />
-                            
-                            </div>
-                          )}
-
-                          <Button type="button" onClick={() => handleCopyStepCode(stepIndex, step.appendType.step || 1)}  className="mt-2">
-                            Copy Step Code
-                          </Button>
-                      </div>
-                    </Card>
-
-                    <Card className="p-5 flex flex-col">
-                      <div className="flex flex-row items-center justify-between">
-                        <Title title="Question Code Snippets" variant="subheading2" noMargin={false} />
-                        <Button type="button" onClick={() => handleAddCodeSnippet(stepIndex)}>
-                          Add Code Snippet
-                        </Button>
-                      </div>
-                      <div className="ml-4 space-y-4">
-                        {step.code.map((codeSnippet, codeIndex) => (
-                          <div key={codeIndex} className="flex flex-row items-center space-x-4">
-                            <div className="flex flex-col flex-1 space-y-3">
-                              <Label htmlFor={`step-code-${stepIndex}-${codeIndex}`}>Code Snippet {codeIndex + 1}</Label>
-                              <SimpleCodeEditor
-                                value={codeSnippet.content}
-                                onValueChange={(code) => handleCodeChange(code, stepIndex, codeIndex)}
-                                highlight={highlightCode}
-                                padding={15}
-                                className="p-2 font-mono min-h-[100px] text-lg rounded-xl"
-                                style={{
-                                  backgroundColor: theme.plain.backgroundColor,
-                                  color: theme.plain.color,
-                                  fontFamily: 'monospace',
-                                  overflow: 'auto',
-                                }}
-                              />
-                            </div>
-                            <div className="flex flex-col space-y-3">
-                              <div className="flex flex-row space-x-4">
-                                <div className="flex flex-col w-20 space-y-3">
-                                  <Label htmlFor={`step-indent-${stepIndex}-${codeIndex}`}>Indent</Label>
-                                  <Input
-                                    id={`step-indent-${stepIndex}-${codeIndex}`}
-                                    name={`step-indent-${stepIndex}-${codeIndex}`}
-                                    type="number"
-                                    step="0.5"
-                                    value={codeSnippet.indent}
-                                    onChange={(e) => handleChange(e, stepIndex, codeIndex)}
-                                  />
-                                </div>
-                                <div className="flex flex-col w-32 space-y-3">
-                                  <Label htmlFor={`step-newline-${stepIndex}-${codeIndex}`}>New Line</Label>
+                    <div className="flex-row space-x-5 ">
+                        <Card className="w-1/4 p-5 flex flex-col space-y-2">
+                          <div className="flex flex-row space-x-4  grow">
+                              <div className='flex flex-col grow'>
+                                  <Label htmlFor={`step-appendType-${stepIndex}`} className="my-2">
+                                    Append Type
+                                  </Label>
                                   <Select
                                     onValueChange={(value) =>
                                       handleChange(
-                                        { target: { name: `step-newline-${stepIndex}-${codeIndex}`, value } } as React.ChangeEvent<HTMLInputElement>,
-                                        stepIndex,
-                                        codeIndex
+                                        { target: { name: `step-appendType-${stepIndex}`, value } } as React.ChangeEvent<HTMLInputElement>,
+                                        stepIndex
                                       )
                                     }
-                                    value={codeSnippet.newLine === false ? 'false' : 'true'}
+                                    value={step.appendType.type}
                                   >
                                     <SelectTrigger>
-                                      <SelectValue placeholder="New Line" />
+                                      <SelectValue placeholder="Append Type" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                      <SelectItem value="true">True</SelectItem>
-                                      <SelectItem value="false">False</SelectItem>
+                                      <SelectItem value="new">New</SelectItem>
+                                      <SelectItem value="edit">Edit</SelectItem>
                                     </SelectContent>
-                                  </Select>
-                                  {typeof codeSnippet.newLine === 'object' && (
-                                    <Input
-                                      type="number"
-                                      id={`step-newline-amount-${stepIndex}-${codeIndex}`}
-                                      name={`step-newline-amount-${stepIndex}-${codeIndex}`}
-                                      value={codeSnippet.newLine.by}
-                                      onChange={(e) => handleChange(e, stepIndex, codeIndex)}
-                                      placeholder="Line Amount"
-                                      min="1"
-                                    />
-                                  )}
+                                  </Select>  
+                              </div>
+
+                              {step.appendType.type === 'edit' && (
+                                <div className="flex flex-col space-y-2 mt-2">
+                                  <Label htmlFor={`step-append-step-${stepIndex}`}>Edit Step Number</Label>
+                                  <Input
+                                    id={`step-append-step-${stepIndex}`}
+                                    name={`step-append-step-${stepIndex}`}
+                                    type="number"
+                                    min="1"
+                                    max={step.step - 1}
+                                    value={step.appendType.step || ''}
+                                    onChange={(e) => handleAppendStepChange(e, stepIndex)}
+                                  />
+                                </div>
+                              )}
+                          </div>
+
+                          <div className='flex justify-end'>
+                              <Button type="button" onClick={() => handleCopyStepCode(stepIndex, step.appendType.step || 1)}  className="mt-2">
+                                Copy Step Code
+                              </Button>
+                          </div>
+                        </Card>
+
+                        <Card className="grow p-5 flex flex-col">
+                          <div className="flex flex-row items-center justify-between">
+                            <Title title="Question Code Snippets" variant="subheading2" noMargin={false} />
+                            <Button type="button" onClick={() => handleAddCodeSnippet(stepIndex)}>
+                              Add Code Snippet
+                            </Button>
+                          </div>
+                          <div className="ml-4 space-y-4">
+                            {step.code.map((codeSnippet, codeIndex) => (
+                              <div key={codeIndex} className="flex flex-row items-center space-x-4">
+                                <div className="flex flex-col flex-1 space-y-3">
+                                  <Label htmlFor={`step-code-${stepIndex}-${codeIndex}`}>Code Snippet {codeIndex + 1}</Label>
+                                  <SimpleCodeEditor
+                                    value={codeSnippet.content}
+                                    onValueChange={(code) => handleCodeChange(code, stepIndex, codeIndex)}
+                                    highlight={highlightCode}
+                                    padding={15}
+                                    className="p-2 font-mono min-h-[100px] text-lg rounded-xl"
+                                    style={{
+                                      backgroundColor: theme.plain.backgroundColor,
+                                      color: theme.plain.color,
+                                      fontFamily: 'monospace',
+                                      overflow: 'auto',
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex flex-col space-y-3">
+                                  <div className="flex flex-row space-x-4">
+                                    <div className="flex flex-col w-20 space-y-3">
+                                      <Label htmlFor={`step-indent-${stepIndex}-${codeIndex}`}>Indent</Label>
+                                      <Input
+                                        id={`step-indent-${stepIndex}-${codeIndex}`}
+                                        name={`step-indent-${stepIndex}-${codeIndex}`}
+                                        type="number"
+                                        step="0.5"
+                                        value={codeSnippet.indent}
+                                        onChange={(e) => handleChange(e, stepIndex, codeIndex)}
+                                      />
+                                    </div>
+                                    <div className="flex flex-col w-32 space-y-3">
+                                      <Label htmlFor={`step-newline-${stepIndex}-${codeIndex}`}>New Line</Label>
+                                      <Select
+                                        onValueChange={(value) =>
+                                          handleChange(
+                                            { target: { name: `step-newline-${stepIndex}-${codeIndex}`, value } } as React.ChangeEvent<HTMLInputElement>,
+                                            stepIndex,
+                                            codeIndex
+                                          )
+                                        }
+                                        value={codeSnippet.newLine === false ? 'false' : 'true'}
+                                      >
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="New Line" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="true">True</SelectItem>
+                                          <SelectItem value="false">False</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                      {typeof codeSnippet.newLine === 'object' && (
+                                        <Input
+                                          type="number"
+                                          id={`step-newline-amount-${stepIndex}-${codeIndex}`}
+                                          name={`step-newline-amount-${stepIndex}-${codeIndex}`}
+                                          value={codeSnippet.newLine.by}
+                                          onChange={(e) => handleChange(e, stepIndex, codeIndex)}
+                                          placeholder="Line Amount"
+                                          min="1"
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    onClick={() => handleRemoveCodeSnippet(stepIndex, codeIndex)}
+                                  >
+                                    Delete Snippet
+                                  </Button>
                                 </div>
                               </div>
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                onClick={() => handleRemoveCodeSnippet(stepIndex, codeIndex)}
-                              >
-                                Delete Snippet
-                              </Button>
-                            </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </Card>
+                        </Card>
+                    </div>
 
                     <Card className="p-5 flex flex-col">
                       <div className="flex flex-row items-center justify-between">
