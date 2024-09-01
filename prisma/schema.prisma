@@ -19,7 +19,6 @@ enum UserStatus {
   INACTIVE
 }
 
-
 model Users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   userId     String       @unique
@@ -69,7 +68,6 @@ model ProposedSession {
     proposer   USERTYPE
 }
 
-
 model Sessions {
     id         String   @id @default(auto()) @map("_id") @db.ObjectId
     title      String
@@ -81,6 +79,7 @@ model Sessions {
     notes      Json 
     preSessionNotes Json 
 }
+
 
 // ... relations between a user and [ languages, Users ] //
 

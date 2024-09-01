@@ -223,10 +223,9 @@ const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProp
 interface SessionProposedDisplayProps {
   studentId: string;
    userType: 'Teacher' | 'Student'
-
 }
 
-// SessionProposedDisplay component to display the proposed session
+// SessionProposedDisplay component to display the proposed session...
 const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ studentId , userType } : SessionProposedDisplayProps ) => {
 
   let oppositeUser = userType == 'Student' ? 'Teacher' : 'Student'; 
@@ -253,6 +252,16 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
     },
   });
 
+  const handleAcceptProposal = async () => {
+    try {
+      await action__acceptProposal({ studentId });
+      // Revalidate the session data after accepting the proposal
+      mutate(`fetchProposedSession-${studentId}`);
+    } catch (error) {
+      console.error('Failed to accept the session:', error);
+    }
+  };
+
   React.useEffect(() => {
     console.log('Session data from cache:', !isValidating);
   }, [isValidating]);
@@ -268,9 +277,8 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
          <div className="flex flex-row items-center space-x-4 mb-4">
             <div className="grow text-white bg-gray-900 p-3 text-sm rounded-md ">
               <h1 className="text-md font-bold"> 
-                
                 { proposedSession && proposedSession.proposer != userType.toUpperCase() ? (
-                  ' You have a Proposed Session by the { oppositeUser }'    
+                   ` You have a Proposed Session by the ${ oppositeUser }`   
                 ) : (
                   'You have proposed a new session.'
                 )}
@@ -309,7 +317,7 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-end">
+      <CardFooter className="flex justify-end space-x-3">
         <SessionProposal
           key={proposedSession ? proposedSession.id : 'new-session'}
           updateProposed={() => mutate(`fetchProposedSession-${studentId}`)}
@@ -317,12 +325,11 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
           studentId={studentId}
           userType={ userType }
         />
-        { proposedSession && proposedSession?.proposer != userType.toUpperCase() && 
-            <Button className="bg-blue-600" onClick={ () => action__acceptProposal({ studentId }) }> 
-                Accept Session  
-            </Button>   
-        }
-
+         {proposedSession && proposedSession?.proposer !== userType.toUpperCase() && (
+          <Button className="bg-blue-600" onClick={handleAcceptProposal}>
+            Accept Session
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

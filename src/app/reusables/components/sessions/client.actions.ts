@@ -1,6 +1,18 @@
 'use server'
-import { db__getProposedSession , db__upsertProposedSession } from "@/db_queries/sessions/admin.queries"
-import { db__confirmProposedSession } from "./db.actions";
+import {  db__confirmProposedSession, db__getSessions , db__getProposedSession , db__upsertProposedSession } from "@/db_queries/sessions/admin.queries"
+// import { db__confirmProposedSession, db__getSessions , db__getProposedSession , db__upsertProposedSession } from "./db.actions"
+
+
+export const action__getSessions = async ( { studentId } ) => {
+    try {
+       return await db__getSessions({ studentId })
+    }
+    catch ( error ) {
+        console.error( error );
+        throw error;
+    }
+}
+
 
 export const action__getProposedSession = async ( { studentId } ) => {
     try {
@@ -34,5 +46,3 @@ export const action__acceptProposal = async ( { studentId } ) => {
         throw error;
     }
 }
-
-//

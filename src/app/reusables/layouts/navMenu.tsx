@@ -1,7 +1,9 @@
+'use client'
 import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { usePathname } from 'next/navigation';
 import Link from "next/link";
+
 import { Card } from "@/components/ui/card";
 import Title from "../content/title"; 
 import getGradientBackground from "../svggradients/gradientBackground";

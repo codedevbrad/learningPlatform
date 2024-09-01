@@ -8,11 +8,10 @@ export default function TopicsPushSheetRender ( { conceptTitle , topics } ) {
 
     return (
         <>
-            <div className="flex p-2 rounded-lg justify-center flex-col items-center">
-              <Title title={ conceptTitle } variant="subheading2" noMargin={false} />
-
+            <div className="flex py-5 rounded-lg justify-center flex-col items-center">
+              <Title title={ conceptTitle } variant="subheading2" noMargin={true} />
               <PushSheet side="right">
-                    <PushSheetTrigger className="border-white border-2 text-white">
+                    <PushSheetTrigger className="border-white border-2 text-white px-2 py-1">
                         Topics
                     </PushSheetTrigger>
                     <PushSheetHeader className={undefined}>
@@ -26,7 +25,7 @@ export default function TopicsPushSheetRender ( { conceptTitle , topics } ) {
                     <div className="p-4">
                         <ul>
                             { topics.map((topic, topicIndex) => (
-                                <Link href={`/authed/content/concepts/${topic.id}`} className="text-md"> 
+                                <Link href={`/authed/content/concepts/${topic.id}`} className="text-md" key={ topicIndex}> 
                                     <li key={topicIndex} className="px-6 py-4 border border-gray-200 rounded-lg bg-black shadow-md mb-5">                                
                                         <Title title={topic.title} variant="subheading2" noMargin={false} className="text-white"/>
                                         <p className="text-sm text-gray-500 pb-5"> {topic.description} </p>
@@ -35,7 +34,7 @@ export default function TopicsPushSheetRender ( { conceptTitle , topics } ) {
                             ))}
                         </ul> 
                     </div>
-                    <PushSheetFooter  className={undefined}>
+                    <PushSheetFooter className={undefined}>
                         <button onClick={() => console.log("Footer button clicked")}>Footer Button</button>
                     </PushSheetFooter>
                 </PushSheet>

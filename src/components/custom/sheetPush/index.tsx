@@ -84,7 +84,7 @@ const PushSheet = ({ className, children, side = 'right', showTrigger = true }) 
 const PushSheetTrigger = ({ isOpen, onToggle, className, children, ...props }) => {
   return (
     <button
-      className={cn("cursor-pointer p-2 rounded", className)}
+      className={cn("cursor-pointer rounded", className)}
       onClick={onToggle}
       {...props}
     >
