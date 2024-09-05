@@ -15,13 +15,14 @@ import { taskObject, TaskProps } from "@/app/reusables/components/blocks/task/ta
 import { editorJsObject, EditorJsProps } from "@/app/reusables/components/blocks/editorJs/editor"
 import { videoBlockObject, VideoBlockProps } from "@/app/reusables/components/blocks/video/video"
 import { animatedCodeChallengeObject , AnimatedCodeChallengeProps } from "../blocks/animatedCodeChallenge"
+import { imageObject , ImageBlockProps } from "../blocks/image/image"
 
 // create props for UpdateDataBlockProps.
 // import { props__AdminTool_UpdateDataBlock } from "@/app/(pages)/(authed)/admin/_types/type.adminTools"
 
 interface addDataToBlockProps {
    type: 'new';
-   blockData: ExplanationProps | QuizObjectProps | CodeSnippetProps | ChallengeUsageProps | TaskProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps;
+   blockData: ExplanationProps | QuizObjectProps | CodeSnippetProps | ChallengeUsageProps | TaskProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
    blockIndex: number;
 }
 
@@ -51,6 +52,12 @@ export default function AddNewDataBlock ({ addDataToBlock }: AddNewDataBlockProp
                       type: 'new', blockData: {...explanationObject, id: uuidv4() }, blockIndex: 0 
                   }) }>
                     <div> Explanation </div>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 
+                      type: 'new', blockData: {...imageObject, id: uuidv4() }, blockIndex: 0 
+                  }) }>
+                    <div> Image </div>
                   </DropdownMenuItem>
                   
                   <DropdownMenuItem className="cursor-pointer" onClick={ ( ) => addDataToBlock({ 

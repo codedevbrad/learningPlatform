@@ -1,16 +1,19 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { CodeDisplay, EditorHeader, CompletedButton, OptionsDisplay } from "./components"
+import { Card } from "@/components/ui/card"
+import Title from "@/app/reusables/content/title"
 
 interface AnimatedCodeChallengeProps {
   title: string; 
   codeSteps: Array<any>; // You can replace 'any' with a more specific type if you have it
   onComplete?: () => void;
   codeType: 'js' | 'jsx'
+  summary: string;
 }
 
 
-export default function AnimatedCodeChallengev0 ({ title = 'title not set' , codeSteps , onComplete , codeType } : AnimatedCodeChallengeProps ) {
+export default function AnimatedCodeChallengev0 ({ summary, title = 'title not set' , codeSteps , onComplete , codeType } : AnimatedCodeChallengeProps ) {
   const [displayedCodeState, updateDisplayedCodeState] = useState("");
   const [previousCodeState, setPreviousCodeState] = useState(""); // Track previous code
   const [currentStep, setCurrentStep] = useState(0);
@@ -106,9 +109,9 @@ export default function AnimatedCodeChallengev0 ({ title = 'title not set' , cod
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4bg-gray-200 py-8 p-5 rounded-xl">
+    <div className="flex flex-col items-center space-y-4 bg-gray-100 py-8 p-5 rounded-xl">
           {currentStep < codeSteps.length && (
-            <div className="text-lg text-black font-bold">
+            <div className="text-lg text-black font-bold space-y-4 mb-5">
               <h1 className="text-3xl text-center text-black mb-3"> { title } </h1>
               <h2> {codeSteps[currentStep].interactive.question} </h2>
             </div>
@@ -129,8 +132,14 @@ export default function AnimatedCodeChallengev0 ({ title = 'title not set' , cod
             </div>
           )}
           {currentStep >= codeSteps.length && (
-            <div className="flex justify-center mt-4">
-              <CompletedButton onClick={handleRetry} />
+            <div className="flex flex-col justify-center mt-4 space-y-5">
+              <Card className="p-6 mt-5"> 
+                <Title title="What's happened here" variant="subheading1" noMargin={false} />
+                <p className="text-gray-500"> { summary } </p> 
+              </Card>
+              <div className="flex justify-center">
+                <CompletedButton onClick={handleRetry} />
+              </div>
             </div>
           )}
     </div>

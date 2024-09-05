@@ -26,8 +26,11 @@ import VideoAdminBlock from '../blocks/video/admin.video'
 import AnimatedCodeChallenge, { AnimatedCodeChallengeProps } from '../blocks/animatedCodeChallenge'
 import AnimatedCodeChallengeAdminBlock from '../blocks/animatedCodeChallenge/index.admin'
 
+import ImageBlock , { ImageBlockProps } from '../blocks/image/image'
+import ImageAdminBlock from '../blocks/image/image.admin'
 
-export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps;
+
+export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
 
 
 interface DataChoiceComponentProps {
@@ -74,6 +77,10 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return (
                     <AnimatedCodeChallengeAdminBlock blockIndex={ blockIndex } data={ dataItem as AnimatedCodeChallengeProps } adminTools={ adminTools } />
                 )
+            case 'image':
+                return (
+                    <ImageAdminBlock blockIndex={ blockIndex } data={ dataItem as ImageBlockProps } adminTools={ adminTools } />
+                )
             default:
                 return <div>Could not render { dataItem.type } block in Admin ... </div>;
         }
@@ -99,6 +106,8 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return <VideoViewComponent data={ dataItem as VideoBlockProps } />
             case 'animatedCodeChallenge':
                 return <AnimatedCodeChallenge data={ dataItem as AnimatedCodeChallengeProps } />
+            case 'image':
+                return <ImageBlock data={ dataItem as ImageBlockProps } />
             default:
                 return <div>Could not render { dataItem.type } block ...</div>;
         }

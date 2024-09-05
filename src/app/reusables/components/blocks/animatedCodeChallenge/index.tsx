@@ -25,12 +25,14 @@ interface StepContent {
     };
 }
   
+
 interface AnimatedCodeChallengeProps {
     codeType: "js" | "jsx";
     content: StepContent[];
     title: string;
     type: "animatedCodeChallenge";
     id?: string;
+    summary: string;
 }
 
 export const animatedCodeChallengeObject : AnimatedCodeChallengeProps = {
@@ -48,17 +50,20 @@ export const animatedCodeChallengeObject : AnimatedCodeChallengeProps = {
                 `function name function keyword`,
               ],
               question: "How do we tell js we want to create a named function?",
-            },
+            }
         },
     ],
     title: 'Creating ReactJs components',
     codeType: 'jsx',
-    type: 'animatedCodeChallenge'
+    type: 'animatedCodeChallenge',
+    summary: `We can see how a component is created and the syntax needed. I'd say the hardest parts are getting the keywords right.`
 }
 
+
 interface AnimatedCodeChallengeUsageProps {
-    data: AnimatedCodeChallengeProps
+    data: AnimatedCodeChallengeProps;
 }
+
 
 export default function AnimatedCodeChallenge ( { data } : AnimatedCodeChallengeUsageProps ) {
     function onEnd ( ) {
@@ -66,7 +71,7 @@ export default function AnimatedCodeChallenge ( { data } : AnimatedCodeChallenge
     }
     return (
         <>
-            <AnimatedCodeChallengev0 title={ data.title } codeSteps={ data.content } onComplete={ onEnd } codeType={ data.codeType } />
+            <AnimatedCodeChallengev0 title={ data.title } summary={ data.summary } codeSteps={ data.content } onComplete={ onEnd } codeType={ data.codeType } />
         </>
     )
 }
