@@ -41,6 +41,7 @@ interface ConceptControlModalProps {
   updateTable: (topics: ExtendedConcepts[], message: string) => void;
 }
 
+
 const ConceptControlDropdown: React.FC<ConceptControlModalProps> = ({ concept, updateTable, conceptId }) => {
 
     const [dropdownState, changeDropdownState ] = useState(false);

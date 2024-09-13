@@ -21,7 +21,8 @@ export default function Header() {
                   <NavigationMenuList>  
                         <NavMenu link={{ title: 'Dashboard'    , href: '/admin/' }} subLinks={ null } />
                         <NavMenu link={{ title: 'content work' , href: '/admin/edit/' }} subLinks={ null } />
-                        <NavMenu link={{ title: 'Student area' , href: '/admin/students' }} subLinks={ null } />
+                        <NavMenu link={{ title: 'Tutor area' , href: '/admin/students' }} subLinks={ null } />
+                        <NavMenu link={{ title: 'Data'         , href: '/admin/data' }} subLinks={ null } />
                   </NavigationMenuList>
             </NavigationMenu>
           </nav>

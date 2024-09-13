@@ -7,7 +7,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, value = "", onChange, charLimit = 45, ...props }, ref) => {
+  ({ type="text", className, value = "", onChange, charLimit = 45, ...props }, ref) => {
     const [count, setCount] = useState(0); // State to manage character count
     const [warning, setWarning] = useState(false); // State to manage warning visibility
 
@@ -25,9 +25,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div>
+      <>
         <input
-          type="text"
+          type={type}
           className={cn(
             "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
             className
@@ -37,15 +37,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onChange={handleChange}
           {...props}
         />
-        <div className="mt-2 text-right text-sm text-muted-foreground">
-          {count}/{charLimit} characters
-        </div>
-        {warning && (
-          <div className="mt-1 text-right text-xs text-red-500">
-            Limit reached! You can only delete characters now.
-          </div>
-        )}
-      </div>
+        { type == "text" &&
+              <>
+              <div className="mt-2 text-right text-sm text-muted-foreground">
+                {count}/{charLimit} characters
+              </div>
+              {warning && (
+                <div className="mt-1 text-right text-xs text-red-500">
+                  Limit reached! You can only delete characters now.
+                </div>
+              )}
+              </>
+        }
+      </>
     );
   }
 );

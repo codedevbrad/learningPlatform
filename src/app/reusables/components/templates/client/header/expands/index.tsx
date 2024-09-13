@@ -1,17 +1,16 @@
 "use client"
 import React, { useEffect , useState , useRef } from "react"
 import Title from "@/app/reusables/content/title"
-import { 
-  PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle, PushSheetDescription 
-} from "@/components/custom/sheetPush"
+import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle, PushSheetDescription } from "@/components/custom/sheetPush"
 
 import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import Editor from "@/app/reusables/usables/editorJs/index"
 import ResourceComponent from "@/app/reusables/components/resources"
+import FeatureDisabled from "@/app/(pages)/(authed)/authed/auth.protection/protection.disabled"
 
 
-const Notes: React.FC = ({ notes }) => {
+function Notes ({ notes } : { notes: any; }) {
     const { state , updateNotesToDb } = notes;
     const [data, setData] = useState( state );
 
@@ -52,7 +51,6 @@ const Notes: React.FC = ({ notes }) => {
                   <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
               </div>
           </div>
-             
       </PushSheet>
     );
 };
@@ -90,7 +88,9 @@ export default function PageWorkExtraExpandable({ resources , notes , triggerRes
 
     return (
         <div className="flex justify-center items-center">
-            <Notes notes={ notes } />
+            <FeatureDisabled explanation={"write notes on this topic for your learning journey."}>
+              <Notes notes={ notes } />
+            </FeatureDisabled>
             <Resources resources={ resources } displayResource={ triggerResourceVideoDisplay } />
         </div>
     );

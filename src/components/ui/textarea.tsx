@@ -12,7 +12,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, value = "", onChange, wordLimit = 45, children, updateContentbyLorem, ...props }, ref) => {
+  ({ className, value = "", onChange, wordLimit = 45, children, updateContentbyLorem, displayLoremIspum = false , ...props }, ref) => {
     const [localValue, setLocalValue] = useState(value); // Local state for managing textarea value
     const [count, setCount] = useState(0); // State to manage character count
     const [warning, setWarning] = useState(false); // State to manage warning visibility
@@ -37,7 +37,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     return (
-      <div>
+      <>
         <textarea
           className={cn(
             "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50",
@@ -58,10 +58,11 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         <div className="flex justify-end">
           {children}
-          {/* Pass the current value and updateContentbyLorem to AddLoremIspum */}
-          <AddLoremIspum content={localValue} onUpdate={updateContentbyLorem!} wordLimit={wordLimit} />
+          { displayLoremIspum &&
+            <AddLoremIspum content={localValue} onUpdate={updateContentbyLorem!} wordLimit={wordLimit} />
+          }
         </div>
-      </div>
+      </>
     );
   }
 );

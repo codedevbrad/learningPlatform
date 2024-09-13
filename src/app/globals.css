@@ -6,6 +6,12 @@ body {
   transition: margin-left 0.3s ease-in-out, margin-right 0.3s ease-in-out;
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 /* Add this CSS to your global stylesheet */
 .push-body-right {
   margin-left: 75%;

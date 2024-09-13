@@ -5,6 +5,8 @@ import { Tabs, TabsList, TabsContent , TabsTrigger } from "@/components/ui/tabs"
 import SessionsWithProposals from "@/app/reusables/components/sessions"
 import MessagesDisplayComponent from "@/app/reusables/components/messages"
 
+import FeatureDisabled from "../../../auth.protection/protection.disabled"
+
 import { action__getUserData } from "../actions"
 
 export default async function TutorSessions ( ) {
@@ -17,15 +19,19 @@ export default async function TutorSessions ( ) {
                     <Tabs defaultValue="messages" storageKey="student_studentArea__m&s">
                         <TabsList className="">
                             <TabsTrigger value="messages"> Messages </TabsTrigger>
-                            <TabsTrigger value="content"> Sessions </TabsTrigger>
+                            <TabsTrigger value="content">  Sessions </TabsTrigger>
                         </TabsList>
                         <TabsContent value="messages">            
-                            <Title variant="heading" title="Messages with Your tutor 🙏" noMargin={false} />                
-                            <MessagesDisplayComponent studentId={id} sender={"STUDENT"} />
+                            <Title variant="heading" title="Messages with Your tutor 🙏" noMargin={false} />    
+                            <FeatureDisabled displayTipType="displayed" className="p-4" explanation={`chat with the tutor`}>
+                                <MessagesDisplayComponent studentId={id} sender={"STUDENT"} />
+                            </FeatureDisabled>            
                         </TabsContent>
                         <TabsContent value="content">
                             <Title variant="heading" title="Sessions with Your tutor 🙏" noMargin={false} />
-                            <SessionsWithProposals studentId={ id } userType={"Student"} />
+                            <FeatureDisabled displayTipType="displayed" className="p-4" explanation={`book tutor sessions with the tutor`}>
+                                <SessionsWithProposals studentId={ id } userType={"Student"} />
+                            </FeatureDisabled>
                         </TabsContent>
                     </Tabs>
             </div>
