@@ -22,8 +22,7 @@ function ChallengData ( { description , notes , tasks } : ChallengeDataProps ) {
 
     const [ tasksState , setTaskState ] = useState({
 
-    })
-
+    });
     
     return (
         <Tabs defaultValue="Description" className="" storageKey="concept_single_admin__tab">

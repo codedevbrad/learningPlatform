@@ -1,15 +1,6 @@
 'use client' 
 import React, { useState } from 'react'
 
-
-interface QuizObjectProps {
-  type: 'quiz';
-  title: string;
-  quizData: QuizType[];
-  id?: string;
-}
-
-
 interface QuizType {
   title: string;
   content: {
@@ -19,10 +10,16 @@ interface QuizType {
   };
 }
 
+interface QuizObjectProps {
+  type: 'quiz';
+  title: string;
+  quizData: QuizType[];
+  id?: string;
+}
+
 interface QuizDataProps {
   data: QuizObjectProps;
 }
-
 
 export const quizObject: QuizObjectProps = {
   type: 'quiz',

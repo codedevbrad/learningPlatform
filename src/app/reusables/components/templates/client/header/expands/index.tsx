@@ -1,19 +1,16 @@
 "use client"
 import React, { useEffect , useState , useRef } from "react"
 import Title from "@/app/reusables/content/title"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
-import {   
-  PushSheet, PushSheetTrigger, PushSheetContent, PushSheetClose, PushSheetHeader,
-  PushSheetFooter, PushSheetTitle, PushSheetDescription, 
-} from "@/components/custom/sheetPush"
+import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle, PushSheetDescription } from "@/components/custom/sheetPush"
 
 import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import Editor from "@/app/reusables/usables/editorJs/index"
 import ResourceComponent from "@/app/reusables/components/resources"
+import FeatureDisabled from "@/app/(pages)/(authed)/authed/auth.protection/protection.disabled"
 
 
-const Notes: React.FC = ({ notes }) => {
+function Notes ({ notes } : { notes: any; }) {
     const { state , updateNotesToDb } = notes;
     const [data, setData] = useState( state );
 
@@ -34,7 +31,7 @@ const Notes: React.FC = ({ notes }) => {
     }
   
     return (
-      <PushSheet side="right">
+      <PushSheet side="right" className="">
           <PushSheetTrigger className="" isOpen={undefined} onToggle={undefined} >
             <div className="border p-5 m-4 rounded-md bg-white">
                 <FaBookOpenReader />
@@ -54,75 +51,47 @@ const Notes: React.FC = ({ notes }) => {
                   <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
               </div>
           </div>
-             
       </PushSheet>
-    //   <Sheet onOpenChange={saveEditorDataOnClose}>
-    //   <SheetTrigger>
-    //     <div className="border p-5 m-4 rounded-md bg-white">
-    //       <FaBookOpenReader />
-    //     </div>
-    //   </SheetTrigger>
-    //   <SheetContent className="w-[700px] flex flex-col h-full">
-    //     <SheetHeader>
-    //       <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
-    //     </SheetHeader>
-    //     <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
-    //       <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
-    //     </SheetDescription>
-    //   </SheetContent>
-    // </Sheet>
     );
 };
 
 
-/* 
-     <Sheet onOpenChange={saveEditorDataOnClose}>
-        <SheetTrigger>
-          <div className="border p-5 m-4 rounded-md bg-white">
-            <FaBookOpenReader />
-          </div>
-        </SheetTrigger>
-        <SheetContent className="w-[700px] flex flex-col h-full">
-          <SheetHeader>
-            <Title variant="subheading1" title="Notes you've made for this course" noMargin={false} />
-          </SheetHeader>
-          <SheetDescription className="flex-grow flex flex-col text-black overflow-auto">
-            <Editor notesMode={ true } inReadMode={ false } data={data} onSaveToState={ saveDataToState } saveByButton={ saveEditorDataOnBtnClick } />
-          </SheetDescription>
-        </SheetContent>
-      </Sheet>
-*/
-
-function Resources({ resources }) {
+function Resources({ resources , displayResource }) {
     console.log( 'resources: ', resources  )
+
     return (
-        <Sheet>
-            <SheetTrigger>
-                <div className="border p-5 m-4 rounded-md bg-white"> 
-                    <FaRegFile />  
-                </div> 
-            </SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <Title variant="subheading1" title="Resources for this course" noMargin={false} />
-                </SheetHeader>
-                <SheetDescription>
-                    { resources.map( ( resource , index ) => 
-                        <ResourceComponent key={ `resource_${ index }`} resource={ resource } isInAdminMode={ false } />
-                    )}
-                </SheetDescription>
-            </SheetContent>
-        </Sheet>
+          <PushSheet side="right" className={'z-50'}>
+            <PushSheetTrigger className="" isOpen={undefined} onToggle={undefined} >
+              <div className="border p-5 m-4 rounded-md bg-white">
+                  <FaRegFile />
+                </div>
+            </PushSheetTrigger>
+            <PushSheetHeader className={undefined}>
+              <PushSheetTitle className={undefined}>
+                <Title variant="subheading1" title="Resources for this course" noMargin={false} />
+              </PushSheetTitle>
+             
+            </PushSheetHeader> 
+            <PushSheetDescription className={undefined}>
+                  { resources.map( ( resource , index ) => 
+                      <div key={ `resource_${ index }`} onClick={ () => displayResource( resource.url ) }>
+                         <ResourceComponent viewType={ 'embedded'}resource={ resource } isInAdminMode={ false } />
+                      </div>
+                  )}
+              </PushSheetDescription>
+        </PushSheet>
     );
 }
 
 
-export default function PageWorkExtraExpandable({ resources , notes }) {
+export default function PageWorkExtraExpandable({ resources , notes , triggerResourceVideoDisplay }) {
 
     return (
         <div className="flex justify-center items-center">
-            <Notes notes={ notes } />
-            <Resources resources={ resources } />
+            <FeatureDisabled explanation={"write notes on this topic for your learning journey."}>
+              <Notes notes={ notes } />
+            </FeatureDisabled>
+            <Resources resources={ resources } displayResource={ triggerResourceVideoDisplay } />
         </div>
     );
 }

@@ -134,10 +134,10 @@ export const db__updateConceptOrder = async ({ conceptPositions }) => {
 
 export async function editConceptById( { conceptId, conceptData } :
   { 
-    conceptId: string; conceptData:{ title: string; selectedCategories: string[]}
+    conceptId: string; conceptData:{ title: string; description: string; selectedCategories: string[]}
   }) {
   try {
-    let { title, selectedCategories } = conceptData;
+    let { title, description, selectedCategories } = conceptData;
 
     // Delete existing categories relationships
     await prisma.categoriesConcept.deleteMany({
@@ -153,6 +153,7 @@ export async function editConceptById( { conceptId, conceptData } :
       },
       data: {
         title,
+        description,
         categories: {
           create: selectedCategories.map((categoryId) => ({
             categoryId,

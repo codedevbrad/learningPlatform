@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/toaster"
-import LoadingBar from "./reusables/usables/pageLoad"
+import LoadingBar from "./reusables/app/pageLoad"
 import { UserProvider } from "./contexts/context"
 import Footer from "./reusables/app/footer"
 import CookiesToast from "./reusables/app/cookies"

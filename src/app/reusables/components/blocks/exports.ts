@@ -15,3 +15,6 @@ export const blockObjects = [
     editorJsObject,
     videoBlockObject
 ];
+
+
+// might be using this for my a.i generation prompt.

@@ -1,56 +1,34 @@
-'use client'
-import Image from "next/image"
-import Link from "next/link"
-import Title from "../../content/title"
-import ImageDisplayAndChange from "../../usables/imageChoice"
+'use client';
+import { useState, useEffect } from 'react';
 
-export const resourceObject = {
-    title: '',
-    description: '',
-    url: '',
-    imgUrl: 'https://images.unsplash.com/photo-1558244661-d248897f7bc4'
-};
-
-interface resourceObjectType {
-    id: number;
-    title: string;
-    url: string;
-    description: string;
-    imgUrl: string;
-  }
-
-interface ResourceType {
-    resource: resourceObjectType;
-    isInAdminMode: boolean;
-    handleImageChange?: any;
+interface Resource {
+  title: string;
+  description: string;
+  url: string;
+  imgUrl: string;
 }
 
+function ResourceComponent({ resource, viewType = 'embedded' }: { resource: Resource; viewType?: string }) {
+  const { title, description, url, imgUrl } = resource;
 
-function ResourceComponent({ resource , isInAdminMode = false, handleImageChange }: ResourceType) {
-    const { title, description, url, imgUrl } = resource;
-
-    return (
-        <div className="border p-4 rounded-lg flex flex-row">
-            <ImageDisplayAndChange 
-                imageUrl={ imgUrl } 
-                isInAdminMode={ false } 
-            />
-            <div className="flex flex-col justify-center pl-4">
-                <Link href={url}>
-                    <div>
-                        <Title title={ title } variant={'subheading2'} noMargin={ true } />
-                        <p>{description}</p>
-                    </div> 
-                </Link>
-            </div>
+  return (
+    <>
+      <div className="border m-4 p-4 rounded-lg flex flex-row cursor-pointer">
+        <div className='flex items-center justify-center'>
+          <img src={imgUrl} alt={title} className="w-40 h-20 object-cover rounded-lg" />
         </div>
-    );
+        <div className="flex flex-col justify-center pl-4">
+          {viewType === 'embedded' && (
+            <div onClick={ () => console.log('hey')}>
+              <h2 className="text-lg font-semibold">{title}</h2>
+              <p>{description}</p>
+              <span> { url } </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 }
-
-export type {
-    ResourceType, 
-    resourceObjectType
-}
-
 
 export default ResourceComponent;

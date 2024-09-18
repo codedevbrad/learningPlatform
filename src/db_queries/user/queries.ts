@@ -16,7 +16,22 @@ export const db_fetchUser = async ( ) => {
 }
 
 
-export async function getUserByUserId(userId) {
+export async function getUserByuuid ( id:string ) {
+    try {
+        return await prisma.users.findUnique({
+              where: {
+                id
+              }
+        })
+    }
+    catch ( error ) {
+      console.error("Error fetching user by uuid:", error);
+      throw error;   
+    }
+}
+
+
+export async function getUserByUserId(userId:string) {
   try {
     const user = await prisma.users.findFirst({
       where: {
@@ -32,10 +47,11 @@ export async function getUserByUserId(userId) {
 }
 
 
+
 export async function addUser( userObj ) {
   try {
     const newUser = await prisma.users.create({
-      data: userObj
+      data: {...userObj, status: 'ACTIVE' }
     });
     return newUser;
   } 

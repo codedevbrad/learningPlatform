@@ -94,7 +94,6 @@ const Editor = ({ notesMode = false, data, onSaveToState, saveByButton, inReadMo
   return (
     <div className={`editor editor-read-${ inReadMode } flex-grow flex-col flex overflow-hidden`}>
       <div className={`overflow-y-auto overflow-x-hidden flex-grow ${notesMode ? 'bg-gray-100' : 'bg-white'} rounded-md`}>
-        { /* editor data */ }
         <div id={editorName} className={`p-0 w-auto h-auto ${ notesMode ? 'p-3' : '' }`}/>
       </div>
       {!inReadMode && showSaveButn &&

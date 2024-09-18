@@ -1,11 +1,11 @@
 'use server'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import MessagesTabContent from "./messages"
-import TutoringTabContent from "./tutoring"
+
+import SessionsWithProposals from "@/app/reusables/components/sessions"
 
 export default async function StudentTabsArea({ params }) {
-    // Extract student id (slug) from params
+    // Extract student id (slug) from params...
     const { slug } = params;
     
     return (
@@ -15,8 +15,12 @@ export default async function StudentTabsArea({ params }) {
                     <TabsTrigger value="messages">Messages</TabsTrigger>
                     <TabsTrigger value="tutoring">Tutoring</TabsTrigger>
                 </TabsList>
-                <MessagesTabContent studentId={slug} />
-                <TutoringTabContent studentId={slug} />
+                <TabsContent value="messages"> 
+                    <MessagesTabContent studentId={slug} />
+                </TabsContent>
+                <TabsContent value="tutoring">
+                    <SessionsWithProposals studentId={slug} userType="Teacher" />
+                </TabsContent>
             </Tabs>
         </div>
     );

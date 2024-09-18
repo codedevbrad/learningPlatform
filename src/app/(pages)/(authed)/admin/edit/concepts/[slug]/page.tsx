@@ -9,7 +9,6 @@ import Title from "@/app/reusables/content/title"
 export default async function AdminConceptPage ({ params }: { params: { slug: string } }) {
 
     // need an error boundary around this.
-
     let topic = await action_getTopicById( params.slug );
 
     if (!topic) {
@@ -37,21 +36,14 @@ export default async function AdminConceptPage ({ params }: { params: { slug: st
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="Data" className="p-6 border border-gray-200 mt-4 rounded-lg">
-                        <EditDataComponent 
-                        topicId={ topic.id } 
-                        topicData={ topic.data } 
-                        topicInfo={{ 
+                        <EditDataComponent topicId={ topic.id } topicData={ topic.data } topicInfo={{ 
                             title: topic.title , 
-                            description: topic.description  , 
+                            description: topic.description , 
                             languages: topic.languages
-                        }} 
-                        />
+                        }}/>
                     </TabsContent>
                     <TabsContent value="Resources">
-                        <EditResourcesComponent 
-                        topicId={ params.slug } 
-                        resources={ topic.resources }
-                        />
+                        <EditResourcesComponent topicId={ params.slug } resources={ topic.resources } />
                     </TabsContent>
                     <TabsContent value="Analytics"> 
                         Analytics

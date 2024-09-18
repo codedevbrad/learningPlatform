@@ -1,48 +1,54 @@
-'use server'
+
+ 'use server'
 import Title from "@/app/reusables/content/title"
-import Link from "next/link"
 import { getAllConcepts } from "@/db_queries/concepts/student.queries"
+import TopicsPushSheetRender from "./client.topicDisplay"
+import Link from "next/link"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 
-// React component to render the learning path ...
-const ConceptsRender = async () => {
-
+export default async function ConceptsPage() {
   const concepts = await getAllConcepts();
-  console.log( 'concepts: ', concepts );
-
   return (
-    <div className="w-full flex flex-wrap -m-2"> 
-      { concepts.map((area, index) => (
-        <div key={index} className="p-2 w-1/3"> 
-          <div className="flex items-start p-2">
-            <div>
-              <Title title={area.title} variant="subheading2" noMargin={false} />
-              <ul>
-                { area.topics.map((topic, topicIndex) => (
-                  <li key={topicIndex} className="p-3 border border-gray-200 rounded-lg my-4">
-                    <Link href={`/authed/content/concepts/${ topic.id }`} className="text-md">
-                        <Title title={topic.title} variant="subheading2" noMargin={false} /> 
-                        <p> { topic.description }  </p>  
+    <div className="w-3/4 mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-8"> Explore Concepts </h1>
+      <div className="grid gap-8 md:grid-cols-3">
+        {concepts.map((concept) => (
+          <Card key={concept.id} className="flex flex-col overflow-hidden">
+            <CardHeader className="bg-gradient-to-tr from-white via-blue-100 50% to-blue-200">
+              <div className="flex items-center gap-4">       
+                <div>
+                  <CardTitle className="text-2xl text-gray-800">{concept.title}</CardTitle>
+                  <CardDescription className="text-gray-600">{concept.description}</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <div className="flex flex-wrap gap-2 my-4">
+                {concept.categories.map((category, index) => (
+                  <Badge key={index} variant="secondary">{category.name}</Badge>
+                ))}
+              </div>
+              <div className="space-y-4">
+                {concept.topics.map((topic, index ) => (
+                  <div key={ index }>
+                    <Link href={`/authed/content/concepts/${topic.id}`} key={topic.id} className="">
+                      <h3 className="font-semibold mb-1 text-gray-800">{topic.title}</h3>
+                      <p className="text-sm text-gray-600">{topic.description}</p>
                     </Link>
-                  </li>
-                )) }
-              </ul>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+            <div className="p-4">
+              <Button className="w-full" variant="outline">Explore All Topics </Button>
             </div>
-          </div>
-        </div>
-      ))}
+          </Card>
+        ))}
+      </div>
     </div>
-  );
-};
-
-
-export default async function ConceptsPage ( ) {
-    return (
-        <main className="flex flex-col items-center p-4">
-            <Title title="Concepts" variant="heading" noMargin={false} />
-            <div className="my-6 w-full">
-                <ConceptsRender />
-            </div>
-        </main>
-    )
+  )
 }

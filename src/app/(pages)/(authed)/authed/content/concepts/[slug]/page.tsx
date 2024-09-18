@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     const { id, title, description, data, resources , position } = topic;
 
     return (
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col items-center">
             <ConceptTopicMainComponent 
                   courseInfo={{ name: title , description , resources }}
                          data={ data } 
