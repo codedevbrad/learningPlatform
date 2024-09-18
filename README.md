@@ -22,9 +22,6 @@
     </a>
 </div>
 
-<br />
-<br />
-
 ## Table of Contents
 
 <div align="left">
