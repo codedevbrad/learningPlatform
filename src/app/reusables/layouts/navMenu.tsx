@@ -25,12 +25,12 @@ function CardComponent({ colorChosen = 'red', emoji = '🔥', each }) {
       <Link href={each.href} legacyBehavior passHref>
           <Card className={`cursor-pointer relative mr-5 min-w-[200px] h-[125px] flex justify-center items-center overflow-hidden ${gradientBackground}`}>
               {/* Emoji Layer */}
-              <div className="absolute top-8 inset-0 flex justify-center items-center">
+              <div className="absolute top-12 inset-0 flex justify-center items-center">
                   <span className="text-white text-4xl">{emoji}</span>
               </div>
 
               {/* Title Layer */}
-              <div className="relative z-10">
+              <div className="relative z-10 bottom-2">
                   <Title title={each.title} variant={'subheading3'} noMargin={false} className="text-white" />
               </div>
           </Card>
@@ -72,15 +72,16 @@ export default function NavMenu({ link, subLinks, basePathDepth = 2 }) {
         </NavigationMenuTrigger>
       )}
       {hasSubLinks && (
-        <NavigationMenuContent className="z-50 bg- min-w-96 min-h-36 flex flex-col justify-center py-5 px-7">
+        <NavigationMenuContent className="z-50 min-w-96 min-h-36 flex flex-col justify-center py-5 px-7">
             <div className="flex flex-row"> 
-                { subLinks.map((each) => (
-                   <CardComponent colorChosen={ each.colorChosen } each={ each } emoji={ each.emoji } />
+                { subLinks.map((each , index ) => (
+                   <CardComponent key={ index } colorChosen={ each.colorChosen } each={ each } emoji={ each.emoji } />
                 ))}
             </div>
         </NavigationMenuContent>
       )}
     </NavigationMenuItem>
   );
-  
-};//   className={`${navigationMenuTriggerStyle()} ${getBasePath(normalizePath(each.href), basePathDepth) === basePathname ? '' : 'bg-black'} text-white text-sm`}
+};
+
+// className={`vigationMenuTriggerStyle()} ${getBasePath(normalizePath(each.href), basePathDepth) === basePathname ? '' : 'bg-black'} text-white text-sm`}${na
