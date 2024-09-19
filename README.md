@@ -47,14 +47,26 @@
 
 ## Project Features
 
-<div align="left">
+<div align="center">
    <div>
-    <h3 id="the-bootcamp"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png" alt="Fire" width="55" height="55" style="vertical-align: middle;" /> The Bootcamp </h3> 
+    <h3 id="the-bootcamp">
+        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Fire.png" alt="Fire" width="55" height="55" style="vertical-align: middle;" /> 
+        The Bootcamp 
+    </h3> 
     <p> A full-featured coding bootcamp platform, designed for ease of use, with tasks, challenges, and learning materials tailored for students. </p>
+    <div> 
+      <img src="https://github.com/user-attachments/assets/238bdc13-34bd-48cc-a2e0-bf550bba5318" />   
+    <div>
    </div>
    <div>
     <h3 id="tutor-area-for-management-of-students-and-bootcamp-content"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Artist%20Medium%20Skin%20Tone.png" alt="Artist Medium Skin Tone" width="55" height="55" style="vertical-align: middle;" /> Tutor Area for Management of Students and Bootcamp Content </h3>
     <p> Tutors can manage students, create new course content, assign challenges, and track progress through the platform. </p>
+   </div>
+   </div>
+   </br>
+    <div align="center"> 
+      <img src="https://github.com/user-attachments/assets/d50d5a5f-0141-40fe-a0f5-67ffa3e040e8"
+    <div>
    </div>
     <div>
     <h3 id="tutor-sessions-and-messaging"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Calendar.png" alt="Calendar" width="55" height="55" style="vertical-align: middle;" /> Tutor Sessions and Messaging </h3>
@@ -78,6 +90,9 @@
     <p>
         Currently, OpenAI is used for generating concept blocks in the creation phase.
     </p>
+    <div align="center"> 
+      <img src="https://github.com/user-attachments/assets/81738be9-8f1e-4d22-a727-5e2f3893845f"
+    <div>
 </div>
 
 <br />
