@@ -68,6 +68,10 @@
       <img src="https://github.com/user-attachments/assets/d50d5a5f-0141-40fe-a0f5-67ffa3e040e8"
     <div>
    </div>
+   <div>
+    <h3 id="tutor-sessions-and-messaging"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Calendar.png" alt="Calendar" width="55" height="55" style="vertical-align: middle;" /> Student Learning area </h3>
+     <p> complete concept pages and write notes within the pages detailing any learning. View all of the work you've done in your student area. </p>
+   </div>
     <div>
     <h3 id="tutor-sessions-and-messaging"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Calendar.png" alt="Calendar" width="55" height="55" style="vertical-align: middle;" /> Tutor Sessions and Messaging </h3>
      <p> Integrated scheduling and messaging system for booking sessions and communicating directly with students. </p>
@@ -77,14 +81,25 @@
 <br />
 <br />
 
-<h2 id="in-depth"> In Depth </h2>
-
-<div align="left">
-    <br />
-    <h3 id="content-blocks"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Bubbles.png" alt="Bubbles" width="45" height="45" /> Content Blocks </h3> 
+<h1 id="in-depth"> In Depth </h1>
+<h3 id="content-blocks"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Bubbles.png" alt="Bubbles" width="45" height="45" /> Content Blocks </h3> 
+<div align="center">
+    <div>
+        <h3> Video and image </h3>
+    </div>
+    <div>
+        <h3> explanation </h3>
+    </div>
+    <div>
+        <h3> Quiz </h3>
+    </div>
+    <div>
+        <h3> Task and challenges </h3>
+    </div> 
+    </div>
 </div>
 
-<div align="left">
+<div align="center">
     <br />
     <h3 id="ai-integration"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="45" height="45" /> A.I Integration </h3> 
     <p>
