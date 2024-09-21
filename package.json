@@ -1,6 +1,6 @@
 {
   "name": "learning platform",
-  "version": "0.85",
+  "version": "0.85.5",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -11,7 +11,7 @@
     "deploy:prod": "will build and deploy in time",
 
     "db:update": "npx prisma generate",
-    "db:visualise": "dotenv -e .env.development npx prisma studio",
+    "db:visualise": "dotenv -e .env.development npx prisma studio", 
 
     "run:dev": "next dev",
 
@@ -21,7 +21,9 @@
     "setup:prune-users-all": "dotenv -e .env.development node setup/setup.data.ts users all ",
     "setup:prune-users-work": "dotenv -e .env.development node setup/setup.data.ts users work ",
     "setup:prune-users-to-tutor": "dotenv -e .env.development node setup/setup.data.ts users tutor",
-    "setup:prune-tags": "dotenv -e .env.development node setup/setup.data.ts tags all"
+    "setup:prune-tags": "dotenv -e .env.development node setup/setup.data.ts tags all",
+
+    "test:services": "checks all services are functioning"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.1.5",
