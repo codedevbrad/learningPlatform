@@ -40,16 +40,16 @@ export default function Header() {
         <nav>
           <NavigationMenu>
                 <NavigationMenuList>  
-                      <NavMenu link={{ title: 'explore' , href: '#' }} subLinks={[
-                        { title: 'concepts' , href: '/authed/content/concepts' , colorChosen: 'purple', emoji: '👹' },
-                        { title: 'challenge me' , href: '/authed/content/challenges', colorChosen: 'red' , emoji: '👊' }
+                      <NavMenu link={{ title: 'Learn' , href: '#' }} subLinks={[
+                        { title: 'Concepts' , href: '/authed/content/concepts' , colorChosen: 'purple', emoji: '👹' },
+                        { title: 'Challenge me' , href: '/authed/content/challenges', colorChosen: 'red' , emoji: '👊' }
                       ]} />
-                      <NavMenu link={{ title: 'help with' , href: '#' }} subLinks={[
-                        { title: 'figuring problems out' , href: '/authed/content/help/chat' , colorChosen: 'emerald' },
-                        { title: 'creating' , href: '/authed/content/help/build', colorChosen: 'purple' },
-                        { title: 'resources to help' , href: '/authed/content/help/resources' }
+                      <NavMenu link={{ title: 'Help with' , href: '#' }} subLinks={[
+                        { title: 'Figuring problems out' , href: '/authed/content/help/chat' , colorChosen: 'emerald' },
+                        { title: 'Creating' , href: '/authed/content/help/build', colorChosen: 'purple' },
+                        { title:  'Resources to help' , href: '/authed/content/help/resources' }
                       ]} />
-                      <NavMenu link={{ title: 'my learning' , href: '/authed/user/home' }} subLinks={ null } />
+                      <NavMenu link={{ title: 'My learning' , href: '/authed/user/home' }} subLinks={ null } />
                 </NavigationMenuList>
           </NavigationMenu>
         </nav>

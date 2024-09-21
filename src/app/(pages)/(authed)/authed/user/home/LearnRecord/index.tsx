@@ -13,7 +13,7 @@ export default function UserRecord ( ) {
                         Topics
                     </TabsTrigger>
                     <TabsTrigger value="courses">
-                        Content
+                        Challenges
                     </TabsTrigger>
                 </TabsList>
                 <div className="my-5 mb-11">
@@ -21,7 +21,7 @@ export default function UserRecord ( ) {
                         <TopicsTable />
                     </TabsContent> 
                     <TabsContent value="courses">
-                        tcourses.
+                        Challenges.
                     </TabsContent>
                 </div>
             </Tabs>

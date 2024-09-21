@@ -12,6 +12,7 @@ datasource db {
 
 // ***** User ****** //
 enum UserStatus {
+  PENDING
   ACTIVE
   SUSPENDED
   PAUSED
@@ -27,7 +28,7 @@ model Users {
   TopicsData UserDataForTopic[]
   sessions   Sessions[]
   role       String @default("USER")
-  status     UserStatus @default(ACTIVE)
+  status     UserStatus @default(PENDING)
   nickname   String
 }
 

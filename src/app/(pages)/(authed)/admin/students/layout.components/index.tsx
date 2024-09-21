@@ -75,21 +75,7 @@ export default function UsersList() {
                   <p className="text-sm font-medium leading-none"> { user.nickname } </p>
                 </div>
                 <div className="ml-auto font-medium">
-                      {user.status === 'ACTIVE' && (
-                        <span className="bg-gray-900 text-white px-2 py-1 rounded">Active</span>
-                      )}
-                      {user.status === 'SUSPENDED' && (
-                        <span className="bg-gray-800 text-white px-2 py-1 rounded">Suspended</span>
-                      )}
-                      {user.status === 'PAUSED' && (
-                        <span className="bg-gray-700 text-white px-2 py-1 rounded">Paused</span>
-                      )}
-                      {user.status === 'COMPLETED' && (
-                        <span className="bg-gray-600 text-white px-2 py-1 rounded">Completed</span>
-                      )}
-                      {user.status === 'INACTIVE' && (
-                        <span className="bg-gray-500 text-white px-2 py-1 rounded">Inactive</span>
-                      )}
+                  <span className="bg-gray-900 text-white px-3 py-1.5 rounded text-sm"> { user.status.toLocaleLowerCase() } </span>
                 </div>
               </Card>
             </Link>
