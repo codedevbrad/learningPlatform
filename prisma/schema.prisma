@@ -101,7 +101,6 @@ model Categories {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   color       String
-  courses     CategoryCourse[]
   concepts    CategoriesConcept[]
   challenges  CategoriesChallenge[]
 }
@@ -110,7 +109,6 @@ model Languages {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   color       String
-  courses     LanguagesCourse[]
   concepts    LanguagesTopic[]
   challenges  LanguagesChallenge[]
 }
@@ -164,39 +162,6 @@ model LanguagesTopic {
 }
 
 
-// **** Courses ***** //
-
-model Courses {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String 
-  imgUrl      String  @default("")
-  data        Json[]
-  resources   Json[]
-  categories  CategoryCourse[]
-  languages   LanguagesCourse[]
-  active      Boolean
-}
-
-// ... relations between course and tags ... //
-
-model CategoryCourse {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  course      Courses      @relation(fields: [courseId], references: [id])
-  courseId    String       @db.ObjectId
-  category    Categories   @relation(fields: [categoryId], references: [id])
-  categoryId  String       @db.ObjectId
-}
-
-model LanguagesCourse {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  course      Courses      @relation(fields: [courseId], references: [id])
-  courseId    String       @db.ObjectId
-  language    Languages    @relation(fields: [languageId], references: [id])
-  languageId  String       @db.ObjectId
-}
-
-
 // ****** Challenges ****** //
 
 model Challenges {
@@ -210,7 +175,6 @@ model Challenges {
   resources   Json[]
   active      Boolean      @default(true)
 }
-
 
 // ... relations between challenges and tags ... //
 
@@ -229,3 +193,35 @@ model LanguagesChallenge {
   language    Languages    @relation(fields: [languageId], references: [id], onDelete: Cascade )
   languageId  String       @db.ObjectId
 }
+
+// **** Courses ***** //
+
+// model Courses {
+//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+//   name        String
+//   description String 
+//   imgUrl      String  @default("")
+//   data        Json[]
+//   resources   Json[]
+//   categories  CategoryCourse[]
+//   languages   LanguagesCourse[]
+//   active      Boolean
+// }
+
+// ... relations between course and tags ... //
+
+// model CategoryCourse {
+//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+//   course      Courses      @relation(fields: [courseId], references: [id])
+//   courseId    String       @db.ObjectId
+//   category    Categories   @relation(fields: [categoryId], references: [id])
+//   categoryId  String       @db.ObjectId
+// }
+
+// model LanguagesCourse {
+//   id          String       @id @default(auto()) @map("_id") @db.ObjectId
+//   course      Courses      @relation(fields: [courseId], references: [id])
+//   courseId    String       @db.ObjectId
+//   language    Languages    @relation(fields: [languageId], references: [id])
+//   languageId  String       @db.ObjectId
+// }

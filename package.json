@@ -1,29 +1,24 @@
 {
-  "name": "learning platform",
+  "name": "learningplatform",
   "version": "0.85.5",
   "private": true,
   "scripts": {
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-
     "deploy:example": "will build and deploy a example version of the app",
     "deploy:prod": "will build and deploy in time",
-
     "db:update": "npx prisma generate",
-    "db:visualise": "dotenv -e .env.development npx prisma studio", 
-
+    "db:visualise": "dotenv -e .env.development npx prisma studio",
     "run:dev": "next dev",
-
     "setup:create-admin": "dotenv -e .env.development node setup/setup.admin.ts",
-
-    "setup:prune-entire": "dotenv -e .env.development node setup/setup.data.ts all",
-    "setup:prune-users-all": "dotenv -e .env.development node setup/setup.data.ts users all ",
-    "setup:prune-users-work": "dotenv -e .env.development node setup/setup.data.ts users work ",
-    "setup:prune-users-to-tutor": "dotenv -e .env.development node setup/setup.data.ts users tutor",
-    "setup:prune-tags": "dotenv -e .env.development node setup/setup.data.ts tags all",
-
-    "test:services": "checks all services are functioning"
+    "setup:prune-entire": "dotenv -e .env.development node setup/setup.data.ts entire",
+    "setup:prune-users-all": "dotenv -e .env.development node setup/setup.data.ts usersAll ",
+    "setup:prune-users-work": "dotenv -e .env.development node setup/setup.data.ts usersWork ",
+    "setup:prune-users-to-tutor": "dotenv -e .env.development node setup/setup.data.ts usersM&S",
+    "setup:prune-tags": "dotenv -e .env.development node setup/setup.data.ts tagAssociations",
+    "test:services": "checks all services are functioning",
+    "test:sessions": "checks that the session feature works correctly"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.1.5",
@@ -64,6 +59,7 @@
     "@types/uuid": "^10.0.0",
     "@uiw/react-codemirror": "^4.22.2",
     "axios": "^1.7.6",
+    "chalk": "^4.1.2",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "cloudinary": "^2.4.0",
@@ -101,7 +97,7 @@
     "vaul": "^0.9.1",
     "zod": "^3.23.8"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "@clerk/clerk-sdk-node": "^5.0.42",
     "@types/node": "^20",
     "@types/react": "^18",

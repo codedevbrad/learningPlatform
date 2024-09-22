@@ -138,6 +138,14 @@
 
 <br />
 
+<h3 id="adminsetup"> Admin access </h3>
+you need to run 
+```npm run setup:create-admin <userid>
+
+In order to create an admin role for a user so they can access the admin and start interacting with Students or working on creating the platform content.
+
+the userid should be gathered from clerk
+
 <h3 id="services"> Services </h3>
 
 #### Clerk Authentication
