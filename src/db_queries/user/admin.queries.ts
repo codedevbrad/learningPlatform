@@ -18,21 +18,6 @@ export const db_userOrAdmin = async () => {
 };
 
 
-export const db_userCanAccess = async ({ userIdfromAdmin } : { userIdfromAdmin: string }) => {
-    try {
-        const { userId } = auth();
-        if (!userId) throw new Error('No user logged in');
-        let user = await prisma.users.findFirst({
-            where: { userId: userId || userIdfromAdmin }
-        });
-        return user?.status == 'ACTIVE';
-    } 
-    catch (error) {
-        throw error;
-    }
-}
-
-
 export const db__getAllPendingStudents = async ( ) => {
     try {
         const { userId } = auth();

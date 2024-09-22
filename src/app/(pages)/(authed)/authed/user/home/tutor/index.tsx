@@ -5,9 +5,12 @@ import { Tabs, TabsList, TabsContent , TabsTrigger } from "@/components/ui/tabs"
 import SessionsWithProposals from "@/app/reusables/components/sessions"
 import MessagesDisplayComponent from "@/app/reusables/components/messages"
 
-import FeatureDisabled from "../../../auth.protection/protection.disabled"
+import FeatureDisabled from "../../../../../../reusables/access/components/protection.disabled"
+
+import AllowContentOrDisplayUserStatus from "@/app/reusables/access/components/student/student.displayAccess"
 
 import { action__getUserData } from "../actions"
+
 
 export default async function TutorSessions ( ) {
     
@@ -16,7 +19,7 @@ export default async function TutorSessions ( ) {
     return (
         <div className="p-5 border flex grow flex-col border-gray-200 rounded-lg mt-4">
             <div className="flex flex-col">
-                    <Tabs defaultValue="messages" storageKey="student_studentArea__m&s">
+                     <Tabs defaultValue="messages" storageKey="student_studentArea__m&s">
                         <TabsList className="">
                             <TabsTrigger value="messages"> Messages </TabsTrigger>
                             <TabsTrigger value="content">  Sessions </TabsTrigger>

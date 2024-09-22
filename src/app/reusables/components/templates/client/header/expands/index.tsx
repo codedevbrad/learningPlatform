@@ -7,7 +7,7 @@ import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import Editor from "@/app/reusables/usables/editorJs/index"
 import ResourceComponent from "@/app/reusables/components/resources"
-import FeatureDisabled from "@/app/(pages)/(authed)/authed/auth.protection/protection.disabled"
+import FeatureDisabled from "@/app/reusables/access/components/protection.disabled"
 
 
 function Notes ({ notes } : { notes: any; }) {
