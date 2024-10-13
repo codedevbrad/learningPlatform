@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -17,6 +17,10 @@ const AddTopicModal: React.FC<AddTopicModalProps> = ({ updateTable, conceptId })
   const [description, setDescription] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+
+  useEffect( ( ) => {
+      console.log('hey')
+  }, [ ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,10 +76,7 @@ const AddTopicModal: React.FC<AddTopicModalProps> = ({ updateTable, conceptId })
                 required
               />
             </div>
-            <LanguagesChosen 
-                    selectedLanguages={ selectedLanguages }
-                    setSelectedLanguages={ setSelectedLanguages }
-            />
+            <LanguagesChosen selectedLanguages={ selectedLanguages } setSelectedLanguages={ setSelectedLanguages } />
           </div>
           <DialogFooter>
             <Button type="submit">Save changes</Button>

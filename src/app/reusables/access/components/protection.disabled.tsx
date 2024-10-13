@@ -1,7 +1,14 @@
 'use client'
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 
-export default function FeatureDisabled({ children, explanation, className, displayTipType = 'tooltip' }) {
+interface FeatureDisabledType {
+  children?: any;
+  explanation: string;
+  className?: string; 
+  displayTipType: 'tooltip' | 'feature'
+}
+
+export default function FeatureDisabled({ children, explanation, className, displayTipType = 'tooltip' } : FeatureDisabledType ) {
 
   let tooltip = `This Feature is disabled while your tutor accepts you to the platform. Once accepted, you can then ${explanation}`;
   return (

@@ -1,9 +1,18 @@
+/**
+ * AdminBlockTemplate is a flexible admin interface component that provides a structured layout for managing and editing a block of data.
+ * It offers three main views: a form to edit data, a preview of the saved data, and a raw object view displaying the underlying data.
+ * 
+ * This component allows users to toggle fullscreen mode, submit the form, and optionally remove the block. It integrates with external form
+ * and saved data passed as props and maintains the full-screen state and the current state of saved data.
+**/
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Title from "../../../content/title";
-import ButtonSaving from "@/app/reusables/themes/saveButton";
+import ButtonSaving from "@/components/custom/buttons/button.form";
 import { buttonVariants } from "@/components/ui/button";
+
 
 const TrashIcon = () => {
   return (

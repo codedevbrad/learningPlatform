@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import LoadingButton from "@/app/reusables/themes/saveButton2"
+import LoadingButton from '@/components/custom/buttons/button.plain'
 
 
 // dislay options as sidebar or just in a row.

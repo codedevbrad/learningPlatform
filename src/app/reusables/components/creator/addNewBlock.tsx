@@ -6,27 +6,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from 'uuid';
 
-import { explanationObject, ExplanationProps } from "@/app/reusables/components/blocks/explanation/explanation";
-import { quizObject, QuizObjectProps } from "@/app/reusables/components/blocks/quiz/quiz";
-import { codeSnippetObject, CodeSnippetProps } from "@/app/reusables/components/blocks/snippet/snippet";
-import { ChallengeComponentObject, ChallengeUsageProps } from "@/app/reusables/components/blocks/challenge/challenge";
-import { taskObject, TaskProps } from "@/app/reusables/components/blocks/task/task";
-import { editorJsObject, EditorJsProps } from "@/app/reusables/components/blocks/editorJs/editor";
-import { videoBlockObject, VideoBlockProps } from "@/app/reusables/components/blocks/video/video";
-import { animatedCodeChallengeObject, AnimatedCodeChallengeProps } from "../blocks/animatedCodeChallenge";
-import { imageObject, ImageBlockProps } from "../blocks/image/image";
+import { explanationObject } from "@/app/reusables/components/blocks/explanation/explanation";
+import { quizObject } from "@/app/reusables/components/blocks/quiz/quiz";
+import { codeSnippetObject } from "@/app/reusables/components/blocks/snippet/snippet";
+import { ChallengeComponentObject } from "@/app/reusables/components/blocks/challenge/challenge";
+import { taskObject } from "@/app/reusables/components/blocks/task/task";
+import { editorJsObject } from "@/app/reusables/components/blocks/editorJs/editor";
+import { videoBlockObject } from "@/app/reusables/components/blocks/video/video";
+import { animatedCodeChallengeObject } from "../blocks/animatedCodeChallenge";
+import { imageObject } from "../blocks/image/image";
+import { diagramCompletionObject } from "../blocks/diagramCompletion/diagramCompletion";
+
+import { DataForBuild } from "../render";
 
 interface addDataToBlockProps {
    type: 'new';
-   blockData: ExplanationProps | QuizObjectProps | CodeSnippetProps | ChallengeUsageProps | TaskProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
+   blockData: DataForBuild;
    blockIndex: number;
 }
 
 interface AddNewDataBlockProps {
     addDataToBlock: (props: addDataToBlockProps) => void;
+    title: string;
+    icon: string;
+    object: DataForBuild;
 }
 
-function DropdownBlockItem({ addDataToBlock, title, icon, object }) {
+
+function DropdownBlockItem({ addDataToBlock, title, icon, object } : AddNewDataBlockProps ) {
     return (
         <DropdownMenuItem className="cursor-pointer" onClick={() => addDataToBlock({
             type: 'new', blockData: { ...object, id: uuidv4() }, blockIndex: 0
@@ -66,6 +73,7 @@ export default function AddNewDataBlock({ addDataToBlock }: AddNewDataBlockProps
                     <DropdownBlockItem title="EditorJs" icon={'✏️'} addDataToBlock={addDataToBlock} object={editorJsObject} />
                     <DropdownBlockItem title="Video" icon={'🎥'} addDataToBlock={addDataToBlock} object={videoBlockObject} />
                     <DropdownBlockItem title="Animated Code Challenge" icon={'🚀'} addDataToBlock={addDataToBlock} object={animatedCodeChallengeObject} />
+                    <DropdownBlockItem title="Diagram completion" icon="💻" addDataToBlock={ addDataToBlock } object={ diagramCompletionObject } />
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>

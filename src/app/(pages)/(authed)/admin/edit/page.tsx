@@ -10,8 +10,6 @@ export default async function EditContentPage (
     { searchParams }: { searchParams?: { [key: string]: string | string[] | undefined };
 }) {
 
-  console.log( searchParams?.tab )
-
   return (
         <div>
             <Tabs defaultValue={searchParams?.tab || 'concepts' } className="">

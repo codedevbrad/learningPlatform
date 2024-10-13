@@ -29,8 +29,11 @@ import AnimatedCodeChallengeAdminBlock from '../blocks/animatedCodeChallenge/ind
 import ImageBlock , { ImageBlockProps } from '../blocks/image/image'
 import ImageAdminBlock from '../blocks/image/image.admin'
 
+import DiagramCompletionComponent, { DiagramCompletionProps } from '../blocks/diagramCompletion/diagramCompletion'
+import DiagramCompletionAdminBlock from '../blocks/diagramCompletion/diagramCompletion.admin'
 
-export type DataForBuild = ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
+
+export type DataForBuild = DiagramCompletionProps | ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
 
 
 interface DataChoiceComponentProps {
@@ -81,6 +84,10 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return (
                     <ImageAdminBlock blockIndex={ blockIndex } data={ dataItem as ImageBlockProps } adminTools={ adminTools } />
                 )
+            case 'diagramCompletion': 
+                return (
+                    <DiagramCompletionAdminBlock blockIndex={ blockIndex } data={ dataItem as DiagramCompletionProps } adminTools={ adminTools } />
+                )
             default:
                 return <div>Could not render { dataItem.type } block in Admin ... </div>;
         }
@@ -108,12 +115,13 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return <AnimatedCodeChallenge data={ dataItem as AnimatedCodeChallengeProps } />
             case 'image':
                 return <ImageBlock data={ dataItem as ImageBlockProps } />
+            case 'diagramCompletion': 
+                return <DiagramCompletionComponent data={ dataItem as DiagramCompletionProps } />
             default:
                 return <div>Could not render { dataItem.type } block ...</div>;
         }
     }
 }
-
 
 export default function PlatformContentBlocks({ data, isInAdminMode = false, adminTools }) {
     return (

@@ -1,14 +1,18 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-interface Resource {
+interface ResourceType {
   title: string;
   description: string;
   url: string;
   imgUrl: string;
 }
 
-function ResourceComponent({ resource, viewType = 'embedded' }: { resource: Resource; viewType?: string }) {
+export type {
+  ResourceType
+};
+
+function ResourceComponent({ resource, viewType = 'embedded' }: { resource: ResourceType; viewType?: string }) {
   const { title, description, url, imgUrl } = resource;
 
   return (
