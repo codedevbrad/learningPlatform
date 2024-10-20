@@ -26,6 +26,7 @@ import { Switch } from "@/components/ui/switch";
 
 
 import { Resizable } from 're-resizable';
+import Title from '@/app/reusables/content/title';
 
 
 function UserGuess({ guess }: { guess: string }) {
@@ -180,6 +181,7 @@ const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
     return (
       <>
         <div>
+          <Title title="Guesses" variant="subheading2" />
           <ul className="flex flex-row space-x-5">
             {guessableNodes.map((node) => (
               <li
@@ -188,13 +190,13 @@ const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
                 draggable
                 onDragStart={(e) => handleDragStart(e, node.id, node.data.label)}
               >
-                {node.data.label} ({node.id})
+                {node.data.label}
               </li>
             ))}
           </ul>
         </div>
 
-        <Resizable
+        {/* <Resizable
         defaultSize={{
             width: 320,
             height: 200,
@@ -202,7 +204,7 @@ const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         className='bg-black text-white'
         >
         Sample with default size
-        </Resizable>
+        </Resizable> */}
 
         <div style={{ height: 600, marginTop: '20px', border: '1px solid #ddd', position: 'relative' }}>
           {displayMode === 'admin' && (

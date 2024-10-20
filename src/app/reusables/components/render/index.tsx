@@ -123,11 +123,12 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
     }
 }
 
+
 export default function PlatformContentBlocks({ data, isInAdminMode = false, adminTools }) {
     return (
         <>
             { data.map((item: DataForBuild, index: number) => (
-                <div className="my-5" key={index}>
+                <div className="my-5" id={ item.id } key={index}>
                     <DataChoiceComponent 
                         key={ index } 
                         blockIndex={index} 

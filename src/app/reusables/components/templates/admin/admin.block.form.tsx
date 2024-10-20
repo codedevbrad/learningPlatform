@@ -47,10 +47,6 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
   const [ savedDataObject , updateSavedDataObject ] = useState( savedData.props.data );
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  useEffect( ( ) => {
-     console.log( savedData.props.data )
-  }, [ savedData ] );
-
   const triggerFormSubmit = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));

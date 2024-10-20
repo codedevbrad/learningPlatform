@@ -67,11 +67,8 @@ const DiagramCompletionComponent: React.FC<DiagramCompletionUsageProps> = ({ dat
       <p>{data.content}</p>
 
       <div className="">
-        <div>
-          <Button> Test my try </Button>
-        </div>
 
-        <div style={{ height: 400 }}>
+        <div>
           <DiagramCanvas
             nodes={nodes}
             edges={edges}

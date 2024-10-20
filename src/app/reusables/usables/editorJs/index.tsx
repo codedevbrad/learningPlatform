@@ -71,6 +71,7 @@ const Editor = ({ notesMode = false, data, onSaveToState, saveByButton, inReadMo
             const newData = await api.saver.save();
             onSaveToState(newData);
             setCanSave(true);
+            console.log( newData )
           }
         },
       });
@@ -82,7 +83,8 @@ const Editor = ({ notesMode = false, data, onSaveToState, saveByButton, inReadMo
         ref.current.destroy();
       }
     };
-  }, []);
+  }, [] );
+
 
   const saveEditorData = async () => {
     console.log(data);

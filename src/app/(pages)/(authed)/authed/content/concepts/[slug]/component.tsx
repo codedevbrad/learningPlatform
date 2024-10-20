@@ -1,15 +1,16 @@
 'use client'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
 import ContentHeader from '@/app/reusables/components/templates/client/header/index'
 import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/components/render/index"
 
 import { action__updateTopicNotesForUser } from './actions'
-
 import SaveProgressForPageBtn from './savePageProgress/index'
-
 import EmbeddedVideoDisplay from '@/app/reusables/components/resources/resource'
+import PageContents from '@/app/reusables/layouts/pagecontents'
+
+
 
 interface InfoProps {
     name: string;
@@ -23,6 +24,7 @@ interface DataProps {
     map(arg0: (item: DataForBuild, index: React.Key | null | undefined) => React.JSX.Element): React.ReactNode;
     data: DataForBuild[];
 }
+
 
 
 const ConceptTopicMainComponent: React.FC<
@@ -47,28 +49,32 @@ const ConceptTopicMainComponent: React.FC<
     }
 
     return (
-        <div className="w-3/5 overflow-x-hidden px-3 flex flex-col min-h-screen relative ">
-            { displayResource.state && 
-             <EmbeddedVideoDisplay url={ displayResource.url } closeDisplay={ CloseResourceDisplay } />
-            }
-          
-            <div className='flex flex-col flex-1'>
-                <ContentHeader 
-                    courseInfo={courseInfo} 
-                    notes={{ state: notes, updateNotesToDb: updateTheNotes }} 
-                    triggerResourceVideoDisplay={ OpenResourceDisplay }
-                />
-                
-                <DividerWithText className="">
-                    enjoy the content 🙂
-                </DividerWithText>
+        <div className='flex w-2/3 justify-center'>
+            <div className="mr-8 overflow-x-hidden px-3 flex flex-col min-h-screen relative ">
+                { displayResource.state && 
+                <EmbeddedVideoDisplay url={ displayResource.url } closeDisplay={ CloseResourceDisplay } />
+                }
+            
+                <div className='flex flex-col flex-1'>
+                    <ContentHeader 
+                        courseInfo={courseInfo} 
+                        notes={{ state: notes, updateNotesToDb: updateTheNotes }} 
+                        triggerResourceVideoDisplay={ OpenResourceDisplay }
+                    />
+                    
+                    <DividerWithText className="">
+                        enjoy the content 🙂
+                    </DividerWithText>
 
-                <PlatformContentBlocks data={data} isInAdminMode={false} adminTools={null} />
+                    <PlatformContentBlocks data={data} isInAdminMode={false} adminTools={null} />
+                </div>
+
+                <div className="flex fixed bottom-0 left-0 h-[150px] justify-center p-5 items-center bg-white w-full">
+                    <SaveProgressForPageBtn topicId={topicId} completedState={completed} updateLocally={changeCompleted} />
+                </div>
             </div>
 
-            <div className="flex fixed bottom-0 left-0 h-[150px] justify-center p-5 items-center bg-white w-full">
-                <SaveProgressForPageBtn topicId={topicId} completedState={completed} updateLocally={changeCompleted} />
-            </div>
+            <PageContents content={ data } />
         </div>
     );
 };

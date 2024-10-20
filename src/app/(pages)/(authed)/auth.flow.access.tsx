@@ -34,7 +34,7 @@ export default function AuthedFlow ({ children } : { children: ReactNode }) {
       <SignedIn>
           <div className={`h-full flex flex-row ${colors.app_primary_bg} `}>
             { !isUserRegistered ? <AuthedButRegister /> : null }
-            <div className="flex-grow px-5 overflow-hidden pb-20">
+            <div className="flex-grow px-5 pb-20">
               {children}
             </div>
           </div>

@@ -5,6 +5,7 @@ class CustomHeader extends Header {
     render(settings) {
       const wrapper = super.render(settings);
       const level = this.data.level || this.defaultLevel;
+      console.log( 'block level:' , level )
   
       let tailwindClasses = '';
       switch (level) {
