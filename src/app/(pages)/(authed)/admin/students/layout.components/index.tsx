@@ -1,11 +1,12 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from 'next/link';
-import { useState, useEffect } from "react";
-import useSWR, { mutate } from 'swr';
-import { action__getStudents } from "./action";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from 'next/link'
+import { useState, useEffect } from "react"
+import useSWR from 'swr'
+import { action__getStudents } from "./action"
+import ControlStudentAccesspopup from "@/app/reusables/access/components/admin/admin.controlAccess.popup"
 
 export default function UsersList() {
   const [selectedUser, setSelectedUser] = useState('');
@@ -40,7 +41,6 @@ export default function UsersList() {
     setSelectedUser(userId);
   }, []);
 
-
   useEffect(() => {
     if (isLoading) {
       console.log('Loading users...');
@@ -48,7 +48,7 @@ export default function UsersList() {
     console.log('Users data from cache:', !isValidating);
   }, [isValidating, isLoading]);
 
-  const handleUserClick = async (userId) => {
+  const handleUserClick = (userId) => {
     setSelectedUser(userId);
   };
 
@@ -62,23 +62,25 @@ export default function UsersList() {
           <div>Failed to load users</div>
         ) : (
           users.map((user) => (
-            <Link href={`/admin/students/student/${user.id}`} key={user.id} passHref>
-              <Card 
-                className={`py-5 px-4 rounded-md flex items-center gap-4 cursor-pointer ${selectedUser === user.id ? 'bg-gray-100' : ''}`} 
-                onClick={() => handleUserClick(user.id)}
-              >
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src={user.avatar} alt="Avatar" />
-                  <AvatarFallback> { user.nickname[0] } </AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none"> { user.nickname } </p>
-                </div>
-                <div className="ml-auto font-medium">
-                  <span className="bg-gray-900 text-white px-3 py-1.5 rounded text-sm"> { user.status.toLocaleLowerCase() } </span>
-                </div>
-              </Card>
-            </Link>
+            <div key={user.id}>
+              <Link href={`/admin/students/student/${user.id}`} passHref>
+                <Card 
+                  className={`py-5 px-4 rounded-md flex items-center gap-4 cursor-pointer ${selectedUser === user.id ? 'bg-gray-100' : ''}`} 
+                  onClick={() => handleUserClick(user.id)}
+                >
+                  <Avatar className="hidden h-9 w-9 sm:flex">
+                    <AvatarImage src={user.avatar} alt="Avatar" />
+                    <AvatarFallback>{user.nickname[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">{user.nickname}</p>
+                  </div>  
+                  <div className="ml-auto font-medium">
+                    <ControlStudentAccesspopup status={user.status} />
+                  </div>
+                </Card>
+              </Link>
+            </div>
           ))
         )}
       </div>

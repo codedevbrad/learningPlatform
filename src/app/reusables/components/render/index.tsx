@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 
@@ -31,9 +31,15 @@ import ImageAdminBlock from '../blocks/image/image.admin'
 
 import DiagramCompletionComponent, { DiagramCompletionProps } from '../blocks/diagramCompletion/diagramCompletion'
 import DiagramCompletionAdminBlock from '../blocks/diagramCompletion/diagramCompletion.admin'
+import AddNewDataBlock from '../creator/addNewBlock'
 
 
-export type DataForBuild = DiagramCompletionProps | ExplanationProps | TaskProps | ChallengeUsageProps | QuizObjectProps | CodeSnippetProps | EditorJsProps | VideoBlockProps | AnimatedCodeChallengeProps | ImageBlockProps;
+export type DataForBuild = 
+DiagramCompletionProps | ExplanationProps | 
+TaskProps | ChallengeUsageProps | 
+QuizObjectProps | CodeSnippetProps | 
+EditorJsProps | VideoBlockProps | 
+AnimatedCodeChallengeProps | ImageBlockProps;
 
 
 interface DataChoiceComponentProps {
@@ -124,20 +130,45 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
 }
 
 
+interface PlatformContentBlocksInterface {
+    data: any;
+    isInAdminMode: boolean;
+    adminTools: any;
+}
+
+
 export default function PlatformContentBlocks({ data, isInAdminMode = false, adminTools }) {
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+
     return (
         <>
-            { data.map((item: DataForBuild, index: number) => (
-                <div className="my-5" id={ item.id } key={index}>
-                    <DataChoiceComponent 
-                        key={ index } 
-                        blockIndex={index} 
-                        dataItem={item} 
-                        isInAdminMode={isInAdminMode} 
-                        adminTools={adminTools} 
-                    />
+            {data.map((item, index) => (
+                <div className="my-5" id={item.id} key={index}>
+                    <div 
+                        className="relative group" 
+                        onMouseEnter={() => setHoveredIndex(index)} 
+                        onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                        <DataChoiceComponent 
+                            key={index} 
+                            blockIndex={index} 
+                            dataItem={item} 
+                            isInAdminMode={isInAdminMode} 
+                            adminTools={adminTools} 
+                        />
+                    
+                        {isInAdminMode && (
+                            <div
+                                className={`${
+                                    hoveredIndex === index ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                                } flex flex-row justify-center items-center my-4 relative bottom-9 transition-opacity transition-transform duration-300`}
+                            > 
+                                <AddNewDataBlock addDataToBlock={adminTools.updateDataBlock} pushAfter={index} />
+                            </div>
+                        )}
+                    </div>
                 </div>
             ))}
         </>
-    )
+    );
 }

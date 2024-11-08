@@ -1,5 +1,5 @@
 'use server'
-import prisma from "../../../../../prisma/client";
+import prisma from "../../../../../../prisma/client";
 import { auth } from "@clerk/nextjs/server"
 
 export const db_userCanAccess = async (input?: { userIdfromAdmin?: string }) => {

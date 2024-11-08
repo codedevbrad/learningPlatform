@@ -3,7 +3,6 @@ import AppLoadingScreen from "@/app/reusables/app/loadingScreen"
 import { useUser, SignedIn } from "@clerk/nextjs"
 import { ReactNode, useState, useEffect } from "react"
 import { action__userRegisteredThroughDbCheck } from "./authed/actions"
-import { colors } from "./authed/data"
 import { useUserContext } from "@/app/contexts/context"
 import AuthedButRegister from "./authed/(layout)/register"
 
@@ -32,7 +31,7 @@ export default function AuthedFlow ({ children } : { children: ReactNode }) {
   
     return (
       <SignedIn>
-          <div className={`h-full flex flex-row ${colors.app_primary_bg} `}>
+          <div className={`h-full flex flex-row bg-white`}>
             { !isUserRegistered ? <AuthedButRegister /> : null }
             <div className="flex-grow px-5 pb-20">
               {children}

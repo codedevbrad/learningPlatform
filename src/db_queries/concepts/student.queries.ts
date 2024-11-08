@@ -36,7 +36,6 @@ export async function getAllConcepts() {
         concept.categories.map((cat) => cat.categoryId)
       );
       console.log(categories);
-      // Replace category and language IDs with actual data
       return {
         ...concept,
         categories,
@@ -57,8 +56,14 @@ export async function findTopicById(topicId: string) {
         id: topicId,
       },
       include: {
-        languages: true
-      }
+        languages: true,
+        author: {
+          select: {
+            userId: true,
+            name: true,
+          },
+        },
+      },
     });
 
     if (!topic) {
@@ -66,13 +71,16 @@ export async function findTopicById(topicId: string) {
     }
 
     // Fetch languages for the topic using getLanguagesByIds
-    const languageIds = topic.languages.map(lang => lang.languageId);
+    const languageIds = topic.languages.map((lang) => lang.languageId);
     const languages = await getLanguagesByIds(languageIds);
 
     // Replace language IDs with actual language data
-    const topicWithLanguages = { ...topic, languages };
+    const topicWithLanguagesAndAuthor = {
+      ...topic,
+      languages,
+    };
 
-    return topicWithLanguages;
+    return topicWithLanguagesAndAuthor;
   } 
   catch (error) {
     console.error(`Failed to find topic by ID: ${error.message}`);

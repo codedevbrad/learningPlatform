@@ -37,6 +37,8 @@ model AdminUsers {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   userId     String       @unique
   role       String       @default("ADMIN")
+  topics     Topic[]      @relation("AuthorOfTopics")
+  name       String
 }
 
 
@@ -140,6 +142,9 @@ model Topic {
   languages   LanguagesTopic[]
   userDataOnCourse UserDataForTopic?
   position    Int @unique
+  author      AdminUsers @relation("AuthorOfTopics", fields: [authorId], references: [id])
+  authorId    String @db.ObjectId
+  postedOn    DateTime  @default(now())
 }
 
 

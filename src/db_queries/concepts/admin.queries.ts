@@ -3,6 +3,7 @@ import prisma from '../../../prisma/client'
 import { TopicType } from '../../../prisma/schema.types';
 import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
+import { db_getAdminIdFromAuth } from '../user/admin.queries';
 
 export async function getAllConceptsPlain ( ) {
   let concepts = await prisma.concepts.findMany({
@@ -375,6 +376,9 @@ export const addNewTopic = async (
   { conceptId: string; title: string; description: string; active: boolean; selectedLanguages: any } 
 ) => {
   try {
+    // if an error happens from that func then does this continue or do we go to the catch block?
+    let authorId = await db_getAdminIdFromAuth();
+
     // Fetch the current maximum position
     const maxPosition = await prisma.topic.aggregate({
       _max: {
@@ -398,6 +402,7 @@ export const addNewTopic = async (
             languageId,
           })),
         },
+        authorId: authorId
       },
     });
 

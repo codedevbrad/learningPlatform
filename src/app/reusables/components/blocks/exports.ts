@@ -6,6 +6,8 @@ import { taskObject, TaskProps } from "@/app/reusables/components/blocks/task/ta
 import { editorJsObject, EditorJsProps } from "@/app/reusables/components/blocks/editorJs/editor"
 import { videoBlockObject, VideoBlockProps } from "@/app/reusables/components/blocks/video/video"
 
+// using this for my a.i generation prompt.
+
 export const blockObjects = [
     explanationObject,
     quizObject,
@@ -15,6 +17,3 @@ export const blockObjects = [
     editorJsObject,
     videoBlockObject
 ];
-
-
-// might be using this for my a.i generation prompt.

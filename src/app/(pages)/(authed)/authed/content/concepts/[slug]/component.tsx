@@ -11,12 +11,15 @@ import EmbeddedVideoDisplay from '@/app/reusables/components/resources/resource'
 import PageContents from '@/app/reusables/layouts/pagecontents'
 
 
-
 interface InfoProps {
     name: string;
     description: string;
-    resources: string;
-    position: number;
+    resources: any;
+    author: {
+        userId: string; 
+        name: string;
+    };
+    postedOn: Date;
 }
 
 
@@ -26,17 +29,16 @@ interface DataProps {
 }
 
 
-
 const ConceptTopicMainComponent: React.FC<
-  { data: DataProps, courseInfo: InfoProps , userProgress: any , topicId: string , topicPos: number }> = (
-  { data, courseInfo, userProgress , topicId , topicPos }) => {
+  { data: DataProps, pageInfo: InfoProps , userProgress: any , topicId: string , topicPos: number }> = (
+  { data, pageInfo, userProgress , topicId , topicPos }) => {
     
     const { progress , notes } = userProgress;
     const [ completed , changeCompleted ] = useState( progress );
 
     const [ displayResource , setResourceDisplay ] = useState({ state: false , url: false });
 
-    function OpenResourceDisplay ( url ) {
+    function OpenResourceDisplay ( url : string ) {
         setResourceDisplay({ state: true , url });
     }
 
@@ -49,15 +51,15 @@ const ConceptTopicMainComponent: React.FC<
     }
 
     return (
-        <div className='flex w-2/3 justify-center'>
-            <div className="mr-8 overflow-x-hidden px-3 flex flex-col min-h-screen relative ">
+        <div className='flex w-3/4'>
+            <div className="grow mr-8 overflow-x-hidden px-3 flex flex-col min-h-screen relative ">
                 { displayResource.state && 
                 <EmbeddedVideoDisplay url={ displayResource.url } closeDisplay={ CloseResourceDisplay } />
                 }
             
                 <div className='flex flex-col flex-1'>
                     <ContentHeader 
-                        courseInfo={courseInfo} 
+                        headerInfo={pageInfo} 
                         notes={{ state: notes, updateNotesToDb: updateTheNotes }} 
                         triggerResourceVideoDisplay={ OpenResourceDisplay }
                     />

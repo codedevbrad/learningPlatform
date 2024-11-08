@@ -14,6 +14,7 @@ import ButtonSaving from "@/components/custom/buttons/button.form";
 import { buttonVariants } from "@/components/ui/button";
 
 
+
 const TrashIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -66,6 +67,7 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
   }, [isFullScreen]);
 
   return (
+    <>
     <div className={`border border-gray-200 rounded-lg p-5 ${isFullScreen ? 'fixed inset-0 z-50 bg-black bg-opacity-50' : ''}`}>
       <div className={`bg-white ${isFullScreen ? 'w-full flex flex-col h-full p-5 overflow-hidden rounded-xl' : ''}`}>
         <div className="flex flex-row justify-between items-center mb-5">
@@ -104,7 +106,7 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
             </TabsContent>
 
             <TabsContent value="preview" className="flex-grow overflow-auto">
-              <Card className="border-none h-full">
+              <Card className="border-none h-full ">
                 <CardHeader>
                   <CardTitle>Preview</CardTitle>
                   <CardDescription className="py-3">
@@ -118,22 +120,23 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
             </TabsContent>
 
             <TabsContent value="raw object" className="flex-grow overflow-auto">
-                <Card className="border-none h-full">
-                    <CardHeader>
-                      <CardTitle> View your block as a raw object. </CardTitle>
-                      <CardDescription> This is how it's saved as an object. </CardDescription>
-                    </CardHeader>
-                    <CardContent className="h-full">
-                        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto h-full">
-                          {JSON.stringify(savedDataObject, null, 2)}
-                        </pre>
-                      </CardContent>
-                </Card>
+              <Card className="border-none h-full">
+                <CardHeader>
+                  <CardTitle> View your block as a raw object. </CardTitle>
+                  <CardDescription> This is how it's saved as an object. </CardDescription>
+                </CardHeader>
+                <CardContent className="h-full">
+                  <pre className="bg-gray-100 p-4 rounded-lg overflow-auto h-full break-words whitespace-pre-wrap">
+                    {JSON.stringify(savedDataObject, null, 2)}
+                  </pre>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

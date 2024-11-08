@@ -149,7 +149,7 @@
 you need to run 
 </br>
 
-    npm run setup:create-admin <userid>
+    npm run setup:create-admin <userid> "<name>"
     
 In order to create an admin role for a user so they can access the admin and start interacting with Students or working on creating the platform content.
 
