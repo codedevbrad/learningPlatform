@@ -1,8 +1,5 @@
-
- 'use server'
-import Title from "@/app/reusables/content/title"
+'use server'
 import { getAllConcepts } from "@/db_queries/concepts/student.queries"
-import TopicsPushSheetRender from "./client.topicDisplay"
 import Link from "next/link"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,10 +31,12 @@ export default async function ConceptsPage() {
               </div>
               <div className="space-y-4">
                 {concept.topics.map((topic, index ) => (
-                  <div key={ index }>
-                    <Link href={`/authed/content/concepts/${topic.id}`} key={topic.id} className="">
-                      <h3 className="font-semibold mb-1 text-gray-800">{topic.title}</h3>
-                      <p className="text-sm text-gray-600">{topic.description}</p>
+                  <div key={ index } className="hover:bg-gray-50">
+                    <Link href={`/authed/content/concepts/${topic.id}`} key={topic.id}>
+                      <div className="p-4">
+                          <h3 className="font-semibold mb-1 text-gray-800">{topic.title}</h3>
+                          <p className="text-sm text-gray-600">{topic.description}</p>
+                      </div>
                     </Link>
                   </div>
                 ))}

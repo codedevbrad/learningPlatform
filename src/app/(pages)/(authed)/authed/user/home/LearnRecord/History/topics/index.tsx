@@ -1,6 +1,6 @@
 
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { action__fetchTopicsUsersWorkedWith } from "../actions"
+import { action__fetchTopicsUsersWorkedWith } from "./actions"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 

@@ -27,14 +27,9 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
-    
     setFormData((prevData) => ({
       ...prevData,
-      title: {
-        ...prevData.title,
-        [name]: type === 'checkbox' ? checked : value,
-      },
-      ...(name === 'content' && { content: value }),
+      [name]: type === 'checkbox' ? checked : value,
     }));
     setIsSaved(false); // Reset the save status when the form changes
   };
@@ -66,11 +61,11 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
         {/* Title Section Inline */}
         <div className="flex items-start space-x-4">
           <div className="flex-1">
-            <Label htmlFor="value">Title</Label>
+            <Label htmlFor="title">Title</Label>
             <Input
-              id="value"
-              name="value"
-              value={formData.title.value}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleChange}
             />
           </div>
@@ -80,7 +75,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
             <select
               id="size"
               name="size"
-              value={formData.title.size || 'subheading1'}
+              value={formData.size || 'subheading1'}
               onChange={handleChange}
               className="block w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none"
             >
@@ -91,21 +86,13 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
           </div>
 
           <div className="flex items-center flex-col">
-            <Label htmlFor="show" className="mr-2">Show Title</Label>
+            <Label htmlFor="renderTitle" className="mr-2">Show Title</Label>
             <input
               type="checkbox"
-              id="show"
-              name="show"
-              checked={formData.title.show}
-              onChange={(e) =>
-                setFormData((prevData) => ({
-                  ...prevData,
-                  title: {
-                    ...prevData.title,
-                    show: e.target.checked,
-                  },
-                }))
-              }
+              id="renderTitle"
+              name="renderTitle"
+              checked={formData.renderTitle}
+              onChange={handleChange}
               className="mt-1 w-12 h-12"
             />
           </div>

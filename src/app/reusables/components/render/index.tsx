@@ -102,7 +102,7 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
     else {
         switch (dataItem.type) {
             case 'explanation':
-                return <ExplanationComponent data={dataItem as ExplanationProps} />;
+                return <ExplanationComponent data={dataItem } />;
             case 'quiz':
                 return <QuizComponent data={dataItem as QuizObjectProps} />;
             case 'codeSnippet':

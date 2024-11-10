@@ -3,11 +3,9 @@ import Title from '@/app/reusables/content/title'
 
 interface ExplanationProps {
   content: string;
-  title: {
-    value: string;
-    size: 'subheading1' | 'subheading2' | 'subheading3';
-    show: boolean;
-  };
+  title: string;  // Title text
+  size: 'subheading1' | 'subheading2' | 'subheading3';  // Title size
+  renderTitle: boolean;  // Whether to display the title
   type: 'explanation';
   id?: string;
 }
@@ -18,19 +16,17 @@ interface ExplanationUsageProps {
 
 export const explanationObject: ExplanationProps = {
   content: '',
-  title: {
-    value: '',
-    size: 'subheading1',
-    show: true,
-  },
+  title: '',
+  size: 'subheading1',
+  renderTitle: true,
   type: 'explanation',
 };
 
 const ExplanationComponent: React.FC<ExplanationUsageProps> = ({ data }) => {
   return (
     <div className="mt-4 w-full">
-      {data.title.show && (
-        <Title title={data.title.value} variant={data.title.size} noMargin={false} />
+      {data.renderTitle && (
+        <Title title={data.title} variant={data.size} noMargin={false} />
       )}
       <p className="leading-8 break-words whitespace-pre-wrap">
         {data.content}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import DashboardLayout from "./(layout)"
+import AnalyticsPopover from "./tracking/component";
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -8,8 +9,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <DashboardLayout>
-        { children }
-    </DashboardLayout>
+      <>
+          <AnalyticsPopover />
+          <DashboardLayout>
+              { children }
+          </DashboardLayout>
+      </>
   );
 }

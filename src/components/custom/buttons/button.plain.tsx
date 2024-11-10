@@ -12,7 +12,9 @@ interface LoadingButtonProps {
     className?: string;
   }
   
-  const LoadingButton: React.FC<LoadingButtonProps> = ({ onClick, isLoading, disabled, children, className }) => {
+  const LoadingButton: React.FC<LoadingButtonProps> = ({ 
+    onClick, isLoading, disabled, children, className 
+  }) => {
     return (
       <Button onClick={onClick} disabled={isLoading || disabled } className={className}>
         {isLoading ? (
