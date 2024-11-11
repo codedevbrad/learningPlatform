@@ -222,6 +222,7 @@ Regular Updates in Issues:
 Drop comments in the issue as you make progress, especially for larger tasks. This provides a log of decisions and progress for yourself and collaborators.
 Milestones and Labels:
 
+
 Use labels to categorize issues (e.g., bug, enhancement, documentation) and milestones for larger goals. Milestones can help you track overall progress for a set of issues, especially if you’re working toward a release.
 
 ..
