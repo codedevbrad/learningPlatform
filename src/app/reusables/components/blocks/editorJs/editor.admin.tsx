@@ -39,12 +39,14 @@ const EditorAdminBlock: React.FC<EditorAdminBlockProps> = ({ data, adminTools, b
       content: editorData,
     }));
     setIsSaved(false);
+    console.log('saving editor through auto update')
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSavedData(formData);
     setIsSaved(true);
+    console.log('saving editor through submit')
     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
   };
 
@@ -79,7 +81,7 @@ const EditorAdminBlock: React.FC<EditorAdminBlockProps> = ({ data, adminTools, b
   );
 
   const preview = savedData ? (
-        <EditorViewComponent data={ savedData } />
+    <EditorViewComponent data={ savedData } />
   ) : (
     <p>No data available. Please fill out the form.</p>
   );

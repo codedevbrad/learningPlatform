@@ -47,11 +47,10 @@ export async function getUserByUserId(userId:string) {
 }
 
 
-
 export async function addUser( userObj ) {
   try {
     const newUser = await prisma.users.create({
-      data: {...userObj, status: 'ACTIVE' }
+      data: {...userObj, status: 'PENDING' }
     });
     return newUser;
   } 

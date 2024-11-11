@@ -114,13 +114,13 @@
 
 ## Setup
 
-<h3 id="setup"> Setup </h3>
+<h3 id="setup"> environment Setup </h3>
 
 ### .ENV Variables
 | Variable                             | Description                                          |
 |--------------------------------------|------------------------------------------------------|
-| NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY    | Public key for the Clerk authentication service.      |
-| CLERK_SECRET_KEY                     | Secret key for the Clerk authentication service.      |
+| NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY    | Public key for the Clerk authentication service.     |
+| CLERK_SECRET_KEY                     | Secret key for the Clerk authentication service.     |
 | DATABASE_URL                         | URL for the database connection.                     |
 | BASE_URL                             | Base URL for the application.                        |
 | OPENAI_CREDS                         | Credentials for the OpenAI service.                  |
@@ -130,28 +130,62 @@
 | NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME    | Public cloud name for Cloudinary.                    |
 | NEXT_PUBLIC_CLOUDINARY_PRESET_NAME   | Cloudinary preset name.                              |
 
+### .development.env 
+| Variable                             | Description                                          |
+|--------------------------------------|------------------------------------------------------|
+| DATABASE_URL                         | URL for the dev database connection.                 |
+
+### .production.env
+| Variable                             | Description                                          |
+|--------------------------------------|------------------------------------------------------|
+| DATABASE_URL                         | URL for the prod database connection.                |
+
 ---
 
 <br />
 
-## Services
+<h3 id="adminsetup"> Admin access </h3>
 
-<h3 id="services"> Services </h3>
+you need to run 
+</br>
 
-#### Clerk Authentication
+    npm run setup:create-admin <userid> "<name>"
+    
+In order to create an admin role for a user so they can access the admin and start interacting with Students or working on creating the platform content.
+
+the userid should be gathered from clerk
+
+
+![gif-clerk](https://github.com/user-attachments/assets/be4f188c-1ed3-4dba-a7a9-5e28bdb734cc)
+
+
+</br>
+
+<h2 id="services"> Services </h2>
+
+<div align="left">
+    
+### Clerk Authentication
 Clerk.com is an authentication and user management service that simplifies the process of adding user authentication and management to your web applications. Steps involved:
 1. Head to https://dashboard.clerk.com/
 2. Add a new application and fill in name and login providers.
 3. Select Next.js from the quickstart and copy the API keys to the `.env` file.
 
-#### OpenAI Integration
+### OpenAI Integration
 ChatGPT, the sibling model to InstructGPT, is a form of generative AI — a tool that lets users enter prompts to receive humanlike images and text. We use this tool to generate social media post ideas. Steps involved to set up:
 1. Head to https://openai.com/ and sign up.
 2. Navigate to https://platform.openai.com/account/api-keys and generate a new secret key.
 3. Paste the key into the `.env` file with the appropriate key name.
 
+### cloudinary
+Cloudinary is used to store the project assets and block images.
+1. navigate to ...
+2. get the secret keys and paste into. 
+
+</div>
+
+
 ### Running the App
 Follow the steps to set up and run the application.
 
 </div>
-

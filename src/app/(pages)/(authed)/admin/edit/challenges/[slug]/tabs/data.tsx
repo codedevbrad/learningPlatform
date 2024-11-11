@@ -4,7 +4,6 @@ import Title from "@/app/reusables/content/title"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import AddNewDataBlock from "../../../../../../../reusables/components/creator/addNewBlock"
 import Editor from "@/app/reusables/usables/editorJs"
 import { useState } from "react"
 
@@ -16,13 +15,9 @@ interface ChallengeDataProps {
 
 function ChallengData ( { description , notes , tasks } : ChallengeDataProps ) {
 
-    const [ notesState , setNotesState ] = useState({
-        
-    });
+    const [ notesState , setNotesState ] = useState({});
 
-    const [ tasksState , setTaskState ] = useState({
-
-    });
+    const [ tasksState , setTaskState ] = useState({ });
     
     return (
         <Tabs defaultValue="Description" className="" storageKey="concept_single_admin__tab">

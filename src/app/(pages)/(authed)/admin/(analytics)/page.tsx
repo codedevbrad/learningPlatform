@@ -1,17 +1,21 @@
 import Title from "@/app/reusables/content/title"
-import Statistics from "./components/statistics"
-import UsersList from "./components/users"
 
-export default async function CoursesPage ( ) {
+import ChartTopics from "./charts/topics"
+import ChartUsers from "./charts/users"
+
+export default async function CoursesPage() {
     return (
-        <main className="flex flex-col">
-            <Title title="Dashboard" variant="heading" />
-           <Statistics />
-           <div className="flex flex-row space-x-3 my-3">
-                <UsersList />
-                chart
-           </div>
-           
-        </main>
+      <main className="flex flex-col">
+        <Title title="Dashboard" variant="heading" />
+        <div className="grid grid-cols-3 gap-3 p-4">
+          <ChartTopics size="full" />
+          <ChartTopics size="half" />
+          <ChartUsers  />
+          <ChartTopics />
+          <ChartTopics />
+          <ChartTopics />
+        </div>
+      </main>
     )
-}
+  }
+  

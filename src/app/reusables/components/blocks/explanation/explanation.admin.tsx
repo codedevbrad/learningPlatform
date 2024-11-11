@@ -14,7 +14,6 @@ interface ExplanationBlockProps {
   adminTools: AdminToolsProps;
 }
 
-
 const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   data,
   adminTools,
@@ -26,11 +25,11 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 
   const formRef = useRef(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
     setIsSaved(false); // Reset the save status when the form changes
   };
@@ -47,7 +46,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
     adminTools.updateDataBlock({ type: 'delete', blockData: null, blockIndex });
   };
 
-  // Function to update content from AddLoremIspum
+  // Function to update content from AddLoremIpsum
   const updateLoremContent = (newContent: string) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -59,29 +58,59 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
       <CardContent className="space-y-2 px-0">
-        <div className="space-y-1">
-          <Label htmlFor="title">Title</Label>
-          <Input
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
+        {/* Title Section Inline */}
+        <div className="flex items-start space-x-4">
+          <div className="flex-1">
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex-1">
+            <Label htmlFor="size">Title Size</Label>
+            <select
+              id="size"
+              name="size"
+              value={formData.size || 'subheading1'}
+              onChange={handleChange}
+              className="block w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none"
+            >
+              <option value="subheading1">Subheading 1</option>
+              <option value="subheading2">Subheading 2</option>
+              <option value="subheading3">Subheading 3</option>
+            </select>
+          </div>
+
+          <div className="flex items-center flex-col">
+            <Label htmlFor="renderTitle" className="mr-2">Show Title</Label>
+            <input
+              type="checkbox"
+              id="renderTitle"
+              name="renderTitle"
+              checked={formData.renderTitle}
+              onChange={handleChange}
+              className="mt-1 w-12 h-12"
+            />
+          </div>
         </div>
+
+        {/* Content Section */}
         <div className="space-y-1">
           <Label htmlFor="content">Content</Label>
           <Textarea
             wordLimit={300}
             rows={3}
-            updateContentbyLorem={ updateLoremContent }
+            updateContentbyLorem={updateLoremContent}
             id="content"
             name="content"
             value={formData.content}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-       
-          </Textarea>
+          />
         </div>
       </CardContent>
     </form>

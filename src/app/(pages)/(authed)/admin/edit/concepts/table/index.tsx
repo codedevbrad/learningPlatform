@@ -16,7 +16,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } 
 import { CSS } from "@dnd-kit/utilities"
 import { Button } from "@/components/ui/button"
 
-import LoadingButton from '@/app/reusables/themes/saveButton2'
+import LoadingButton from '@/components/custom/buttons/button.plain'
 
 
 // Topic Component ...

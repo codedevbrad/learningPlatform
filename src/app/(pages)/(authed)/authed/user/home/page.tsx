@@ -4,6 +4,7 @@ import Title from "@/app/reusables/content/title"
 import AboutUser from "./about"
 import UserRecord from "./LearnRecord"
 import TutorSessions from "./tutor"
+import Learn from "./learning"
 
 function Tabbed ( ) {
     return (
@@ -12,6 +13,7 @@ function Tabbed ( ) {
                 <TabsTrigger value="about">   about you   </TabsTrigger>
                 <TabsTrigger value="record">  your record </TabsTrigger>
                 <TabsTrigger value="tutor">   Your tutor  </TabsTrigger>
+                <TabsTrigger value="learn">   Learning    </TabsTrigger>
             </TabsList>
             <TabsContent value="about">
                 <AboutUser />
@@ -21,6 +23,9 @@ function Tabbed ( ) {
             </TabsContent>
             <TabsContent value="tutor"> 
                 <TutorSessions />
+            </TabsContent>
+            <TabsContent value="learn"> 
+                <Learn />
             </TabsContent>
         </Tabs>
     )

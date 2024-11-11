@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(pages)/(authed)/auth.flow.access.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(pages)/(authed)/auth.flow.access.tsx", "src/app/config/env.tss", "setup/db.setup.ts", "setup/db.setup.ts"],
   "exclude": ["node_modules"]
 }

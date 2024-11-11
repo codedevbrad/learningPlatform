@@ -1,5 +1,6 @@
-import Title from "@/app/reusables/content/title";
-import { Button } from "@/components/ui/button";
+
+import Title from "@/app/reusables/content/title"
+import { Button } from "@/components/ui/button"
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs"
 
 import AuthedFlow from "./auth.flow.access"

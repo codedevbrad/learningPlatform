@@ -4,18 +4,17 @@ import { fetchUserDataOnTopic } from "@/db_queries/user/queries"
 import ConceptTopicMainComponent from "./component"
 import NextTopicCard from "./nextTopic"
 
-
 export default async function Page({ params }: { params: { slug: string } }) {
     
     let topicId = params.slug;
     const topic = await findTopicById( topicId );
     const userData = await fetchUserDataOnTopic( topicId );
-    const { id, title, description, data, resources , position } = topic;
+    const { id, title, description, data, resources , position, author, postedOn } = topic;
 
     return (
         <div className="h-full flex flex-col items-center">
             <ConceptTopicMainComponent 
-                  courseInfo={{ name: title , description , resources }}
+                  pageInfo={{ name: title , description , resources, author , postedOn }}
                          data={ data } 
                  userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
                       topicId={ topicId }
