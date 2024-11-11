@@ -185,7 +185,43 @@ Cloudinary is used to store the project assets and block images.
 </div>
 
 
-### Running the App
+## Running the App
 Follow the steps to set up and run the application.
 
 </div>
+
+
+## working with the project.
+
+Linking Commits to Issues:
+
+When working on an issue, reference it directly in the commit messages. Use keywords like 
+* Fixes #issue_number, 
+* Closes #issue_number, 
+* Resolves #issue_number. 
+This automatically closes the issue when the commit is merged into the main branch. For example:
+sql.
+ 
+```git commit -m "Fixes #12 - Add feature X"
+You can also use References #issue_number if you’re working on the issue but aren’t resolving it yet. This links the commit to the issue without closing it.
+Branch Naming:
+
+Use descriptive branch names that include the issue number, like feature/12-add-login-form or bug/15-fix-loading-state. This keeps the branch history organized and helps you track progress by feature or bug.
+Pull Requests (PRs):
+
+When you create a pull request (PR), 
+
+mention the issue in the description. GitHub will automatically link the PR to the issue.
+Using Closes #issue_number in the PR description will also close the issue upon merge. 
+This approach is often better than closing from a single commit, as it tracks all the work involved.
+Track Progress with Project Boards (Optional):
+
+For a more visual overview, use GitHub Projects or the Kanban board built into the repository. You can create a card for each issue and move it across columns like "To Do," "In Progress," and "Done" to track the issue's status.
+Regular Updates in Issues:
+
+Drop comments in the issue as you make progress, especially for larger tasks. This provides a log of decisions and progress for yourself and collaborators.
+Milestones and Labels:
+
+Use labels to categorize issues (e.g., bug, enhancement, documentation) and milestones for larger goals. Milestones can help you track overall progress for a set of issues, especially if you’re working toward a release.
+
+..
