@@ -13,7 +13,7 @@ export default function PageLinkControl ( ) {
         <SignedIn>
           { isAdminRole &&
              <Button variant={'outline'}>
-              <Link href={ adminRedirect }> Go to Admin </Link>
+              <Link href={ adminRedirect }>  Admin </Link>
             </Button>
           } 
         </SignedIn>

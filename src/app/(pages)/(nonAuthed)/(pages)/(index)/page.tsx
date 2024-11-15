@@ -5,7 +5,7 @@ import Testimonials from "./components/testimonials"
 
 export default function Page () {
   return (
-    <main className="bg-white">
+    <main className="">
       <main className="isolate">
           <HeroSection />
           <FeatureSection />

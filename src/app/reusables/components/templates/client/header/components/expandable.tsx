@@ -7,7 +7,7 @@ import { FaRegFile } from "react-icons/fa"
 import { FaBookOpenReader } from "react-icons/fa6"
 import Editor from "@/app/reusables/usables/editorJs/index"
 import ResourceComponent, { ResourceType } from "@/app/reusables/components/resources"
-import FeatureDisabled from "@/app/reusables/access/components/protection.disabled"
+import FeatureDisabled from "@/app/reusables/access/sharable/protection.disabled"
 
 // Interface for the notes prop in Notes component
 interface NotesProps {

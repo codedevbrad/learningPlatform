@@ -5,7 +5,8 @@ export const action__checkRole = () => new Promise(async (resolve, reject) => {
         try {
             let isAdmin = await db_userOrAdmin();
             resolve(isAdmin);
-        } catch (error) {
+        } 
+        catch (error) {
             console.log('error getting isAdmin');
             reject(error);
         }

@@ -3,14 +3,12 @@ import AppLoadingScreen from "@/app/reusables/app/loadingScreen"
 import { useUser, SignedIn } from "@clerk/nextjs"
 import { ReactNode, useState, useEffect } from "react"
 import { action__userRegisteredThroughDbCheck } from "./authed/actions"
-import { useUserContext } from "@/app/contexts/context"
 import AuthedButRegister from "./authed/(layout)/register"
 
 export default function AuthedFlow ({ children } : { children: ReactNode }) {
     const { user, isLoaded } = useUser();
     const [isUserRegistered, setIsUserRegistered] = useState(true);
     const [loading, setLoading] = useState(true);
-    const { isAdminRole } = useUserContext();
   
     useEffect(() => {
       const checkUserRegistration = async () => {

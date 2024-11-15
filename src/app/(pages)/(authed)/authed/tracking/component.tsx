@@ -12,54 +12,38 @@ function formatDuration(seconds) {
   return `${hours}h ${minutes}m ${secs}s`;
 }
 
-
-function AnalyticItem ( { url, isCurrent , timeOnPage , duration } ) {
+function AnalyticItem({ url, isCurrent, timeOnPage, duration }) {
   return (
-    <div className={`mb-1 text-sm p-4 ${ isCurrent ? 'bg-gray-800 font-bold rounded-xl' : ''}`}>
-        <p>Page: <span className="font-medium">{url}</span></p>
-        <p>Time Spent: <span className="font-medium">{formatDuration( duration )}</span></p>
-        { isCurrent &&
-          <p> current: { formatDuration( timeOnPage ) } </p>
-        }
+    <div className={`mb-1 text-sm p-4 ${isCurrent ? 'bg-gray-800 font-bold rounded-xl' : ''}`}>
+      <p>Page: <span className="font-medium">{url}</span></p>
+      <p>Time Spent: <span className="font-medium">{formatDuration(duration)}</span></p>
+      {isCurrent && <p> current: {formatDuration(timeOnPage)} </p>}
     </div>
-  )
+  );
 }
 
 function AnalyticsPopover() {
-  const trackingUpdate = useUserTracking(); // Track changes
-  const [analyticsData, setAnalyticsData] = useState({});
+  const { trackingUpdate, existingData, deleteAnalytics } = useUserTracking(); // Include trackingUpdate to trigger updates
   const [timeOnPage, setTimeOnPage] = useState(0);
   const [display, setDisplay] = useState(true);
-  const currentPage = window.location.pathname; // Get the current page's URL.
+  const currentPage = window.location.pathname;
 
   useEffect(() => {
-    // Load data from localStorage whenever tracking data updates
-    const loadAnalyticsData = () => {
-      const data = JSON.parse(localStorage.getItem('analyticsData') || '{}');
-      setAnalyticsData(data);
-    };
-    setTimeOnPage(0); // Reset time on page when data updates
-    loadAnalyticsData();
+    setTimeOnPage(0); // Reset time on page whenever tracking data updates
   }, [trackingUpdate]); // Trigger re-fetch on tracking updates
 
   useEffect(() => {
-    // Set a timer for displaying the time on the current page
+    console.log('test')
+    setTimeOnPage(0)
     const intervalId = setInterval(() => {
       setTimeOnPage((prevTime) => prevTime + 1);
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [ currentPage  ]);
 
-  // Function to clear tracking data
-  const clearTrackingData = () => {
-    localStorage.removeItem('analyticsData');
-    setAnalyticsData({});
-  };
-
-  // Get today's date
   const today = new Date().toISOString().split('T')[0];
-  const todayData = analyticsData[today] || [];
+  const todayData = existingData[today] || [];
 
   return (
     <Popover open={display} onOpenChange={setDisplay}>
@@ -75,17 +59,17 @@ function AnalyticsPopover() {
       <PopoverContent
         className="p-6 bg-black text-white w-auto mb-3 shadow-2xl rounded-2xl"
         onInteractOutside={(e) => e.preventDefault()}
-        align='start'
+        align="start"
       >
         <Title title="Today's Page Visits" variant="subheading1" />
         {todayData.length > 0 ? (
           todayData.map((visit, index) => (
-            <AnalyticItem 
-              isCurrent={ visit.url === currentPage } 
-              key={ index } 
-              timeOnPage={ timeOnPage } 
-              duration={ visit.duration }
-              url={ visit.url }
+            <AnalyticItem
+              isCurrent={visit.url === currentPage}
+              key={index}
+              timeOnPage={timeOnPage}
+              duration={visit.duration}
+              url={visit.url}
             />
           ))
         ) : (
@@ -93,7 +77,7 @@ function AnalyticsPopover() {
         )}
         <Button
           variant="secondary"
-          onClick={clearTrackingData}
+          onClick={deleteAnalytics}
           className="mt-4 w-full bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl"
         >
           Clear Tracking Data

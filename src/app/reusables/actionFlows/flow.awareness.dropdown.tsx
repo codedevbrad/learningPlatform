@@ -22,6 +22,7 @@ function EditDialog({ open, onOpenChange, formComponent: FormComponent, formProp
     );
 }
 
+
 function ConfirmDeleteDialog({ open, onOpenChange, onConfirm }) {
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>

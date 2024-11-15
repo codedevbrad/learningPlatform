@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsContent , TabsTrigger } from "@/components/ui/tabs"
 import SessionsWithProposals from "@/app/reusables/components/sessions"
 import MessagesDisplayComponent from "@/app/reusables/components/messages"
 
-import FeatureDisabled from "../../../../../../reusables/access/components/protection.disabled"
+import FeatureDisabled from "@/app/reusables/access/sharable/protection.disabled"
 
 import AllowContentOrDisplayUserStatus from "@/app/reusables/access/components/student/student.displayAccess"
 
