@@ -1,7 +1,7 @@
 'use server'
 import Title from "@/app/reusables/content/title"
 import { Card } from "@/components/ui/card"
-import UsersList from "./layout.components"
+import StudentsList from "./comp.students"
 import Link from "next/link"
 
 export default async function StudentPageLayout ( { children } ) {
@@ -11,7 +11,7 @@ export default async function StudentPageLayout ( { children } ) {
                 <Title title="Tutor Area" variant="heading" noMargin={false} />
             </Link>
             <Card className="flex flex-row h-full mb-6  py-0">
-                <UsersList />
+                <StudentsList />
                 <>
                   { children }
                 </>

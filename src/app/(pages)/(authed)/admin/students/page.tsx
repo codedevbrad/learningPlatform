@@ -1,8 +1,8 @@
 'use server'
 import Title from "@/app/reusables/content/title"
 import { Card } from "@/components/ui/card"
-import WeekdaySelector from "./calendar/availability"
-import TutorCalendar from "./calendar/calendar"
+import WeekdaySelector from "./comp.calendar/availability"
+import TutorCalendar from "./comp.calendar/calendar"
 
 export default async function StudentsPage() {
     return (

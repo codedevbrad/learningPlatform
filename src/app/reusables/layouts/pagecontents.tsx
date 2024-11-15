@@ -45,8 +45,10 @@ const PageContents: React.FC<PageContentsProps> = ({ content }) => {
   
     return (
       <div>
-        <Title title="Content" variant="subheading2" noMargin={false} />
-        <ul>
+        <div>
+          <Title title="On this page" variant="subheading2" noMargin={false} className='text-nowrap' />
+        </div>
+        <ul className='ml-4 border-l border-gray-100'>
           {content.map((block, index) => (
             <li
               key={index}

@@ -5,7 +5,7 @@ import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { SignedIn, UserButton, UserProfile } from "@clerk/nextjs"
 import { bootcampLogoRedirect } from "@/app/flows"
-import PageLinkControl from '@/app/reusables/user/linkControl'
+import PageLinkControl from '@/app/reusables/access/client/linkControl'
 import HeaderLogo from "@/app/reusables/app/headerLogo"
 import { action__getUserName } from "./action"
 import { useEffect, useState } from "react"

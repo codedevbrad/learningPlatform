@@ -6,9 +6,9 @@ import Link from 'next/link'
 import { useState, useEffect } from "react"
 import useSWR from 'swr'
 import { action__getStudents } from "./action"
-import ControlStudentAccesspopup from "@/app/reusables/access/components/admin/admin.controlAccess.popup"
+import ControlStudentAccesspopup from "@/app/reusables/access/admin/admin.controlAccess.popup"
 
-export default function UsersList() {
+export default function StudentsList() {
   const [selectedUser, setSelectedUser] = useState('');
 
   // Define the fetcher function
@@ -26,7 +26,7 @@ export default function UsersList() {
   };
 
   // Use SWR to fetch users
-  const { data: users = [], error, isLoading, isValidating } = useSWR('fetchUsers', fetcher, {
+  const { data: users = [], error, isLoading, isValidating, mutate } = useSWR('fetchUsers', fetcher, {
     onSuccess: (data) => {
       console.log('Data fetched successfully:', data);
     },
@@ -76,7 +76,7 @@ export default function UsersList() {
                     <p className="text-sm font-medium leading-none">{user.nickname}</p>
                   </div>  
                   <div className="ml-auto font-medium">
-                    <ControlStudentAccesspopup status={user.status} />
+                    <ControlStudentAccesspopup studentId={ user.id } status={user.status} rerenderUsers={ mutate } />
                   </div>
                 </Card>
               </Link>

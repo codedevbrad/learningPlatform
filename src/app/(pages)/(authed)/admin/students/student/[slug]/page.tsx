@@ -3,7 +3,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import MessagesTabContent from "./messages"
 
 import SessionsWithProposals from "@/app/reusables/components/sessions"
-import ControlStudentAccess from "@/app/reusables/access/components/admin/admin.controlAccess"
+import ControlStudentAccess from "@/app/reusables/access/admin/admin.controlAccess"
+import AdminHomework from "@/app/reusables/features/homework/render.admin"
 
 export default async function StudentTabsArea({ params }) {
     // Extract student id (slug) from params...
@@ -16,14 +17,18 @@ export default async function StudentTabsArea({ params }) {
 
             <Tabs storageKey="studentArea__tabs" className="flex flex-col h-full">
                 <TabsList className="flex flex-row justify-start">
-                    <TabsTrigger value="messages">Messages</TabsTrigger>
-                    <TabsTrigger value="tutoring">Tutoring</TabsTrigger>
+                    <TabsTrigger value="messages"> Messages  </TabsTrigger>
+                    <TabsTrigger value="tutoring"> Tutoring  </TabsTrigger>
+                    <TabsTrigger value="homework"> Homework </TabsTrigger>
                 </TabsList>
                 <TabsContent value="messages"> 
                     <MessagesTabContent studentId={slug} />
                 </TabsContent>
                 <TabsContent value="tutoring">
                     <SessionsWithProposals studentId={slug} userType="Teacher" />
+                </TabsContent>
+                <TabsContent value="homework">
+                    <AdminHomework />
                 </TabsContent>
             </Tabs>
         </div>

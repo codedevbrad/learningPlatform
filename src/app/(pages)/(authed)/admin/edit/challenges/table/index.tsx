@@ -7,7 +7,7 @@ import AddChallengeDialog from './ui/challenge.add.modal'
 import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast"
 import useSWR, { mutate } from 'swr'
-import DropdownMenuComponent from '@/components/custom/dropdown'
+import DropdownMenuComponent from '@/app/reusables/actionFlows/flow.awareness.dropdown'
 
 import { action__editChallenge, action__deleteChallenge } from '../actions'
 

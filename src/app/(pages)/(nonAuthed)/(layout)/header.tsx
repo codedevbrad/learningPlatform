@@ -4,7 +4,7 @@ import NavMenu from "@/app/reusables/layouts/navMenu"
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/navigation-menu"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button'
-import PageLinkControl from '@/app/reusables/user/linkControl'
+import PageLinkControl from '@/app/reusables/access/client/linkControl'
 import HeaderLogo from '@/app/reusables/app/headerLogo'
 import { bootcampRedirect  } from '@/app/flows'
 
@@ -42,7 +42,7 @@ export default function Header() {
       <div className="flex items-center space-x-4">
           <PageLinkControl />
           <Button>
-            <Link href={ bootcampRedirect }> Enter the bootcamp </Link>
+            <Link href={ bootcampRedirect }> Enter Bootcamp </Link>
           </Button>
       </div>
     </header>

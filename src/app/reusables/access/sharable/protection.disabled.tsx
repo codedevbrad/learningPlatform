@@ -11,13 +11,13 @@ interface FeatureDisabledType {
 export default function FeatureDisabled({ children, explanation, className, displayTipType = 'tooltip' } : FeatureDisabledType ) {
 
   let tooltip = `This Feature is disabled while your tutor accepts you to the platform. Once accepted, you can then ${explanation}`;
+  
   return (
     <TooltipProvider>
       {displayTipType === 'tooltip' ? (
         <Tooltip>
           <TooltipTrigger asChild>
             <div
-              onClick={() => console.log("click")}
               className={`cursor-pointer  rounded-md bg-gray-300 opacity-50 relative overflow-hidden ${className}`}
               style={{
                 backgroundImage: `repeating-linear-gradient(
@@ -40,7 +40,6 @@ export default function FeatureDisabled({ children, explanation, className, disp
         </Tooltip>
       ) : (
         <div
-          onClick={() => console.log("click")}
           className={`cursor-not-allowed pointer-events z-50 rounded-md relative overflow-hidden ${className}`}
           style={{
             backgroundImage: `repeating-linear-gradient(

@@ -3,6 +3,36 @@
 import prisma from "../../../prisma/client"
 import { auth } from "@clerk/nextjs/server"
 
+export const db_userCanAccess = async ({ studentId }) => {
+    try {
+        const user = await prisma.users.findFirst({
+            where: { id: studentId }
+        });
+
+        console.log( user );
+        return {
+            status: user?.status,
+            allowed: user?.status === 'ACTIVE'
+        };
+    } 
+    catch (error) {
+        throw error;
+    }
+};
+
+export const changeStudentStatus = async ({ studentId , status } ) => {
+    try {
+        console.log( studentId , status )
+        return await prisma.users.update({
+            where: { id: studentId },
+            data: { status  },
+        });
+    } 
+    catch (error) {
+        throw error;
+    }
+}
+
 
 export const db_getAdminIdFromAuth = async ( ) => {
     try {
