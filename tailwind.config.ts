@@ -18,7 +18,6 @@ const config = {
       },
     },
     extend: {
-      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -72,6 +71,7 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'spin-slow': 'spin 4s linear infinite', // Slower spin (3 seconds per rotation)
       },
     },
   },

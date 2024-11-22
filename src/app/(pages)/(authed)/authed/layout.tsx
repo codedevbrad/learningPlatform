@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import DashboardLayout from "./(layout)"
 import AnalyticsPopover from "./tracking/component";
+import TimerMusicPlayer from "./zenMode/component";
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
       <>
           <AnalyticsPopover />
+          <TimerMusicPlayer />
           <DashboardLayout>
               { children }
           </DashboardLayout>
