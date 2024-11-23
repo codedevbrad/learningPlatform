@@ -249,7 +249,14 @@ const AnimatedCodeChallengeAdminBlock: React.FC<AnimatedCodeChallengeAdminBlockP
       <CardContent className="space-y-4 px-0">
         <div className="space-y-1">
           <Label htmlFor="title">Title</Label>
-          <Input id="title" name="title" value={formData.title} onChange={handleTitleChange} />
+          <Input 
+                id="title" 
+              name="title" 
+             value={formData.title}
+          onChange={handleTitleChange} 
+         charLimit={150}
+          />
+
         </div>
         <div className="space-y-1">
           <Label htmlFor="summary">Summary</Label>
@@ -259,6 +266,7 @@ const AnimatedCodeChallengeAdminBlock: React.FC<AnimatedCodeChallengeAdminBlockP
             value={formData.summary}
             onChange={handleChange}
             placeholder="Enter the summary here"
+            charLimit={300}
           />
         </div>
         <Card className="bg-gray-50 p-5 pb-5">
@@ -280,6 +288,7 @@ const AnimatedCodeChallengeAdminBlock: React.FC<AnimatedCodeChallengeAdminBlockP
                       value={step.interactive.question}
                       onChange={(e) => handleChange(e, stepIndex)}
                       placeholder="question name"
+                      charLimit={100}
                     />
                   </div>
                   <div className="flex flex-row justify-end">

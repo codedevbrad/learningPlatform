@@ -39,7 +39,8 @@ export const quizObject: QuizObjectProps = {
         }
       }
   ]
-}
+};
+
 
 const QuizComponent: React.FC<QuizDataProps> = ({ data }) => {
   const { title, quizData } = data;
