@@ -7,6 +7,8 @@ import ExplanationComponent, { ExplanationProps } from './explanation'
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 import { Textarea } from '@/components/ui/textarea'
+import { TextAreaWithTooltip2 } from '@/components/custom/inputWithTooltip'
+
 
 interface ExplanationBlockProps {
   data: ExplanationProps;
@@ -97,6 +99,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
             />
           </div>
         </div>
+
+        <TextAreaWithTooltip2 />
 
         {/* Content Section */}
         <div className="space-y-1">

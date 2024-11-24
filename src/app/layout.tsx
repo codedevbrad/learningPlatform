@@ -8,6 +8,7 @@ import Footer from "./reusables/app/footer"
 import CookiesToast from "./reusables/app/cookies"
 
 import "./globals.css"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <UserProvider>
             <html className={`${inter.className} h-full`} lang="en">
               <body className="flex flex-col h-full overflow-x-hidden">
+                <TooltipProvider>
                       <ENVDisplay />
                       <LoadingBar />
                       <Toaster />  
@@ -52,6 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                             {children}
                         <Footer />
                       </div>
+                </TooltipProvider>
               </body>
             </html> 
         </UserProvider>
