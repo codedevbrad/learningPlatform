@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Bot } from 'lucide-react'
 import BlockSelector from "./part.blockSelector"
 import { useState } from "react"
@@ -14,6 +14,7 @@ import {
  
 
 import promptCreator from './prompt'
+import DivAsButton from "@/components/custom/divAsButton"
 
 interface AI_BlockGeneratorProps {
     title: string;
@@ -71,9 +72,9 @@ export default function AI_BlockGenerator({ title , description , updateTableWit
     <div className="mx-2">
       <PushSheet side="right" className={'p-5'}>
         <PushSheetTrigger className="" isOpen={dialogState} onToggle={setDialogState} >
-          <Button>
+            <DivAsButton variant={'default'}> 
               <Bot className="hover:animate-bounce"/>
-          </Button>
+            </DivAsButton>
         </PushSheetTrigger>
         <PushSheetHeader className={undefined}>
           <PushSheetTitle className={undefined}>

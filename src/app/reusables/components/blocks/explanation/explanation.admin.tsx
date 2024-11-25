@@ -9,7 +9,6 @@ import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminT
 import { Textarea } from '@/components/ui/textarea'
 import { TextAreaWithTooltip2 } from '@/components/custom/inputWithTooltip'
 
-
 interface ExplanationBlockProps {
   data: ExplanationProps;
   blockIndex: number;
@@ -35,6 +34,14 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
     }));
     setIsSaved(false); // Reset the save status when the form changes
   };
+
+  const handleTooltipStateUpdate = ( state ) => {
+    console.log( state  , formData );
+    setFormData((prevData) => ({
+        ...formData , content: state
+    }));
+    setIsSaved( false );
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -100,10 +107,15 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
           </div>
         </div>
 
-        <TextAreaWithTooltip2 />
+        <TextAreaWithTooltip2 
+            wordLimit={ 400 }
+            value={ formData.content } 
+            onChange={ handleTooltipStateUpdate }
+            id="content"
+        /> 
 
         {/* Content Section */}
-        <div className="space-y-1">
+        {/* <div className="space-y-1">
           <Label htmlFor="content">Content</Label>
           <Textarea
             wordLimit={300}
@@ -115,7 +127,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-        </div>
+        </div> */}
       </CardContent>
     </form>
   );

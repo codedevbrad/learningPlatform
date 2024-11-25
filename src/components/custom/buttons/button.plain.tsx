@@ -16,7 +16,7 @@ interface LoadingButtonProps {
     onClick, isLoading, disabled, children, className 
   }) => {
     return (
-      <Button onClick={onClick} disabled={isLoading || disabled } className={className}>
+      <Button type="button" onClick={onClick} disabled={isLoading || disabled } className={className}>
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

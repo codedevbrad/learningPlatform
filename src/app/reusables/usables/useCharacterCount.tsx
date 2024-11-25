@@ -1,24 +1,26 @@
 'use client'
 import React, { useEffect, useState } from "react";
  
+
 // Hook for managing character count and warning
-export const useCharacterCount = (initialValue: string, wordLimit: number) => {
-  const [localValue, setLocalValue] = useState(initialValue); // Local state for managing textarea value
+export const useTextStateWithCatches = (initialValue: string, wordLimit: number) => {
+  const [state, setState] = useState(initialValue); // Local state for managing textarea value
   const [count, setCount] = useState(initialValue.length); // Character count
-  const [warning, setWarning] = useState(false); // Warning visibility
+  const [warning, setWarning] = useState({ limitReached: false }); // Warning object with `limitReached`
 
   useEffect(() => {
-    setCount(localValue.length); // Update character count
-    setWarning(localValue.length >= wordLimit); // Update warning visibility
-  }, [localValue, wordLimit]);
+    setCount(state.length); // Update character count
+    setWarning({ limitReached: state.length >= wordLimit }); // Update warning object
+  }, [state, wordLimit]);
 
   return {
-    localValue,
-    setLocalValue,
+    state,
+    setState,
     count,
     warning,
   };
 };
+
 
 
 // Component for displaying the character count

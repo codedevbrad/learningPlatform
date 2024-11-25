@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import AddLoremIspum from "@/app/reusables/usables/loremIspumGenerator"
-import { useCharacterCount , CharacterCountDisplay , LimitWarning } from "@/app/reusables/usables/useCharacterCount";
+import { useTextStateWithCatches , CharacterCountDisplay , LimitWarning } from "@/app/reusables/usables/useCharacterCount";
 
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -23,18 +23,19 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         displayLoremIspum = false,
         ...props
       }, ref ) => {
-      const { localValue, setLocalValue, count, warning } = useCharacterCount(value, wordLimit);
+        
+      const { state, setState, count, warning } = useTextStateWithCatches(value, wordLimit);
   
       // Sync external value prop with local state
       useEffect(() => {
-        setLocalValue(value);
+        setState(value);
       }, [value]);
   
       // Handle input change
       const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = e.target.value;
-        if (newValue.length <= wordLimit || newValue.length < localValue.length) {
-          setLocalValue(newValue);
+        if (newValue.length <= wordLimit ) {
+          setState(newValue);
           onChange && onChange(e); // Call the original onChange handler if provided
         }
       };
@@ -47,17 +48,17 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               className
             )}
             ref={ref}
-            value={localValue}
+            value={state}
             onChange={ handleChange }
             {...props}
           />
           <CharacterCountDisplay count={count} wordLimit={wordLimit} />
-          <LimitWarning warning={warning} />
+          <LimitWarning warning={warning.limitReached} />
           <div className="flex justify-end">
             {children}
             {displayLoremIspum && (
               <AddLoremIspum
-                content={localValue}
+                content={state}
                 onUpdate={updateContentbyLorem!}
                 wordLimit={wordLimit}
               />
