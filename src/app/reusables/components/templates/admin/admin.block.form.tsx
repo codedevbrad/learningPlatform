@@ -59,12 +59,13 @@ const AdminBlockTemplate: React.FC<AdminBlockTemplateProps> = ({ title, form, sa
   };
 
   useEffect(() => {
+    updateSavedDataObject( savedData.props.data )
     if (isFullScreen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [isFullScreen]);
+  }, [ isFullScreen , savedData ]);
 
   return (
     <>

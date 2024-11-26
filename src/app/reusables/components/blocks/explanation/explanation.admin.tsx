@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label"
 import ExplanationComponent, { ExplanationProps } from './explanation'
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
-import { Textarea } from '@/components/ui/textarea'
 import { TextAreaWithTooltip2 } from '@/components/custom/inputWithTooltip'
 
 interface ExplanationBlockProps {
@@ -26,13 +25,17 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 
   const formRef = useRef(null);
 
+  function triggerBlockallowingSave ( ) {
+      setIsSaved( false )
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    setIsSaved(false); // Reset the save status when the form changes
+    setIsSaved(false); // Resets the save status when the form changes
   };
 
   const handleTooltipStateUpdate = ( state ) => {
@@ -40,7 +43,6 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
     setFormData((prevData) => ({
         ...formData , content: state
     }));
-    setIsSaved( false );
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,13 +58,13 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   };
 
   // Function to update content from AddLoremIpsum
-  const updateLoremContent = (newContent: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      content: newContent,
-    }));
-    setIsSaved(false); // Reset save status
-  };
+  // const updateLoremContent = (newContent: string) => {
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     content: newContent,
+  //   }));
+  //   setIsSaved(false); // Reset save status
+  // };
 
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
@@ -111,23 +113,9 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
             wordLimit={ 400 }
             value={ formData.content } 
             onChange={ handleTooltipStateUpdate }
-            id="content"
+            handleSaveOfForm={ triggerBlockallowingSave }
         /> 
 
-        {/* Content Section */}
-        {/* <div className="space-y-1">
-          <Label htmlFor="content">Content</Label>
-          <Textarea
-            wordLimit={300}
-            rows={3}
-            updateContentbyLorem={updateLoremContent}
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div> */}
       </CardContent>
     </form>
   );
