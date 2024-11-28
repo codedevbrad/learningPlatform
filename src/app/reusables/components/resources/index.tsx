@@ -20,7 +20,7 @@ function ResourceComponent({ resource, viewType = 'embedded' }: { resource: Reso
     <>
       <div className="border m-4 p-4 rounded-lg flex flex-row cursor-pointer">
         <div className='flex items-center justify-center'>
-          <Image src={imgUrl} alt={title} className="w-40 h-20 object-cover rounded-lg" />
+          <Image width={ 40 } height={ 20 } src={imgUrl} alt={title} className="w-40 h-20 object-cover rounded-lg" />
         </div>
         <div className="flex flex-col justify-center pl-4">
           {viewType === 'embedded' && (

@@ -1,10 +1,10 @@
-'use client';
-import React, { useState, useEffect, useRef } from "react";
-import { Label } from "@/components/ui/label";
-import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush";
-import { useTextStateWithCatches, CharacterCountDisplay, LimitWarning } from "@/app/reusables/usables/useCharacterCount";
-import { Textarea } from "@/components/ui/textarea";
-import DivAsButton from "../divAsButton";
+'use client'
+import React, { useState, useEffect, useRef } from "react"
+import { Label } from "@/components/ui/label"
+import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush"
+import { useTextStateWithCatches, CharacterCountDisplay, LimitWarning } from "@/app/reusables/usables/useCharacterCount"
+import { Textarea } from "@/components/ui/textarea"
+import DivAsButton from "../divAsButton"
 
 interface TextAreaWithTooltipProps {
   displayOnly?: boolean;
@@ -98,6 +98,7 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
       const newState = contentEditableRef.current.innerHTML;
       setState(newState);
       setHighlightedText("");
+      handleSaveOfForm();
     }
   };
 
@@ -107,8 +108,9 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
 
       if (textContent.length <= wordLimit) {
         setState(textContent);
-        handleSaveOfForm(  );
-      } else {
+        handleSaveOfForm();
+      } 
+      else {
         e.preventDefault();
         contentEditableRef.current.textContent = state;
       }
@@ -130,7 +132,7 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
         })
         .join("");
       setState(updatedHTML);
-      handleSaveOfForm(  );
+      handleSaveOfForm();
     }
   };
 

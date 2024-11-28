@@ -7,12 +7,15 @@ import ExplanationComponent, { ExplanationProps } from './explanation'
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 import { TextAreaWithTooltip2 } from '@/components/custom/inputWithTooltip'
+import { handleSubmitUtility } from '../../templates/admin/admin.block.form'
+
 
 interface ExplanationBlockProps {
   data: ExplanationProps;
   blockIndex: number;
   adminTools: AdminToolsProps;
 }
+
 
 const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   data,
@@ -21,12 +24,12 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 }) => {
   const [formData, setFormData] = useState<ExplanationProps>(data);
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
-  const [isSaved, setIsSaved] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
   const formRef = useRef(null);
 
   function triggerBlockallowingSave ( ) {
-      setIsSaved( false )
+    setIsSaved( false )
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -39,18 +42,44 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   };
 
   const handleTooltipStateUpdate = ( state ) => {
-    console.log( state  , formData );
+    console.log( 'handleTooltipStateUpdate from explanation content area.' );
     setFormData((prevData) => ({
         ...formData , content: state
     }));
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true); // Set the save status to true
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  
+  //   const result = {}; // Placeholder for success/error result
+  //   try {
+  //     // Perform the save/update logic here
+  //     setSavedData(formData);
+  //     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  //     result.success = true;
+  //     result.message = 'Data saved successfully!';
+  //   } 
+  //   catch (error) {
+  //     result.success = false;
+  //     result.message = 'An error occurred during saving.';
+  //   }
+  
+  //   // Check for the callback passed via event detail
+  //   const event = e.nativeEvent as CustomEvent;
+  //   if (event.detail?.callback) {
+  //     event.detail.callback(result); // Pass the result back through the callback
+  //   }
+  // };
 
   const handleDelete = () => {
     console.log('clicked to delete explanation', blockIndex);
