@@ -1,6 +1,8 @@
 'use server'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+
 import MessagesTabContent from "./messages"
+import OverViewTabContent from "./overview"
 
 import SessionsWithProposals from "@/app/reusables/components/sessions"
 import ControlStudentAccess from "@/app/reusables/access/admin/admin.controlAccess"
@@ -15,12 +17,16 @@ export default async function StudentTabsArea({ params }) {
             
             <ControlStudentAccess userId={ slug }/> 
 
-            <Tabs storageKey="studentArea__tabs" className="flex flex-col h-full">
+            <Tabs storageKey="studentArea__tabs" className="flex flex-col h-full" defaultValue="overview">
                 <TabsList className="flex flex-row justify-start">
-                    <TabsTrigger value="messages"> Messages  </TabsTrigger>
-                    <TabsTrigger value="tutoring"> Tutoring  </TabsTrigger>
+                    <TabsTrigger value="overview"> Overview </TabsTrigger>
+                    <TabsTrigger value="messages"> Messages </TabsTrigger>
+                    <TabsTrigger value="tutoring"> Tutoring </TabsTrigger>
                     <TabsTrigger value="homework"> Homework </TabsTrigger>
                 </TabsList>
+                <TabsContent value="overview">
+                     <OverViewTabContent />
+                </TabsContent>
                 <TabsContent value="messages"> 
                     <MessagesTabContent studentId={slug} />
                 </TabsContent>
