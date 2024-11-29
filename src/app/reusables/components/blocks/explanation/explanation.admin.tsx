@@ -24,13 +24,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 }) => {
   const [formData, setFormData] = useState<ExplanationProps>(data);
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
-  const [isSaved, setIsSaved] = useState(false);
-
+  const [ saveOverride , updateSaveOverride ] = useState( null );
   const formRef = useRef(null);
-
-  function triggerBlockallowingSave ( ) {
-    setIsSaved( false )
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
@@ -38,17 +33,17 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
       ...prevData,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    setIsSaved(false); // Resets the save status when the form changes
   };
 
   const handleTooltipStateUpdate = ( state ) => {
-    console.log( 'handleTooltipStateUpdate from explanation content area.' );
+    console.log( 'handleTooltipStateUpdate saves to the formData' );
     setFormData((prevData) => ({
         ...formData , content: state
     }));
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('explanation block form submtted.')
     handleSubmitUtility({
       event: e,
       formData,
@@ -57,34 +52,15 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
       blockIndex,
     });
   };
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
   
-  //   const result = {}; // Placeholder for success/error result
-  //   try {
-  //     // Perform the save/update logic here
-  //     setSavedData(formData);
-  //     adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
-  //     result.success = true;
-  //     result.message = 'Data saved successfully!';
-  //   } 
-  //   catch (error) {
-  //     result.success = false;
-  //     result.message = 'An error occurred during saving.';
-  //   }
-  
-  //   // Check for the callback passed via event detail
-  //   const event = e.nativeEvent as CustomEvent;
-  //   if (event.detail?.callback) {
-  //     event.detail.callback(result); // Pass the result back through the callback
-  //   }
-  // };
-
   const handleDelete = () => {
     console.log('clicked to delete explanation', blockIndex);
     adminTools.updateDataBlock({ type: 'delete', blockData: null, blockIndex });
   };
+
+  function handleContentEditableTrigger ( ) {
+    updateSaveOverride( new Date( ) );
+  }
 
   // Function to update content from AddLoremIpsum
   // const updateLoremContent = (newContent: string) => {
@@ -142,7 +118,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
             wordLimit={ 400 }
             value={ formData.content } 
             onChange={ handleTooltipStateUpdate }
-            handleSaveOfForm={ triggerBlockallowingSave }
+            handleContentEditableTrigger={ handleContentEditableTrigger }
         /> 
 
       </CardContent>
@@ -162,8 +138,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
       form={form}
       savedData={preview}
       formRef={formRef}
-      isSaved={isSaved}
       removeItem={handleDelete}
+      saveOverrided={ saveOverride }
     />
   );
 };

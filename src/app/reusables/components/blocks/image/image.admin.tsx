@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CldUploadButton } from 'next-cloudinary';
 import ImageBlock, { ImageBlockProps } from './image';
-import AdminBlockTemplate from '../../templates/admin/admin.block.form';
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form';
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -72,11 +72,22 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
     setSavedData({ ...formData, imageUrl: uploadedUrl, mediaType: result.info.resource_type });
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true);
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Image block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = () => {

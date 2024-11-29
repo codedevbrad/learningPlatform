@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import AdminBlockTemplate from '../../templates/admin/admin.block.form'
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form'
 
 
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
@@ -60,11 +60,22 @@ const QuizAdminBlock: React.FC<QuizAdminBlockProps> = ({ data, adminTools, block
     setIsSaved(false);
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true);
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Quiz block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = ( ) => {

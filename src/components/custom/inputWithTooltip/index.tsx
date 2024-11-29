@@ -1,16 +1,16 @@
-'use client'
-import React, { useState, useEffect, useRef } from "react"
-import { Label } from "@/components/ui/label"
-import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush"
-import { useTextStateWithCatches, CharacterCountDisplay, LimitWarning } from "@/app/reusables/usables/useCharacterCount"
-import { Textarea } from "@/components/ui/textarea"
-import DivAsButton from "../divAsButton"
+'use client';
+import React, { useState, useEffect, useRef } from "react";
+import { Label } from "@/components/ui/label";
+import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush";
+import { useTextStateWithCatches, CharacterCountDisplay, LimitWarning } from "@/app/reusables/usables/useCharacterCount";
+import { Textarea } from "@/components/ui/textarea";
+import DivAsButton from "../divAsButton";
 
 interface TextAreaWithTooltipProps {
   displayOnly?: boolean;
   wordLimit?: number;
   onChange: any;
-  handleSaveOfForm: any;
+  handleContentEditableTrigger: any;
   value: {
     state: string;
     stateBuilt: Array<{
@@ -25,14 +25,28 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
   onChange,
   displayOnly = false,
   wordLimit = 100, // Default word limit
-  handleSaveOfForm
+  handleContentEditableTrigger
 }) => {
   const [stateBuilt, updateStateBuilt] = useState(value.stateBuilt || []);
   const [highlightedText, setHighlightedText] = useState<string>("");
-  const contentEditableRef = useRef<HTMLDivElement>(null);
+  const contentEditableRef = useRef<HTMLDivElement>(null); 
 
   const { state, setState, count, warning } = useTextStateWithCatches(value.state, wordLimit);
 
+  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    if (contentEditableRef.current) {
+      const textContent = contentEditableRef.current.innerHTML;
+
+      if (textContent.length <= wordLimit) {
+        setState(textContent);
+        handleContentEditableTrigger();
+      } else {
+        e.preventDefault();
+        contentEditableRef.current.textContent = state;
+      }
+    }
+  };
+  
   const buildState = () => {
     if (contentEditableRef.current) {
       const elements = Array.from(contentEditableRef.current.childNodes);
@@ -53,27 +67,40 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
         }
         return { type: "basic", content: node.textContent || "" };
       });
-
       updateStateBuilt(builtState);
     }
   };
 
+  function handleTooltipTextChange ( ) {
+    console.log('tooltip textarea updated. can save state')
+  }
+
+  // useEffect( () => {
+  //   handleTooltipTextChange();
+  // }, [ state ] );
+
+  // builds the stateBuild whenever state updates to keep them in sync for moving to preview and raw object.
   useEffect(() => {
     buildState();
+    console.log('hey this is when state is updated')
   }, [state]);
 
+  // syncs the state of the tooltip to the form state ib the block form state.
   useEffect(() => {
     onChange && onChange({ state, stateBuilt });
   }, [state, stateBuilt]);
+
 
   const handleHighlight = () => {
     const selection = window.getSelection();
     if (selection && selection.toString()) {
       setHighlightedText(selection.toString());
-    } else {
+    } 
+    else {
       setHighlightedText("");
     }
   };
+
 
   const addTooltip = () => {
     if (highlightedText && contentEditableRef.current) {
@@ -82,12 +109,13 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
 
       const range = selection.getRangeAt(0);
 
-      const span = document.createElement("span");
-      span.className = "tooltip text-blue-500";
-      span.textContent = highlightedText;
+      const spanHTML = `<span class="tooltip text-blue-500">${highlightedText}</span>`;
+      const tempContainer = document.createElement("div");
+      tempContainer.innerHTML = spanHTML;
+      const spanElement = tempContainer.firstChild;
 
       range.deleteContents();
-      range.insertNode(span);
+      range.insertNode(spanElement);
 
       const newTooltip = {
         type: "tooltip",
@@ -98,24 +126,10 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
       const newState = contentEditableRef.current.innerHTML;
       setState(newState);
       setHighlightedText("");
-      handleSaveOfForm();
+      handleContentEditableTrigger();
     }
   };
 
-  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    if (contentEditableRef.current) {
-      const textContent = contentEditableRef.current.innerHTML;
-
-      if (textContent.length <= wordLimit) {
-        setState(textContent);
-        handleSaveOfForm();
-      } 
-      else {
-        e.preventDefault();
-        contentEditableRef.current.textContent = state;
-      }
-    }
-  };
 
   const updateTooltipText = (index: number, newText: string) => {
     const updatedStateBuilt = [...stateBuilt];
@@ -123,24 +137,44 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
     if (tooltip.type === "tooltip") {
       tooltip.content.text = newText;
       updateStateBuilt(updatedStateBuilt);
+
       const updatedHTML = updatedStateBuilt
-        .map((item) => {
-          if (item.type === "tooltip") {
-            return `<span class="tooltip text-blue-500">${item.content.trigger}</span>`;
-          }
-          return item.content;
-        })
+        .map((item) =>
+          item.type === "tooltip"
+            ? `<span class="tooltip text-blue-500">${item.content.trigger}</span>`
+            : item.content
+        )
         .join("");
       setState(updatedHTML);
-      handleSaveOfForm();
     }
+  };
+
+  const deleteTooltip = (index: number) => {
+    const updatedStateBuilt = stateBuilt.filter((_, i) => i !== index);
+
+    // Update the contentEditable DOM directly
+    if (contentEditableRef.current) {
+      const updatedHTML = updatedStateBuilt
+        .map((item) =>
+          item.type === "tooltip"
+            ? `<span class="tooltip text-blue-500">${item.content.trigger}</span>`
+            : item.content
+        )
+        .join("");
+
+      contentEditableRef.current.innerHTML = updatedHTML; // Immediate DOM update
+      setState(updatedHTML); // Update React state
+    }
+    updateStateBuilt(updatedStateBuilt);
   };
 
   useEffect(() => {
     if (contentEditableRef.current && contentEditableRef.current.innerHTML !== state) {
+      console.log('when this do?')
       contentEditableRef.current.innerHTML = state;
     }
   }, [state]);
+  
 
   useEffect(() => {
     document.addEventListener("mouseup", handleHighlight);
@@ -162,7 +196,7 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
             <div className="p-4">
               {stateBuilt.map((item, index) =>
                 item.type === "tooltip" ? (
-                  <div key={index} className="mb-4 flex space-y-4 flex-col">
+                  <div key={index} className="mb-4 flex flex-col space-y-2">
                     <Label className="block mb-1">Trigger: {item.content.trigger}</Label>
                     <Textarea
                       className="w-full border p-2 rounded"
@@ -170,6 +204,13 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
                       onChange={(e) => updateTooltipText(index, e.target.value)}
                       placeholder="Tooltip text"
                     />
+                    <button
+                      type="button"
+                      onClick={() => deleteTooltip(index)}
+                      className="text-red-500 text-sm self-end underline"
+                    >
+                      Delete
+                    </button>
                   </div>
                 ) : null
               )}
@@ -202,184 +243,4 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
   );
 };
 
-export {TextAreaWithTooltip2};
-
-
-
-
-// interface TooltipContent {
-//   trigger: string;
-//   content: string;
-// }
-
-// type TextContent = 
-//   | { content: string; type: "basic" }
-//   | { content: TooltipContent; type: "tooltip" };
-
-
-//   const TextAreaWithTooltip: React.FC<TextAreaWithTooltipProps> = ({ displayOnly = false }) => {
-//   const [textTooltipTextState, setTextTooltipTextState] = useState<TextContent[]>([
-//     { content: "..", type: "basic" },
-//     { content: "--", type: "basic" },
-//   ]);
-
-//   const [highlightedText, setHighlightedText] = useState<string>("");
-//   const [editingTooltipIndex, setEditingTooltipIndex] = useState<number | null>(null);
-
-//   const handleHighlight = () => {
-//     const selection = window.getSelection();
-//     if (selection && selection.toString()) {
-//       const selectedText = selection.toString();
-//       const isWithinTooltip = textTooltipTextState.some(
-//         (item) =>
-//           item.type === "tooltip" &&
-//           selectedText.includes((item.content as TooltipContent).trigger)
-//       );
-
-//       // Avoid highlighting text already part of a tooltip
-//       if (!isWithinTooltip) {
-//         setHighlightedText(selectedText);
-//       } else {
-//         setHighlightedText("");
-//       }
-//     } else {
-//       setHighlightedText("");
-//     }
-//   };
-
-//   const addTooltip = () => {
-//     if (highlightedText) {
-//       const selection = window.getSelection();
-//       if (!selection || !selection.anchorNode || !selection.anchorNode.textContent) return;
-
-//       const parentText = selection.anchorNode.textContent;
-//       const start = parentText.indexOf(highlightedText);
-//       const end = start + highlightedText.length;
-
-//       if (start === -1) return;
-
-//       const updatedState: TextContent[] = [];
-//       let isUpdated = false;
-
-//       textTooltipTextState.forEach((item) => {
-//         if (isUpdated || item.type !== "basic" || !item.content.includes(parentText)) {
-//           updatedState.push(item);
-//         } else {
-//           const before = item.content.slice(0, start);
-//           const after = item.content.slice(end);
-
-//           if (before) updatedState.push({ content: before, type: "basic" });
-//           updatedState.push({
-//             content: { trigger: highlightedText, content: "New tooltip content" },
-//             type: "tooltip",
-//           });
-//           if (after) updatedState.push({ content: after, type: "basic" });
-
-//           isUpdated = true;
-//         }
-//       });
-
-//       setTextTooltipTextState(updatedState);
-//       setHighlightedText(""); // Clear after adding
-//     }
-//   };
-
-//   const handleEditTooltipContent = (index: number, newContent: string) => {
-//     setTextTooltipTextState((prevState) => {
-//       const updatedState = [...prevState];
-//       if (updatedState[index].type === "tooltip") {
-//         updatedState[index] = {
-//           ...updatedState[index],
-//           content: {
-//             ...updatedState[index].content as TooltipContent,
-//             content: newContent,
-//           },
-//         };
-//       }
-//       return updatedState;
-//     });
-//   };
-
-//   useEffect(() => {
-//     document.addEventListener("mouseup", handleHighlight);
-//     return () => document.removeEventListener("mouseup", handleHighlight);
-//   }, []);
-
-//   return (
-//     <div className="w-full p-3 rounded space-y-2 relative border">
-//       { JSON.stringify( textTooltipTextState ) }
-//       {/* Show Convert Button Only If Text is Highlighted */}
-//       {!displayOnly && highlightedText && (
-//         <Button
-//           type="button"
-//           variant={'outline'}
-//           onClick={(e) => {
-//             e.preventDefault(); // Prevent any default action
-//             addTooltip();
-//           }}
-//           className="absolute top-2 right-2 border text-sm text-black px-3 py-2 rounded"
-//         >
-//           Convert to Tooltip
-//         </Button>
-//       )}
-
-//       {/* Editable Area */}
-//       <div
-//         contentEditable={!displayOnly}
-//         suppressContentEditableWarning={true}
-//         className={`border border-transparent rounded p-3 focus:outline-none ${
-//           displayOnly ? "bg-gray-100 cursor-not-allowed" : ""
-//         }`}
-//       >
-//         {textTooltipTextState.map((item, index) =>
-//           item.type === "basic" ? (
-//             <span key={index}>{item.content} </span>
-//           ) : (
-//             <Tooltip key={index}>
-//               <TooltipTrigger asChild>
-//                 <span
-//                   className={`bg-gray-100 text-black rounded-md p-1.5 ${
-//                     displayOnly ? "cursor-not-allowed" : "cursor-pointer"
-//                   }`}
-//                 >
-//                   {(item.content as TooltipContent).trigger}
-//                 </span>
-//               </TooltipTrigger>
-//               <TooltipContent
-//                 contentEditable={false}
-//                 className="outline-none caret-transparent"
-//                 onMouseLeave={() => !displayOnly && setEditingTooltipIndex(null)}
-//               >
-//                 {editingTooltipIndex === index && !displayOnly ? (
-//                   <textarea
-//                     value={(item.content as TooltipContent).content}
-//                     onChange={(e) =>
-//                       handleEditTooltipContent(index, e.target.value)
-//                     }
-//                     onBlur={() => setEditingTooltipIndex(null)} // Save and exit edit mode on blur
-//                     onKeyDown={(e) => {
-//                       if (e.key === "Enter") {
-//                         e.preventDefault();
-//                         setEditingTooltipIndex(null); // Save and exit on Enter
-//                       }
-//                     }}
-//                     className="w-full border p-2 rounded focus:outline-none caret-black"
-//                   />
-//                 ) : (
-//                   <p
-//                     onClick={() => !displayOnly && setEditingTooltipIndex(index)}
-//                     className={`${
-//                       displayOnly ? "cursor-not-allowed" : "cursor-pointer"
-//                     }`}
-//                   >
-//                     {(item.content as TooltipContent).content}
-//                   </p>
-//                 )}
-//               </TooltipContent>
-//             </Tooltip>
-//           )
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+export { TextAreaWithTooltip2 };

@@ -11,7 +11,7 @@ import SimpleCodeEditor from 'react-simple-code-editor';
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/nightOwl";
 
-import AdminBlockTemplate from '../../templates/admin/admin.block.form';
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form';
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools';
 import AnimatedCodeChallenge, { AnimatedCodeChallengeProps } from './index';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -153,12 +153,24 @@ const AnimatedCodeChallengeAdminBlock: React.FC<AnimatedCodeChallengeAdminBlockP
     </Highlight>
   );
 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('explanation block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true);
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
 
   const handleDelete = () => {
     adminTools.updateDataBlock({ type: 'delete', blockData: null, blockIndex });

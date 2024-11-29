@@ -4,7 +4,7 @@ import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import AdminBlockTemplate from '../../templates/admin/admin.block.form'
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 import VideoViewComponent, { VideoBlockProps } from './video'
 
@@ -44,11 +44,22 @@ const VideoAdminBlock: React.FC<VideoAdminBlockProps> = ({ data, adminTools, blo
     }
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true);
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Video block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = () => {
