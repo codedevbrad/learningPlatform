@@ -87,7 +87,9 @@ export default function StudentsList() {
                           <AvatarFallback>{user.nickname[0]}</AvatarFallback>
                         </Avatar>
                         <div className="grid gap-1">
-                          <p className="text-sm font-medium leading-none">{user.nickname}</p>
+                          <p className="text-sm font-medium leading-none">
+                            {user.nickname}
+                          </p>
                         </div>
                         <div className="ml-auto font-medium">
                           <ControlStudentAccesspopup
@@ -107,7 +109,7 @@ export default function StudentsList() {
                   className="min-w-72 p-4"
                 >
                   <p className="font-medium text-sm mb-2">
-                      John C reiliey
+                      { user.nickname }
                   </p>
                   <p className="text-sm text-gray-600 leading-relaxed mb-2">
                     has been incredibly dedicated to learning JavaScript. 

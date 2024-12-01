@@ -1,10 +1,16 @@
-import { 
-  DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, 
-  DropdownMenuSeparator, DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
+"use client"
 
-import { Button } from "@/components/ui/button"
-import { v4 as uuidv4 } from 'uuid'
+import * as React from "react"
+import { v4 as uuidv4 } from "uuid"
+
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 
 import { explanationObject } from "@/app/reusables/components/blocks/explanation/explanation"
 import { quizObject } from "@/app/reusables/components/blocks/quiz/quiz"
@@ -18,81 +24,81 @@ import { imageObject } from "../blocks/image/image"
 import { diagramCompletionObject } from "../blocks/diagramCompletion/diagramCompletion"
 
 import { DataForBuild } from "../render"
-
-
-interface addDataToBlockProps {
-   type: 'new';
-   blockData: DataForBuild;
-   blockIndex?: number;
-}
-
-
-interface DropdownBlockItemProps {
-    addDataToBlock: (props: addDataToBlockProps) => void;
-    title: string;
-    icon: string;
-    object: DataForBuild;
-    pushAfter: number;
-}
-
-
-function DropdownBlockItem({ addDataToBlock, title, icon, object , pushAfter }: DropdownBlockItemProps,  ) {
-    return (
-        <DropdownMenuItem className="cursor-pointer" onClick={() => addDataToBlock({
-            type: 'new', 
-            blockData: { ...object, id: uuidv4() } , 
-            blockIndex: pushAfter
-        })}>
-            <div className="flex flex-row p-4 w-full space-x-3">
-                <div className="flex items-center justify-center">
-                    {title} 
-                </div>
-            </div>
-        </DropdownMenuItem>
-    );
-}
+import { Button } from "@/components/ui/button"
 
 interface AddNewDataBlockProps {
-    addDataToBlock: any;
-    pushAfter: number;
-}   
+  addDataToBlock: (props: {
+    type: "new"
+    blockData: DataForBuild
+    blockIndex?: number
+  }) => void
+  pushAfter: number
+}
 
+const blockOptions = [
+  { title: "Explanation", object: explanationObject },
+  { title: "Image", object: imageObject },
+  { title: "Quiz", object: quizObject },
+  { title: "Code Snippet", object: codeSnippetObject },
+  { title: "Challenge", object: ChallengeComponentObject },
+  { title: "Task", object: taskObject },
+  { title: "EditorJs", object: editorJsObject },
+  { title: "Video", object: videoBlockObject },
+  { title: "Animated Code Challenge", object: animatedCodeChallengeObject },
+  { title: "Diagram Completion", object: diagramCompletionObject },
+]
 
-export default function AddNewDataBlock({ addDataToBlock , pushAfter }: AddNewDataBlockProps ) {
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline"> Add a new block </Button>
-            </DropdownMenuTrigger>
+export default function AddNewDataBlock({
+  addDataToBlock,
+  pushAfter,
+}: AddNewDataBlockProps) {
+  const [open, setOpen] = React.useState(false)
 
-            <DropdownMenuContent className="h-[600px] overflow-y-scroll">
-                <DropdownMenuLabel>Add a new block  </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpen((open) => !open)
+      }
+    }
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
 
-                <DropdownMenuGroup>
-                    {[
-                        { title: "Explanation", icon: "📄", object: explanationObject },
-                        { title: "Image", icon: "🖼️", object: imageObject },
-                        { title: "Quiz", icon: "❓", object: quizObject },
-                        { title: "Code Snippet", icon: "💻", object: codeSnippetObject },
-                        { title: "Challenge", icon: "🏆", object: ChallengeComponentObject },
-                        { title: "Task", icon: "📝", object: taskObject },
-                        { title: "EditorJs", icon: "✏️", object: editorJsObject },
-                        { title: "Video", icon: "🎥", object: videoBlockObject },
-                        { title: "Animated Code Challenge", icon: "🚀", object: animatedCodeChallengeObject },
-                        { title: "Diagram completion", icon: "💻", object: diagramCompletionObject }
-                    ].map((block, index) => (
-                        <DropdownBlockItem 
-                            key={index} 
-                            addDataToBlock={addDataToBlock} 
-                            title={block.title} 
-                            icon={block.icon} 
-                            object={block.object} 
-                            pushAfter={pushAfter} 
-                        />
-                    ))}
-                </DropdownMenuGroup>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
+  const handleSelect = (block: typeof blockOptions[0]) => {
+    console.log('works')
+    addDataToBlock({
+      type: "new",
+      blockData: { ...block.object, id: uuidv4() },
+      blockIndex: pushAfter,
+    })
+    setOpen(false) // Close dialog
+  }
+
+  return (
+    <>
+      <Button
+        className="btn btn-outline"
+        onClick={() => setOpen((prev) => !prev)}
+        variant="outline"
+      >
+        Add a new block
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type to search blocks..." />
+        <CommandList>
+          <CommandEmpty>No blocks found.</CommandEmpty>
+          <CommandGroup heading="Blocks">
+            {blockOptions.map((block, index) => (
+              <div key={index} onClick={() => handleSelect(block)} className="rounded-md cursor-pointer hover:bg-black hover:text-white">
+                    <CommandItem onSelect={() => handleSelect(block)}>
+                        {block.title}
+                    </CommandItem>
+              </div>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </>
+  )
 }
