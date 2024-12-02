@@ -14,6 +14,7 @@ import SortableList from "@/app/reusables/usables/sortable"
 import AI_BlockGenerator from "../../../../../../../../reusables/components/creator/ai.dataCreator"
 
 import TopicLanguagesControl from "./topic.languages.popup.edit"
+import EmptyState from "@/app/reusables/layouts/emptyState"
 
 
 interface TopicParams {
@@ -70,7 +71,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
   }  
 
 
-
   const refreshTableWithNewBlocks = async ( dataAltered : DataForBuild[] ) => {
         try {
           await action_saveTopicBlock( topicId, dataAltered );        
@@ -82,8 +82,6 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
         }
   }
   
-
-
   return (
     <div className="flex flex-col">
         <div className="flex justify-end">
@@ -110,6 +108,13 @@ export default function EditDataComponent({ topicId, topicData, topicInfo } : To
         </div>
 
         <div>
+
+            { data.length == 0 &&
+                <EmptyState>
+                    <AddNewDataBlock addDataToBlock={ updateDataBlock } pushAfter={ data.length - 1 } />
+                </EmptyState>
+            }
+
             {/* render blocks based on data. */}
             <PlatformContentBlocks data={ data } isInAdminMode={ inAdminMode } adminTools={
               { updateDataBlock } as AdminToolsProps } 

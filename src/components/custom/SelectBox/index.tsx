@@ -14,9 +14,10 @@ import {
 type SelectBoxProps = {
   items: { value: string; label: string }[] // Array of items to display
   placeholder?: string // Placeholder text for the select box
+  selected: any;
 }
 
-export default function SelectBox({ items, placeholder = "Select an option" }: SelectBoxProps) {
+export default function SelectBox({ items, placeholder = "Select an option" , selected }: SelectBoxProps) {
   const [search, setSearch] = React.useState("")
   const [selectedValue, setSelectedValue] = React.useState<string | null>(null)
 
@@ -27,6 +28,7 @@ export default function SelectBox({ items, placeholder = "Select an option" }: S
 
   const handleSelect = (value: string) => {
     setSelectedValue(value)
+    selected ? selected( value ) : null;
   }
 
   return (

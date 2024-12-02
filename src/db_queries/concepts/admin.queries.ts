@@ -3,7 +3,7 @@ import prisma from '../../../prisma/client'
 import { TopicType } from '../../../prisma/schema.types';
 import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
-import { db_getAdminIdFromAuth } from '../user/admin.queries';
+import { db_getAdminIdFromAuth } from '../user/admin.queries'
 
 export async function getAllConceptsPlain ( ) {
   let concepts = await prisma.concepts.findMany({
