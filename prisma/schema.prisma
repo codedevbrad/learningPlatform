@@ -20,6 +20,7 @@ enum UserStatus {
   INACTIVE
 }
 
+
 model Users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   userId     String       @unique
@@ -39,6 +40,7 @@ model AdminUsers {
   role       String       @default("ADMIN")
   topics     Topic[]      @relation("AuthorOfTopics")
   name       String
+  tutorAvailability Calendar[] @relation("AdminCalendar")
 }
 
 
@@ -46,6 +48,16 @@ model AdminUsers {
 enum USERTYPE {
   STUDENT
   TEACHER
+}
+
+
+model Calendar {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  relatedTo   AdminUsers  @relation("AdminCalendar", fields: [relatedToId], references: [id])
+  relatedToId String      @db.ObjectId
+  availability Json       // Stores the weekly schedule as a JSON object
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 

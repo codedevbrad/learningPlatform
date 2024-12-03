@@ -6,7 +6,7 @@ import OverViewTabContent from "./overview"
 
 import SessionsWithProposals from "@/app/reusables/components/sessions"
 import ControlStudentAccess from "@/app/reusables/access/admin/admin.controlAccess"
-import AdminHomework from "@/app/reusables/features/homework/render.admin"
+import AdminHomework from "@/db_queries/homework/render.admin"
 
 export default async function StudentTabsArea({ params }) {
     // Extract student id (slug) from params...

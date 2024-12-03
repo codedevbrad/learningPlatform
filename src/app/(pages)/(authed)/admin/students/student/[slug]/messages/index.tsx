@@ -1,5 +1,5 @@
 'use server'
-import MessagesDisplayComponent from "@/app/reusables/components/messages"
+import MessagesDisplayComponent from "@/db_queries/messages/ui"
 
 export default async function StudentMessages ( { studentId } ) {
     return (

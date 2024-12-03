@@ -6,7 +6,7 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
-import enGB from 'date-fns/locale/en-GB' // Import British English locale
+import enGB from 'date-fns/locale/en-GB'
 import { useState, useRef } from 'react'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
@@ -23,6 +23,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+// Events
 const events = [
   {
     title: 'Meeting with Team',
@@ -75,15 +76,11 @@ const CustomToolbar = ({ date, onNavigate, onView, view }) => {
   );
 };
 
-export default function Calendar() {
+export default function Calendar({ availability }) {
   const [calendarEvents, setCalendarEvents] = useState(events);
   const [view, setView] = useState(Views.MONTH);
   const [currentDate, setCurrentDate] = useState(new Date());
   const calendarRef = useRef(null);
-
-  const handleSelectSlot = (slotInfo) => {
-    console.log(slotInfo);
-  };
 
   const handleViewChange = (newView) => {
     setView(newView);
@@ -124,6 +121,23 @@ export default function Calendar() {
     }
   };
 
+  // Custom day style handler
+  const dayPropGetter = (date) => {
+    const dayName = format(date, 'EEEE'); // Get day name, e.g., "Monday"
+    const isUnavailable = !availability.includes(dayName); // Grayed out if not available
+
+    if (isUnavailable) {
+      return {
+        style: {
+          backgroundColor: '#f0f0f0',
+          color: '#999',
+          pointerEvents: 'none', // Disable click events
+        },
+      };
+    }
+    return {};
+  };
+
   return (
     <div ref={calendarRef} className="space-y-4">
       <Title title="Tutor Calendar" variant="heading" noMargin={true} />
@@ -135,15 +149,16 @@ export default function Calendar() {
         date={currentDate}
         onNavigate={handleNavigate}
         selectable
-        onSelectSlot={handleSelectSlot}
+        onSelectSlot={(slotInfo) => console.log(slotInfo)}
         onSelectEvent={(event) => alert(event.title)}
         view={view}
         onView={handleViewChange}
         views={['month', 'week', 'day']}
         components={{
-          toolbar: (props) => <CustomToolbar {...props} onNavigate={handleNavigate} />, // Use custom toolbar with date and navigation handling
+          toolbar: (props) => <CustomToolbar {...props} onNavigate={handleNavigate} />,
         }}
-        style={{ height: '600px' }} // Minimum height of 600px, can grow
+        style={{ height: '600px' }}
+        dayPropGetter={dayPropGetter} // Apply custom styles to days
       />
     </div>
   );
