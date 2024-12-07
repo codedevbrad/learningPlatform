@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
 import ContentHeader from '@/app/reusables/components/templates/client/header/index'
@@ -7,6 +7,7 @@ import PlatformContentBlocks , { DataForBuild } from "@/app/reusables/components
 
 // import { action__updateTopicNotesForUser } from './actions'
 // import SaveProgressForPageBtn from './savePageProgress/index'
+
 import EmbeddedVideoDisplay from '@/app/reusables/components/resources/resource'
 import PageContents from '@/app/reusables/layouts/pagecontents'
 
@@ -29,7 +30,7 @@ interface DataProps {
 }
 
 
-const ConceptTopicMainComponent: React.FC<
+const PlatformPageRender: React.FC<
   { data: DataProps, pageInfo: InfoProps , userProgress: any , topicId: string , topicPos: number }> = (
   { data, pageInfo, userProgress , topicId , topicPos }) => {
     
@@ -82,4 +83,4 @@ const ConceptTopicMainComponent: React.FC<
 };
 
 
-export default ConceptTopicMainComponent;
+export default PlatformPageRender;

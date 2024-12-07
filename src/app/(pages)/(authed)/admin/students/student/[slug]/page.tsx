@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import MessagesTabContent from "./messages"
 import OverViewTabContent from "./overview"
 
-import SessionsWithProposals from "@/app/reusables/components/sessions"
+import SessionsWithProposals from "@/db_queries/sessions/ui"
 import ControlStudentAccess from "@/app/reusables/access/admin/admin.controlAccess"
 import AdminHomework from "@/db_queries/homework/render.admin"
 

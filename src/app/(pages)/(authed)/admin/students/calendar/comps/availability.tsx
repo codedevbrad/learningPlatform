@@ -21,13 +21,13 @@ type WeekSchedule = {
 }
 
 const initialWeekSchedule: WeekSchedule = {
-  Sunday: { selected: false, startTime: '09:00', endTime: '10:00' },
+  Sunday: { selected: false, startTime: '09:00', endTime: '10:00' }, 
+  Monday: { selected: false, startTime: '09:00', endTime: '10:00' }, 
   Tuesday: { selected: false, startTime: '09:00', endTime: '10:00' },
   Wednesday: { selected: false, startTime: '09:00', endTime: '10:00' },
   Thursday: { selected: false, startTime: '09:00', endTime: '10:00' },
   Friday: { selected: false, startTime: '09:00', endTime: '10:00' },
-  Saturday: { selected: false, startTime: '09:00', endTime: '10:00' },
-  Monday: { selected: false, startTime: '09:00', endTime: '10:00' }, 
+  Saturday: { selected: false, startTime: '09:00', endTime: '10:00' }
 };
 
 export default function WeekdayTimeSelector({

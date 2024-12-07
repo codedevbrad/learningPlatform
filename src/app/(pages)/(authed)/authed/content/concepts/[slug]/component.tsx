@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
 import ContentHeader from '@/app/reusables/components/templates/client/header/index'

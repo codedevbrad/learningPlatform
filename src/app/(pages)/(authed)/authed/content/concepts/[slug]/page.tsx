@@ -1,8 +1,10 @@
 'use server'
 import { findTopicById } from "@/db_queries/concepts/student.queries"
 import { fetchUserDataOnTopic } from "@/db_queries/user/queries"
-import ConceptTopicMainComponent from "./component"
 import NextTopicCard from "./nextTopic"
+
+import PlatformPageRender from "@/app/reusables/components/page/pageRender"
+import ConceptTopicMainComponent from "./component"
 
 export default async function Page({ params }: { params: { slug: string } }) {
     
@@ -13,12 +15,20 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
     return (
         <div className="h-full flex flex-col items-center">
-            <ConceptTopicMainComponent 
+            {/* <ConceptTopicMainComponent 
+                  pageInfo={{ name: title , description , resources, author , postedOn }}
+                         data={ data } 
+                 userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
+                      topicId={ topicId }
+            /> */}
+
+            <PlatformPageRender 
                   pageInfo={{ name: title , description , resources, author , postedOn }}
                          data={ data } 
                  userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
                       topicId={ topicId }
             />
+
             <NextTopicCard topicPos={ position } />
         </div>
     )

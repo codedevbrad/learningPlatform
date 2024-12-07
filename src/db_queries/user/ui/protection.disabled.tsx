@@ -1,5 +1,7 @@
 'use client'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { useEffect, useState } from "react"
+import { db_userCanAccess } from "../sharable.queries"
 
 interface FeatureDisabledType {
   children?: any;
@@ -8,9 +10,34 @@ interface FeatureDisabledType {
   displayTipType: 'tooltip' | 'feature'
 }
 
+/*
+  @name FeatureDisabled
+  @description AdHoc component that locks a component based on the status of the student displaying either a tooltip or just display of 
+  the reason they cannot access.
+*/
+
 export default function FeatureDisabled({ children, explanation, className, displayTipType = 'tooltip' } : FeatureDisabledType ) {
 
   let tooltip = `This Feature is disabled while your tutor accepts you to the platform. Once accepted, you can then ${explanation}`;
+  const [ isAllowed , setAllowed ] = useState(false);
+
+  useEffect( ( ) => {
+     db_userCanAccess()
+      .then( ( { status , allowed }) => {
+          setAllowed( allowed )
+      })
+      .catch( ( ) => {
+          setAllowed(false);
+      });
+  }, [ isAllowed ] );
+
+  if ( isAllowed ) {
+      return (
+        <>      
+          { children }
+        </>
+      )
+  }
   
   return (
     <TooltipProvider>

@@ -21,6 +21,13 @@ enum UserStatus {
 }
 
 
+// *** CHAT / Session ENUM Between student and teacher *** //
+enum USERTYPE {
+  STUDENT
+  TEACHER
+}
+
+
 model Users {
   id         String       @id @default(auto()) @map("_id") @db.ObjectId
   userId     String       @unique
@@ -44,13 +51,6 @@ model AdminUsers {
 }
 
 
-// *** CHAT / Session ENUM Between student and teacher *** //
-enum USERTYPE {
-  STUDENT
-  TEACHER
-}
-
-
 model Calendar {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   relatedTo   AdminUsers  @relation("AdminCalendar", fields: [relatedToId], references: [id])
@@ -59,6 +59,12 @@ model Calendar {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
+
+// Homework 
+  // belongsTo: user
+  // createdBy: Admin
+  // name , set for, 
+  // tasks, 
 
 
 // how do i enforce uniquness here?
