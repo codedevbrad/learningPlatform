@@ -1,43 +1,26 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format, formatDistance, setHours, setMinutes, getHours, getMinutes, addDays, isAfter, isToday } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState, useEffect } from "react"
-import useSWR, { mutate } from "swr"
-import { action__getProposedSession, action__proposeSession, action__acceptProposal } from "./client.actions"
+import * as React from "react";
+import { format, formatDistance } from "date-fns";
+import { Button } from "@/components/ui/button";
+import Calendar from '@/components/custom/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState, useEffect } from "react";
+import useSWR, { mutate } from "swr";
+import { action__getProposedSession, action__proposeSession, action__acceptProposal } from "./client.actions";
 
+// Additional imports for availability and custom calendar UI:
+import Title from "@/app/reusables/content/title";
+import { fetchAvailability } from "@/app/services/calendar/fetchevents";
 
-// Utility functions to generate hours and minutes options
-const generateHoursOptions = (): { value: number; label: string }[] => {
-  const hours = [];
-  for (let i = 0; i < 24; i++) {
-    hours.push({ value: i, label: i === 0 ? '12 AM' : i < 12 ? `${i} AM` : i === 12 ? '12 PM' : `${i - 12} PM` });
-  }
-  return hours;
-};
-
-const generateMinutesOptions = (interval: number): { value: number; label: string }[] => {
-  const minutes = [];
-  for (let i = 0; i < 60; i += interval) {
-    minutes.push({ value: i, label: i.toString().padStart(2, '0') });
-  }
-  return minutes;
-};
-
-
-// Helper function to format the session length
+// Utility function to format the session length
 const formatLength = (length: number): string => {
   const hours = Math.floor(length / 60);
   const minutes = length % 60;
-  return `${hours > 0 ? `${hours}h ` : ""}${minutes > 0 ? `${minutes}m` : ""}`;
+  return `${hours > 0 ? `${hours}h` : ""}${hours > 0 && minutes > 0 ? " " : ""}${minutes > 0 ? `${minutes}m` : ""}`;
 };
-
 
 interface SessionProposalProps {
   studentId: string;
@@ -46,58 +29,148 @@ interface SessionProposalProps {
   userType: 'Teacher' | 'Student';
 }
 
-
-// SessionProposal component for proposing or updating a session ...
 const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProposed, initialSession, userType }) => {
-
-  const hoursOptions = generateHoursOptions();
-  const minutesOptions = generateMinutesOptions(15);
-
-  const now = new Date();
-  const tomorrow = addDays(now, 1);
-
-  const [sessionTitle, setSessionTitle] = useState<string>(initialSession?.title || "");
-  const [sessionDate, setSessionDate] = useState<Date>(initialSession?.date || tomorrow);
-  const [sessionLength, setSessionLength] = useState<number>(initialSession?.length || 30);
   const [proposalPopupState, changeProposalState] = useState<boolean>(false);
-  const [selectedHour, setSelectedHour] = useState<number>(sessionDate ? getHours(sessionDate) : getHours(now));
-  const [selectedMinute, setSelectedMinute] = useState<number>(sessionDate ? getMinutes(sessionDate) : getMinutes(now));
+  const [sessionTitle, setSessionTitle] = useState<string>(initialSession?.title || "");
 
-  // Filter hours to show only future hours if the selected date is today
-  const filterHoursOptions = () => {
-    const currentHour = getHours(now);
-    if (isToday(sessionDate)) {
-      return hoursOptions.filter(({ value }) => value > currentHour);
-    }
-    return hoursOptions;
-  };
+  // State related to date/time availability
+  const [selectedDate, setSelectedDate] = React.useState<Date>();
+  const [availableTimes, setAvailableTimes] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
+  const [extraMinutes, setExtraMinutes] = React.useState(0);
+  const [canAddMoreTime, setCanAddMoreTime] = React.useState(true);
 
   useEffect(() => {
     setSessionTitle(initialSession?.title || "");
-    setSessionDate(initialSession?.date || tomorrow);
-    setSessionLength(initialSession?.length || 30);
-    setSelectedHour(initialSession?.date ? getHours(initialSession.date) : getHours(now));
-    setSelectedMinute(initialSession?.date ? getMinutes(initialSession.date) : getMinutes(now));
+    if (initialSession?.date) {
+      setSelectedDate(new Date(initialSession.date));
+    } else {
+      setSelectedDate(new Date(new Date().setDate(new Date().getDate()+1)));
+    }
+
+    if (initialSession?.length) {
+      const initialExtra = initialSession.length > 60 ? (initialSession.length - 60) : 0;
+      setExtraMinutes(initialExtra);
+    } else {
+      setExtraMinutes(0);
+    }
   }, [initialSession]);
 
   useEffect(() => {
-    if (sessionDate) {
-      const updatedDate = setMinutes(setHours(sessionDate, selectedHour), selectedMinute);
-      setSessionDate(updatedDate);
+    if (!selectedDate) return;
+
+    async function loadAvailability() {
+      setLoading(true);
+      try {
+        const busySlots = await fetchAvailability();
+        const allFreeSlots = calculateFreeSlots(busySlots);
+        const times = getAvailableTimes(allFreeSlots, selectedDate);
+        setAvailableTimes(times);
+      } catch (error) {
+        console.error('Error loading availability:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [selectedHour, selectedMinute]);
 
+    loadAvailability();
+  }, [selectedDate]);
 
-  const incrementLength = () => {
-    setSessionLength((prevLength) => prevLength + 15);
+  useEffect(() => {
+    if (selectedTime) {
+      const startTime = new Date(selectedTime);
+      const currentEndTime = new Date(startTime);
+      currentEndTime.setMinutes(startTime.getMinutes() + 60 + extraMinutes); // Current session end time
+
+      const selectedSlot = availableTimes.find((time) => time.value === selectedTime);
+      if (!selectedSlot) return;
+      const slotEndTime = new Date(selectedSlot.slotEnd);
+
+      // Determine if adding 30 minutes would exceed the available time
+      const newEndTime = new Date(currentEndTime);
+      newEndTime.setMinutes(newEndTime.getMinutes() + 30);
+
+      setCanAddMoreTime(newEndTime <= slotEndTime);
+    }
+  }, [extraMinutes, selectedTime, availableTimes]);
+
+  const calculateFreeSlots = (busySlots) => {
+    const freeSlots = [];
+    const timeMin = new Date(); // Current time
+    const timeMax = new Date(new Date().setDate(new Date().getDate() + 7)); // 7 days from now
+
+    let lastEnd = timeMin;
+
+    // Calculate gaps between busy slots
+    busySlots.forEach(({ start, end }) => {
+      const slotStart = new Date(start);
+      const slotEnd = new Date(end);
+
+      if (lastEnd < slotStart) {
+        freeSlots.push({ start: lastEnd, end: slotStart });
+      }
+
+      lastEnd = slotEnd > lastEnd ? slotEnd : lastEnd;
+    });
+
+    // Add final slot if there's free time until timeMax
+    if (lastEnd < timeMax) {
+      freeSlots.push({ start: lastEnd, end: timeMax });
+    }
+
+    return freeSlots;
   };
 
+  const getAvailableTimes = (freeSlots, date) => {
+    const times = [];
+    const selectedDay = date.toISOString().split('T')[0]; // Keep only date part
 
-  const decrementLength = () => {
-    setSessionLength((prevLength) => Math.max(prevLength - 15, 15));
+    freeSlots.forEach((slot) => {
+      const slotStart = new Date(slot.start);
+      const slotEnd = new Date(slot.end);
+
+      while (slotStart < slotEnd) {
+        const sessionStart = new Date(slotStart);
+        const sessionEnd = new Date(sessionStart);
+        sessionEnd.setMinutes(sessionStart.getMinutes() + 60); // Add 1 hour
+
+        const sessionDay = sessionStart.toISOString().split('T')[0];
+        if (
+          sessionDay === selectedDay &&
+          sessionEnd <= slotEnd
+        ) {
+          times.push({
+            label: `${sessionStart.toLocaleTimeString([], {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+            })}`,
+            value: sessionStart.toISOString(),
+            slotEnd: slotEnd.toISOString(),
+          });
+        }
+
+        slotStart.setMinutes(slotStart.getMinutes() + 15); // Increment by 15 mins
+      }
+    });
+
+    return times;
+  };
+
+  const handleAddExtraMinutes = () => {
+    setExtraMinutes(extraMinutes + 30);
   };
 
   const proposeSessionSubmit = async () => {
+    if(!selectedTime) {
+      console.error("No time selected");
+      return;
+    }
+    const startTime = new Date(selectedTime);
+    const sessionLength = 60 + extraMinutes;
+    const sessionDate = startTime;
+
     try {
       await action__proposeSession({
         studentId,
@@ -134,7 +207,7 @@ const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProp
           {initialSession ? 'Change proposed session' : 'Propose a new session'}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-4 w-64 mt-2" align="end">
+      <PopoverContent className="p-4 w-80 mt-2" align="end">
         <div className="flex flex-col space-y-5">
           <div className="flex flex-col space-y-2">
             <label className="block text-sm font-medium text-gray-700">Title</label>
@@ -145,73 +218,84 @@ const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProp
               value={sessionTitle}
               onChange={(e) => setSessionTitle(e.target.value)}
             />
+            <Title title="Pick a Date" variant="subheading3" />
+            <Calendar className='w-full' selectedDate={selectedDate} onDateChange={setSelectedDate} />
           </div>
-          <div className="flex flex-col space-y-3">
-            <label className="block text-sm font-medium text-gray-700">Date & Time</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant={"outline"} className={`w-full justify-start text-left font-normal ${!sessionDate && "text-muted-foreground"}`}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {sessionDate ? format(sessionDate, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={sessionDate}
-                  onSelect={(date) => {
-                    if (isAfter(date, now)) {
-                      setSessionDate(date);
-                    }
-                  }}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            <div className="flex space-x-3 mt-4">
-              <Select value={selectedHour.toString()} onValueChange={(value) => setSelectedHour(parseInt(value))}>
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Hour" />
+          
+          {loading ? (
+            <p className="mt-4 text-sm">Loading available times...</p>
+          ) : availableTimes.length > 0 ? (
+            <div className="mt-4">
+              <h2 className="text-md font-semibold">Pick a Time</h2>
+              <Select onValueChange={(value) => { setSelectedTime(value); setExtraMinutes(0); }}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Select a time" />
                 </SelectTrigger>
                 <SelectContent>
-                  {filterHoursOptions().map(({ value, label }) => (
-                    <SelectItem key={value} value={value.toString()}>
-                      {label}
+                  {availableTimes.map((time, index) => (
+                    <SelectItem key={index} value={time.value}>
+                      {time.label} 
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={selectedMinute.toString()} onValueChange={(value) => setSelectedMinute(parseInt(value))}>
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Minutes" />
-                </SelectTrigger>
-                <SelectContent>
-                  {minutesOptions.map(({ value, label }) => (
-                    <SelectItem key={value} value={value.toString()}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+
+              {selectedTime && (
+                <div className="mt-4 flex flex-col space-y-4 bg-gray-50 p-2 pb-5 rounded-md">
+                  <p className='p-2 text-sm'>You've selected a session for</p>
+                  <div className='flex flex-row flex-wrap items-center space-x-1 justify-center text-sm'>
+                    <span className='bg-gray-200 p-2 rounded-md'>
+                      {new Date(selectedTime).toLocaleTimeString([], {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                      })}
+                    </span> 
+                    <span> - </span> 
+                    <span className='bg-gray-200 p-2 rounded-md'>
+                      {new Date(
+                        new Date(selectedTime).getTime() + (60 + extraMinutes) * 60 * 1000
+                      ).toLocaleTimeString([], {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                      })}
+                    </span>
+                  </div>    
+
+                  <div className='flex flex-col space-y-2 text-sm'>
+                    <p>Which will be for:</p>
+                    <span className='bg-gray-200 p-2 rounded-md'>
+                      {formatLength(60 + extraMinutes)}
+                    </span>
+                  </div>  
+               
+                  { canAddMoreTime && (
+                    <Button
+                      className="mt-4"
+                      onClick={handleAddExtraMinutes}
+                      disabled={!canAddMoreTime}
+                    >
+                      Add 30 minutes
+                    </Button>
+                  )}
+
+                  <Button onClick={proposeSessionSubmit}>
+                    Propose this session 
+                  </Button>
+                </div>
+              )}
             </div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Length</label>
-            <div className="flex items-center space-x-2 ">
-              <Button variant="outline" onClick={decrementLength}>-</Button>
-              <span className="grow text-center"> {formatLength(sessionLength)} </span>
-              <Button variant="outline" onClick={incrementLength}>+</Button>
-            </div>
-          </div>
-          <div className="flex flex-col space-y-2">
-          <Button onClick={proposeSessionSubmit}>
-            Propose
-          </Button>
+          ) : (
+            selectedDate && (
+              <p className="mt-4 text-sm">No available times for the selected day.</p>
+            )
+          )}
+          
           <div className="flex items-center justify-center">
-            <span className="text-white bg-red-700 p-3 rounded-md text-sm grow text-center"> 
-                cancel session 
-            </span>
-          </div>
+            <Button variant="destructive" onClick={() => changeProposalState(false)}>
+              Cancel
+            </Button>
           </div>
         </div>
       </PopoverContent>
@@ -219,15 +303,12 @@ const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProp
   );
 };
 
-
 interface SessionProposedDisplayProps {
   studentId: string;
-   userType: 'Teacher' | 'Student'
+  userType: 'Teacher' | 'Student';
 }
 
-// SessionProposedDisplay component to display the proposed session...
-const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ studentId , userType } : SessionProposedDisplayProps ) => {
-
+const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ studentId, userType }) => {
   let oppositeUser = userType == 'Student' ? 'Teacher' : 'Student'; 
 
   const fetcher = async () => {
@@ -262,29 +343,37 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
     }
   };
 
-  React.useEffect(() => {
-    console.log('Session data from cache:', !isValidating);
-  }, [isValidating]);
+  const updateProposed = (session) => {
+    // This function can trigger a revalidation if needed.
+    mutate(`fetchProposedSession-${studentId}`);
+  };
 
   if (error) return <div>Error loading any session</div>;
 
+  // Compute start and end times if proposedSession is available
+  let sessionStartTime, sessionEndTime;
+  if (proposedSession) {
+    sessionStartTime = new Date(proposedSession.date);
+    sessionEndTime = new Date(sessionStartTime.getTime() + proposedSession.length * 60000);
+  }
+
   return (
     <Card className={`my-5 ${proposedSession ? 'bg-black shadow-2xl' : ''}`}>
-      <CardHeader className=" flex">
+      <CardHeader className="flex">
         {isValidating ? (
-            null
+          null
         ) : proposedSession && (
-         <div className="flex flex-row items-center space-x-4 mb-4">
+          <div className="flex flex-row items-center space-x-4 mb-4">
             <div className="grow text-white bg-gray-900 p-3 text-sm rounded-md ">
-              <h1 className="text-md font-bold"> 
+              <h1 className="text-md font-bold">
                 { proposedSession && proposedSession.proposer != userType.toUpperCase() ? (
-                   ` You have a Proposed Session by the ${ oppositeUser }`   
+                  `You have a Proposed Session by the ${ oppositeUser }`   
                 ) : (
                   'You have proposed a new session.'
                 )}
               </h1>  
             </div>
-         </div>
+          </div>
         )}
         <CardTitle className={`text-2xl font-semibold ${proposedSession ? 'text-white' : 'text-gray-800'}`}>
           {isValidating ? 'Loading...' : (proposedSession ? proposedSession.title : 'No proposed sessions')}
@@ -301,8 +390,11 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
           <div className="flex flex-col space-y-5">
             <div>
               <p className={` ${proposedSession ? 'text-gray-400' : 'text-gray-500'} text-md`}>
-                You have a session of {formatLength(proposedSession.length)} proposed for {format(proposedSession.date, "PPP")}.
-                This session will take place {formatDistance(proposedSession.date, new Date(), { addSuffix: true })}.
+                You have a session of {formatLength(proposedSession.length)} proposed for {format(new Date(proposedSession.date), "PPP")} 
+                {sessionStartTime && sessionEndTime && (
+                  <> at {format(sessionStartTime, "p")} - {format(sessionEndTime, "p")}</>
+                )}.
+                This session will take place {formatDistance(new Date(proposedSession.date), new Date(), { addSuffix: true })}.
               </p>
             </div>
             <div>        
@@ -312,7 +404,7 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
                 ) : (
                   `You'll have to wait for the ${ oppositeUser } to accept this lesson request.`
                 )}
-             </p>
+              </p>
             </div>
           </div>
         )}
@@ -320,12 +412,12 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
       <CardFooter className="flex justify-end space-x-3">
         <SessionProposal
           key={proposedSession ? proposedSession.id : 'new-session'}
-          updateProposed={() => mutate(`fetchProposedSession-${studentId}`)}
+          updateProposed={updateProposed}
           initialSession={proposedSession}
           studentId={studentId}
           userType={ userType }
         />
-         {proposedSession && proposedSession?.proposer !== userType.toUpperCase() && (
+        {proposedSession && proposedSession?.proposer !== userType.toUpperCase() && (
           <Button className="bg-blue-600" onClick={handleAcceptProposal}>
             Accept Session
           </Button>

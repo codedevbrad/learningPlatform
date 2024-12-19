@@ -4,7 +4,8 @@ import { auth } from "@clerk/nextjs/server"
 
 export const db_userCanAccess = async () => {
     try {
-        const { userId } = auth()
+        const { userId } = auth();
+        if (!userId) throw new Error('No user logged in');
         const user = await prisma.users.findFirst({
             where: {
                 userId : userId

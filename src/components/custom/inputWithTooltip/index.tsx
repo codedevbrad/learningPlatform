@@ -1,37 +1,54 @@
 'use client';
-import React, { useState, useEffect, useRef } from "react";
-import { Label } from "@/components/ui/label";
-import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush";
+import React, { useState, useEffect, useRef } from "react"
+import { Label } from "@/components/ui/label"
+import { PushSheet, PushSheetTrigger, PushSheetHeader, PushSheetTitle } from "../sheetPush"
 import { useTextStateWithCatches, CharacterCountDisplay, LimitWarning } from "@/app/reusables/usables/useCharacterCount";
-import { Textarea } from "@/components/ui/textarea";
-import DivAsButton from "../divAsButton";
+import { Textarea } from "@/components/ui/textarea"
+import DivAsButton from "../divAsButton"
+
+// Type Definitions
+interface TooltipContent {
+  trigger: string;
+  text: string;
+}
+
+type StateBuiltItem = 
+  | { type: "basic"; content: string }
+  | { type: "tooltip"; content: TooltipContent };
+
+export interface ContentWithToolTipProps {
+  state: string;
+  stateBuilt: StateBuiltItem[];
+}
 
 interface TextAreaWithTooltipProps {
   displayOnly?: boolean;
   wordLimit?: number;
-  onChange: any;
-  handleContentEditableTrigger: any;
-  value: {
-    state: string;
-    stateBuilt: Array<{
-      type: "basic" | "tooltip";
-      content: string | { trigger: string; text: string };
-    }>;
-  };
+  onChange?: (value: ContentWithToolTipProps ) => void;
+  handleContentEditableTrigger: () => void;
+  value: ContentWithToolTipProps;
 }
+
+interface UseTextState {
+  state: string;
+  setState: React.Dispatch<React.SetStateAction<string>>;
+  count: number;
+  warning: { limitReached: boolean };
+}
+
 
 const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
   value,
   onChange,
   displayOnly = false,
   wordLimit = 100, // Default word limit
-  handleContentEditableTrigger
+  handleContentEditableTrigger,
 }) => {
-  const [stateBuilt, updateStateBuilt] = useState(value.stateBuilt || []);
+  const [stateBuilt, updateStateBuilt] = useState<StateBuiltItem[]>(value.stateBuilt || []);
   const [highlightedText, setHighlightedText] = useState<string>("");
-  const contentEditableRef = useRef<HTMLDivElement>(null); 
+  const contentEditableRef = useRef<HTMLDivElement>(null);
 
-  const { state, setState, count, warning } = useTextStateWithCatches(value.state, wordLimit);
+  const { state, setState, count, warning }: UseTextState = useTextStateWithCatches(value.state, wordLimit);
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
     if (contentEditableRef.current) {
@@ -46,7 +63,7 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
       }
     }
   };
-  
+
   const buildState = () => {
     if (contentEditableRef.current) {
       const elements = Array.from(contentEditableRef.current.childNodes);
@@ -71,36 +88,27 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
     }
   };
 
-  function handleTooltipTextChange ( ) {
-    console.log('tooltip textarea updated. can save state')
-  }
+  const handleTooltipTextChange = () => {
+    console.log("tooltip textarea updated. can save state");
+  };
 
-  // useEffect( () => {
-  //   handleTooltipTextChange();
-  // }, [ state ] );
-
-  // builds the stateBuild whenever state updates to keep them in sync for moving to preview and raw object.
   useEffect(() => {
     buildState();
-    console.log('hey this is when state is updated')
+    console.log("hey this is when state is updated");
   }, [state]);
 
-  // syncs the state of the tooltip to the form state ib the block form state.
   useEffect(() => {
     onChange && onChange({ state, stateBuilt });
   }, [state, stateBuilt]);
-
 
   const handleHighlight = () => {
     const selection = window.getSelection();
     if (selection && selection.toString()) {
       setHighlightedText(selection.toString());
-    } 
-    else {
+    } else {
       setHighlightedText("");
     }
   };
-
 
   const addTooltip = () => {
     if (highlightedText && contentEditableRef.current) {
@@ -115,9 +123,9 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
       const spanElement = tempContainer.firstChild;
 
       range.deleteContents();
-      range.insertNode(spanElement);
+      range.insertNode(spanElement!);
 
-      const newTooltip = {
+      const newTooltip: StateBuiltItem = {
         type: "tooltip",
         content: { trigger: highlightedText, text: "" },
       };
@@ -129,7 +137,6 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
       handleContentEditableTrigger();
     }
   };
-
 
   const updateTooltipText = (index: number, newText: string) => {
     const updatedStateBuilt = [...stateBuilt];
@@ -152,7 +159,6 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
   const deleteTooltip = (index: number) => {
     const updatedStateBuilt = stateBuilt.filter((_, i) => i !== index);
 
-    // Update the contentEditable DOM directly
     if (contentEditableRef.current) {
       const updatedHTML = updatedStateBuilt
         .map((item) =>
@@ -162,19 +168,17 @@ const TextAreaWithTooltip2: React.FC<TextAreaWithTooltipProps> = ({
         )
         .join("");
 
-      contentEditableRef.current.innerHTML = updatedHTML; // Immediate DOM update
-      setState(updatedHTML); // Update React state
+      contentEditableRef.current.innerHTML = updatedHTML;
+      setState(updatedHTML);
     }
     updateStateBuilt(updatedStateBuilt);
   };
 
   useEffect(() => {
     if (contentEditableRef.current && contentEditableRef.current.innerHTML !== state) {
-      console.log('when this do?')
       contentEditableRef.current.innerHTML = state;
     }
   }, [state]);
-  
 
   useEffect(() => {
     document.addEventListener("mouseup", handleHighlight);

@@ -77,7 +77,10 @@ const PlatformPageRender: React.FC<
                 </div>
             </div>
 
-            <PageContents content={ data } />
+            <div className='flex flex-col'>    
+                <PageContents content={ data } />  
+              
+            </div>
         </div>
     );
 };

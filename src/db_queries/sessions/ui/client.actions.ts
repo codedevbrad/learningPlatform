@@ -4,7 +4,7 @@ import {
     db__getSessions , 
     db__getProposedSession , 
     db__upsertProposedSession } 
-from "@/db_queries/sessions/admin.queries"
+from "@/db_queries/sessions/sharable.queries"
 
 
 export const action__getSessions = async ( { studentId } ) => {

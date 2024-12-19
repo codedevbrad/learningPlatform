@@ -1,21 +1,11 @@
 import React from 'react';
 import Title from '@/app/reusables/content/title';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { ContentWithToolTipProps } from '@/components/custom/inputWithTooltip';
 
 // ExplanationProps interface
 interface ExplanationProps {
-  content: {
-    state: string;
-    stateBuilt: [] | [
-      {
-        type: 'basic' | 'tooltip';
-        content: string | {
-          trigger: string;
-          text: string;
-        };
-      }
-    ];
-  };
+  content: ContentWithToolTipProps,
   title: string; // Title text
   size: 'subheading1' | 'subheading2' | 'subheading3'; // Title size
   renderTitle: boolean; // Whether to display the title

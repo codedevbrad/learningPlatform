@@ -47,24 +47,18 @@ model AdminUsers {
   role       String       @default("ADMIN")
   topics     Topic[]      @relation("AuthorOfTopics")
   name       String
-  tutorAvailability Calendar[] @relation("AdminCalendar")
+  tutorAvailability Calendar? 
 }
 
 
 model Calendar {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  relatedTo   AdminUsers  @relation("AdminCalendar", fields: [relatedToId], references: [id])
-  relatedToId String      @db.ObjectId
-  availability Json       // Stores the weekly schedule as a JSON object
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  relatedTo    AdminUsers  @relation( fields: [relatedToId], references: [id])
+  relatedToId  String      @db.ObjectId @unique  // Enforcing unique relation for 1-to-1
+  availability Json        // Stores the weekly schedule as a JSON object
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
-
-// Homework 
-  // belongsTo: user
-  // createdBy: Admin
-  // name , set for, 
-  // tasks, 
 
 
 // how do i enforce uniquness here?
