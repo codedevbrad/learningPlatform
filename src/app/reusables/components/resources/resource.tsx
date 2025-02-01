@@ -1,6 +1,10 @@
 'use client';
 import { useEffect } from 'react';
 
+/*
+  DISPLAYS A RESOURCE IN A IFRAME.
+*/
+
 function EmbeddedVideoDisplay({ url, closeDisplay }) {
   // Function to extract YouTube video ID from the URL
   const extractYouTubeId = (url) => {

@@ -1,16 +1,21 @@
-'use client';
-import React, { useState, useRef } from 'react'
+'use client'
+import React, { useState, useRef, useEffect } from 'react'
 import { action__editNewResource } from './actions'
 import AdminBlockTemplate from '@/app/reusables/components/templates/admin/admin.block.form'
 import { Button } from '@/components/ui/button'
-import ResourceComponent, { resourceObject, resourceObjectType } from '@/app/reusables/components/resources'
-import ImageDisplayAndChange from '@/app/reusables/usables/imageChoice'
+import ResourceComponent, { resourceType , resourceObject } from '@/app/reusables/components/resources'
+
+
+/*
+  Even if my resourceObject isn't matching with my formData i don't get any type errors. 
+  Is this because i'm building formData dynamically?.
+*/
 
 
 interface AdminEachResourceComponentProps {
   removeResource: (index: number) => void;
-  updateResource: (resource: resourceObjectType, index: number) => void;
-  resourceData: resourceObjectType;
+  updateResource: (resource: resourceType, index: number) => void;
+  resourceData: resourceType;
   blockIndex: number;
 }
 
@@ -20,8 +25,8 @@ function AdminEachResourceComponent({
   resourceData,
   blockIndex,
 }: AdminEachResourceComponentProps) {
-  const [formData, setFormData] = useState<resourceObjectType>({ ...resourceData });
-  const [savedData, setSavedData] = useState<resourceObjectType>({ ...resourceData });
+  const [formData, setFormData] = useState<resourceType>({ ...resourceData });
+  const [savedData, setSavedData] = useState<resourceType>({ ...resourceData });
   const [isSaved, setIsSaved] = useState(true);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -50,10 +55,15 @@ function AdminEachResourceComponent({
       updateResource(formData, blockIndex);
       setSavedData({ ...formData });
       setIsSaved(true);
-    } catch (error) {
+    } 
+    catch (error) {
       console.log('error saving resource', error);
     }
   };
+
+  useEffect( ( ) => {
+     console.log( 'resource data' , formData );
+  }, [ formData ] );
 
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
@@ -104,9 +114,6 @@ function AdminEachResourceComponent({
             />
           </div>
         </div>
-        <div className="flex justify-center items-center px-10">
-          <ImageDisplayAndChange imageUrl={formData.imgUrl} isInAdminMode={true} returnImageChosen={handleImageChange} />
-        </div>
       </div>
     </form>
   );
@@ -132,20 +139,20 @@ function AdminEachResourceComponent({
 
 interface EditResourcesComponentProps {
   topicId: string;
-  resources: resourceObjectType[];
+  resources: resourceType[];
 }
 
 function EditResourcesComponent({ topicId, resources }: EditResourcesComponentProps) {
-  const [resourcesState, setResourcesState] = useState<resourceObjectType[]>(resources);
+  const [resourcesState, setResourcesState] = useState<resourceType[]>(resources);
 
   const addNewResourceFunction = async () => {
-    const newResource: resourceObjectType = { id: Date.now(), ...resourceObject };
+    const newResource: resourceType = { id: Date.now(), ...resourceObject };
     const newArrayState = [...resourcesState, newResource];
     setResourcesState(newArrayState);
     await action__editNewResource(topicId, newArrayState);
   };
 
-  const updateAResource = async (resource: resourceObjectType, index: number) => {
+  const updateAResource = async (resource: resourceType, index: number) => {
     const updatedResources = [...resourcesState];
     updatedResources[index] = resource;
     await action__editNewResource(topicId, updatedResources);

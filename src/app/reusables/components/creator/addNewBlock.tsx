@@ -18,7 +18,6 @@ import { codeSnippetObject } from "@/app/reusables/components/blocks/snippet/sni
 import { ChallengeComponentObject } from "@/app/reusables/components/blocks/challenge/challenge"
 import { taskObject } from "@/app/reusables/components/blocks/task/task"
 import { editorJsObject } from "@/app/reusables/components/blocks/editorJs/editor"
-import { videoBlockObject } from "@/app/reusables/components/blocks/video/video"
 import { animatedCodeChallengeObject } from "../blocks/animatedCodeChallenge"
 import { imageObject } from "../blocks/image/image"
 import { diagramCompletionObject } from "../blocks/diagramCompletion/diagramCompletion"
@@ -37,13 +36,12 @@ interface AddNewDataBlockProps {
 
 const blockOptions = [
   { title: "Explanation", object: explanationObject },
-  { title: "Image", object: imageObject },
+  { title: "Media", object: imageObject },
   { title: "Quiz", object: quizObject },
   { title: "Code Snippet", object: codeSnippetObject },
   { title: "Challenge", object: ChallengeComponentObject },
   { title: "Task", object: taskObject },
   { title: "EditorJs", object: editorJsObject },
-  { title: "Video", object: videoBlockObject },
   { title: "Animated Code Challenge", object: animatedCodeChallengeObject },
   { title: "Diagram Completion", object: diagramCompletionObject },
 ]

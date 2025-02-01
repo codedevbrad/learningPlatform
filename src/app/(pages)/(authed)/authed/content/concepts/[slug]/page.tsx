@@ -11,23 +11,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
     let topicId = params.slug;
     const topic = await findTopicById( topicId );
     const userData = await fetchUserDataOnTopic( topicId );
-    const { id, title, description, data, resources , position, author, postedOn } = topic;
+    const { id, title, description, data, resources , position, author, postedOn , introMedia } = topic;
 
     return (
         <div className="h-full flex flex-col items-center">
-            {/* <ConceptTopicMainComponent 
+            <ConceptTopicMainComponent 
                   pageInfo={{ name: title , description , resources, author , postedOn }}
                          data={ data } 
                  userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
                       topicId={ topicId }
-            /> */}
-
+                      introMedia={ introMedia }
+            />
+            
+            {/* 
             <PlatformPageRender 
                   pageInfo={{ name: title , description , resources, author , postedOn }}
                          data={ data } 
                  userProgress={{ progress: userData?.userProgress , notes: userData?.userNotes  }} 
                       topicId={ topicId }
-            />
+            /> */}
 
             <NextTopicCard topicPos={ position } />
         </div>

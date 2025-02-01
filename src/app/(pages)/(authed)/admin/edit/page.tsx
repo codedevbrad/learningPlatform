@@ -15,17 +15,19 @@ export default async function EditContentPage (
             <Tabs defaultValue={searchParams?.tab || 'concepts' } className="">
                 <TabsList>
                     <TabQueryChange tabName={'concepts'} />
-                    <TabQueryChange tabName={'courses'} />
                     <TabQueryChange tabName={'challenges'} />
+                    <TabQueryChange tabName={'courses'} />
                 </TabsList>
                 <TabsContent value="concepts">
                     <ConceptsEditTable />
                 </TabsContent>
-                <TabsContent value="courses">
-                    Courses
-                </TabsContent>
+
                 <TabsContent value="challenges"> 
                     <ChallengesEditTable />
+                </TabsContent>    
+                            
+                <TabsContent value="courses">
+                    Courses
                 </TabsContent>
            </Tabs>
         </div>

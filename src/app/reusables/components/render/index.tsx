@@ -78,10 +78,6 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return (
                     <EditorAdminBlock blockIndex={ blockIndex } data={ dataItem as EditorJsProps } adminTools={ adminTools } />
                 )
-            case 'video':
-                return (
-                    <VideoAdminBlock blockIndex={ blockIndex } data={ dataItem as VideoBlockProps } adminTools={ adminTools }   />
-                )
             case 'animatedCodeChallenge':
                 return (
                     <AnimatedCodeChallengeAdminBlock blockIndex={ blockIndex } data={ dataItem as AnimatedCodeChallengeProps } adminTools={ adminTools } />
@@ -115,8 +111,6 @@ const DataChoiceComponent: React.FC<DataChoiceComponentProps> = ({ blockIndex, d
                 return <TaskComponent data={ dataItem as TaskProps } />;
             case 'editor':
                 return <EditorViewComponent data={ dataItem as EditorJsProps } />
-            case 'video':
-                return <VideoViewComponent data={ dataItem as VideoBlockProps } />
             case 'animatedCodeChallenge':
                 return <AnimatedCodeChallenge data={ dataItem as AnimatedCodeChallengeProps } />
             case 'image':

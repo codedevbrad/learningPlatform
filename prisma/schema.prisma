@@ -149,6 +149,7 @@ model Topic {
   concept     Concepts @relation(fields: [conceptId], references: [id], onDelete: Cascade ) 
   conceptId   String   @db.ObjectId
   active      Boolean 
+  introMedia  Json 
   data        Json[]
   resources   Json[]
   languages   LanguagesTopic[]

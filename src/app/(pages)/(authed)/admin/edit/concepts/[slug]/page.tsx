@@ -1,8 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { action_getTopicById } from "../actions"
 
+import EditMediaIntroComponent from "./tabs/media"
 import EditDataComponent from "./tabs/data"
 import EditResourcesComponent from "./tabs/resources"
+
 import Title from "@/app/reusables/content/title"
 
 
@@ -24,27 +26,37 @@ export default async function AdminConceptPage ({ params }: { params: { slug: st
     return (
         <div>
             <Tabs defaultValue="Data" className="" storageKey="concept_admin__tab">
-                    <TabsList>
+                    <TabsList>   
+                        <TabsTrigger value={"videoIntro"}>
+                            Video intro
+                        </TabsTrigger>
                         <TabsTrigger value="Data">
                             Topic work
-                        </TabsTrigger>
+                        </TabsTrigger>       
                         <TabsTrigger value="Resources">
                             Resources
                         </TabsTrigger>
                         <TabsTrigger value="Analytics">
                             Analytics
                         </TabsTrigger>
-                    </TabsList>
+                    </TabsList> 
+
+                    <TabsContent value="videoIntro">
+                        <EditMediaIntroComponent topicId={ topic.id } introMedia={ topic.introMedia } />
+                    </TabsContent>
+
                     <TabsContent value="Data" className="p-6 border border-gray-200 mt-4 rounded-lg">
                         <EditDataComponent topicId={ topic.id } topicData={ topic.data } topicInfo={{ 
                             title: topic.title , 
                             description: topic.description , 
                             languages: topic.languages
                         }}/>
-                    </TabsContent>
+                    </TabsContent>                    
+                   
                     <TabsContent value="Resources">
                         <EditResourcesComponent topicId={ params.slug } resources={ topic.resources } />
                     </TabsContent>
+
                     <TabsContent value="Analytics"> 
                         Analytics
                     </TabsContent>
