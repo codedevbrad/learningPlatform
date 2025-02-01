@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import ChallengeComponent, { ChallengeUsageProps, ChallengeProps } from './challenge'
 
-import AdminBlockTemplate from '../../templates/admin/admin.block.form'
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/admin/_types/type.adminTools'
 
 interface ChallengeAdminBlockProps {
@@ -45,11 +45,22 @@ const ChallengeAdminBlock: React.FC<ChallengeAdminBlockProps> = ({ data, adminTo
     setIsSaved(false); // Reset the save status when a new challenge is added
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true); // Set the save status to true
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true); // Set the save status to true
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('challenge block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = ( ) => {

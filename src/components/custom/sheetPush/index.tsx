@@ -19,7 +19,16 @@ function PushNav(trigger, side) {
   }
 }
 
-const PushSheet = ({ className, children, side = 'right', showTrigger = true }) => {
+
+interface PushSheetProps {
+    className?: string;
+    children: any;
+    side: 'left' | 'right';
+    showTrigger: boolean;
+}
+
+
+const PushSheet = ({ className, children, side = 'right', showTrigger = true }  ) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleOpen = () => {

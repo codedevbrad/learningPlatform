@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TaskComponent, { TaskProps } from './task'
-import AdminBlockTemplate from '../../templates/admin/admin.block.form'
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form'
 
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
 
@@ -66,11 +66,22 @@ const TaskAdminBlock: React.FC<TaskAdminBlockProps> = ({ data, adminTools, block
     setIsSaved(false); // Reset the save status when a new item is added
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData);
+  //   setIsSaved(true); // Set the save status to true
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true); // Set the save status to true
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Task block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = ( ) => {

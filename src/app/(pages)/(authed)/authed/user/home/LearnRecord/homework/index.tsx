@@ -1,6 +1,6 @@
 'use server'
 import Title from '@/app/reusables/content/title'
-import AdminHomework from '@/app/reusables/features/homework/render.admin'
+import AdminHomework from '@/db_queries/homework/render.admin'
 
 export default async function Homework ({ renderType }) {
   return (

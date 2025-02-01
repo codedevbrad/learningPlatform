@@ -18,10 +18,12 @@ export default async function NextTopicCard ( { topicPos }) {
 
     return (
         <div className='mt-auto mb-[30px] w-full flex justify-end'>
-            <Card className="w-[400px]">
+            <Card className="w-[400px] bg-black text-white z-50">
                 <CardHeader>
                     <div className='flex justify-end'> 
-                        <span className='bg-black text-white px-4 py-1 text-sm rounded-lg'> Up next </span>     
+                        <span className='bg-gray-800 text-white px-4 py-2 text-sm rounded-lg'> 
+                            Up next 
+                        </span>     
                     </div>
                 </CardHeader>
                 

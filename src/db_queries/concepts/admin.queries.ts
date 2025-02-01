@@ -3,7 +3,7 @@ import prisma from '../../../prisma/client'
 import { TopicType } from '../../../prisma/schema.types';
 import { getCategoriesByIds, getLanguagesByIds } from '../tags/student.queries'
 import { auth } from "@clerk/nextjs/server"
-import { db_getAdminIdFromAuth } from '../user/admin.queries';
+import { db_getAdminIdFromAuth } from '../user/admin.queries'
 
 export async function getAllConceptsPlain ( ) {
   let concepts = await prisma.concepts.findMany({
@@ -397,6 +397,9 @@ export const addNewTopic = async (
         conceptId,
         active,
         position: newPosition,
+        introMedia: {
+            url: null,  type: null, bucketId: null
+        },
         languages: {
           create: selectedLanguages.map((languageId: string ) => ({
             languageId,
@@ -487,3 +490,17 @@ export const updateTopicResources = async (topicId, resources) => {
       throw new Error(`Failed to update topic resources: ${error.message}`);
     }
 };
+
+export const updateTopicIntro = async ( topicId , media ) => {
+    try {
+        await prisma.topic.update({
+            where: { id: topicId },
+            data: {
+                introMedia: media
+            }
+        })
+    }
+    catch ( error ) {
+        throw new Error(`Failed to update topic resources: ${error.message}`);
+    }
+}

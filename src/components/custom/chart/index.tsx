@@ -18,7 +18,7 @@ export default function ChartWrapper({ chartSize = "single" , children , chartCo
   }
 
   return (
-    <div className={` ${sizeClasses[chartSize].card}`}>
+    <div className={`rounded-lg border shadow-lg py-3 px-5 ${sizeClasses[chartSize].card}`}>
         { header }
         <ChartContainer config={chartConfig} className={`rounded-lg w-full ${ sizeClasses[chartSize].height}`}>
             { children } 

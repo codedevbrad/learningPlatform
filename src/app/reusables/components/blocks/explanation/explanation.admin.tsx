@@ -6,13 +6,16 @@ import { Label } from "@/components/ui/label"
 import ExplanationComponent, { ExplanationProps } from './explanation'
 import AdminBlockTemplate from '../../templates/admin/admin.block.form'
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools'
-import { Textarea } from '@/components/ui/textarea'
+import { TextAreaWithTooltip2 } from '@/components/custom/inputWithTooltip'
+import { handleSubmitUtility } from '../../templates/admin/admin.block.form'
+
 
 interface ExplanationBlockProps {
   data: ExplanationProps;
   blockIndex: number;
   adminTools: AdminToolsProps;
 }
+
 
 const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
   data,
@@ -21,8 +24,7 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
 }) => {
   const [formData, setFormData] = useState<ExplanationProps>(data);
   const [savedData, setSavedData] = useState<ExplanationProps | null>(data);
-  const [isSaved, setIsSaved] = useState(true);
-
+  const [ saveOverride , updateSaveOverride ] = useState( null );
   const formRef = useRef(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -31,29 +33,43 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
       ...prevData,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    setIsSaved(false); // Reset the save status when the form changes
   };
+
+  const handleTooltipStateUpdate = ( state ) => {
+    console.log( 'handleTooltipStateUpdate saves to the formData' );
+    setFormData((prevData) => ({
+        ...formData , content: state
+    }));
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true); // Set the save status to true
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('explanation block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
-
+  
   const handleDelete = () => {
     console.log('clicked to delete explanation', blockIndex);
     adminTools.updateDataBlock({ type: 'delete', blockData: null, blockIndex });
   };
 
+  function handleContentEditableTrigger ( ) {
+    updateSaveOverride( new Date( ) );
+  }
+
   // Function to update content from AddLoremIpsum
-  const updateLoremContent = (newContent: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      content: newContent,
-    }));
-    setIsSaved(false); // Reset save status
-  };
+  // const updateLoremContent = (newContent: string) => {
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     content: newContent,
+  //   }));
+  //   setIsSaved(false); // Reset save status
+  // };
 
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
@@ -98,20 +114,13 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="space-y-1">
-          <Label htmlFor="content">Content</Label>
-          <Textarea
-            wordLimit={300}
-            rows={3}
-            updateContentbyLorem={updateLoremContent}
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
+        <TextAreaWithTooltip2 
+            wordLimit={ 400 }
+            value={ formData.content } 
+            onChange={ handleTooltipStateUpdate }
+            handleContentEditableTrigger={ handleContentEditableTrigger }
+        /> 
+
       </CardContent>
     </form>
   );
@@ -129,8 +138,8 @@ const ExplanationAdminBlock: React.FC<ExplanationBlockProps> = ({
       form={form}
       savedData={preview}
       formRef={formRef}
-      isSaved={isSaved}
       removeItem={handleDelete}
+      saveOverrided={ saveOverride }
     />
   );
 };

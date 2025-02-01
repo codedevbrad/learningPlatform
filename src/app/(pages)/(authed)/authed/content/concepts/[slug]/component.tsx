@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react'
+import React, { useState } from 'react'
 import DividerWithText from '@/app/reusables/layouts/divider'
 
 import ContentHeader from '@/app/reusables/components/templates/client/header/index'
@@ -9,6 +9,7 @@ import { action__updateTopicNotesForUser } from './actions'
 import SaveProgressForPageBtn from './savePageProgress/index'
 import EmbeddedVideoDisplay from '@/app/reusables/components/resources/resource'
 import PageContents from '@/app/reusables/layouts/pagecontents'
+import ReusableMedia from '@/app/reusables/content/media'
 
 
 interface InfoProps {
@@ -31,7 +32,7 @@ interface DataProps {
 
 const ConceptTopicMainComponent: React.FC<
   { data: DataProps, pageInfo: InfoProps , userProgress: any , topicId: string , topicPos: number }> = (
-  { data, pageInfo, userProgress , topicId , topicPos }) => {
+  { data, pageInfo, userProgress , topicId , topicPos, introMedia }) => {
     
     const { progress , notes } = userProgress;
     const [ completed , changeCompleted ] = useState( progress );
@@ -67,6 +68,15 @@ const ConceptTopicMainComponent: React.FC<
                     <DividerWithText className="">
                         enjoy the content 🙂
                     </DividerWithText>
+
+                    
+                    { JSON.stringify( introMedia ) }
+
+                    <ReusableMedia 
+                    src={'https://res.cloudinary.com/dgunvvl28/video/upload/v1736010417/3253113-hd_1920_1080_25fps_hrg5yq.mp4'} 
+                      controls={ true }
+                      className='my-10'
+                    />
 
                     <PlatformContentBlocks data={data} isInAdminMode={false} adminTools={null} />
                 </div>

@@ -4,7 +4,7 @@ import { CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import DiagramCompletionComponent, { DiagramCompletionProps } from './diagramCompletion';
-import AdminBlockTemplate from '../../templates/admin/admin.block.form';
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form';
 import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools';
 import { Textarea } from '@/components/ui/textarea';
 import DiagramCanvas from './canvas';
@@ -134,11 +134,22 @@ const DiagramCompletionAdminBlock: React.FC<DiagramCompletionBlockProps> = ({
     setIsSaved(false);
   };
 
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setSavedData(formData); // Save the current formData
+  //   setIsSaved(true);
+  //   adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+  // };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData); // Save the current formData
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Diagram completion block form submtted.')
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = () => {

@@ -1,5 +1,5 @@
 'use server'
-import { db__getProposedSession , db__upsertProposedSession } from "@/db_queries/sessions/admin.queries"
+import { db__getProposedSession , db__upsertProposedSession } from "@/db_queries/sessions/sharable.queries"
 
 export const action__getProposedSession = async ( { studentId }) => {
     try {

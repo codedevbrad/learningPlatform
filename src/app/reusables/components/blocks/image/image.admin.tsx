@@ -1,17 +1,23 @@
-// ImageAdminBlock.tsx
 'use client';
 
 import React, { useState, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CldUploadButton } from 'next-cloudinary';
 import ImageBlock, { ImageBlockProps } from './image';
-import AdminBlockTemplate from '../../templates/admin/admin.block.form';
-import { AdminToolsProps } from '@/app/admin/_types/type.adminTools';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import AdminBlockTemplate, { handleSubmitUtility } from '../../templates/admin/admin.block.form';
+import { AdminToolsProps } from '@/app/(pages)/(authed)/admin/_types/type.adminTools';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import Image from 'next/image';
+
+import UploadMediaButton from '@/app/services/cloudinary/components/upload';
+
 
 interface ImageAdminBlockProps {
   data: ImageBlockProps;
@@ -19,7 +25,11 @@ interface ImageAdminBlockProps {
   adminTools: AdminToolsProps;
 }
 
-const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blockIndex }) => {
+const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({
+  data,
+  adminTools,
+  blockIndex,
+}) => {
   const [formData, setFormData] = useState<ImageBlockProps>({
     ...data,
     position: data.position || 'center',
@@ -27,7 +37,7 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
   });
   const [savedData, setSavedData] = useState<ImageBlockProps | null>(data);
   const [isSaved, setIsSaved] = useState(true);
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
@@ -54,29 +64,43 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
     setIsSaved(false);
   };
 
-  const handleUploadSuccess = (result: any) => {
-    const uploadedUrl = result.info.secure_url;
-    console.log( result.info.resource_type );
+  /** 2. handleUploadSuccess used in the reusable component's onUploadSuccess */
+  const handleUploadSuccess = ( url , resource_type) => {
+    const uploadedUrl = url;
+    const uploadedMediaType = resource_type;
+
     setFormData((prevData) => ({
       ...prevData,
       imageUrl: uploadedUrl,
-      mediaType: result.info.resource_type, // Correctly setting the media type based on the resource type
+      mediaType: uploadedMediaType,
     }));
 
     setIsSaved(true);
     adminTools.updateDataBlock({
       type: 'update',
-      blockData: { ...formData, imageUrl: uploadedUrl, mediaType: result.info.resource_type },
+      blockData: {
+        ...formData,
+        imageUrl: uploadedUrl,
+        mediaType: uploadedMediaType,
+      },
       blockIndex,
     });
-    setSavedData({ ...formData, imageUrl: uploadedUrl, mediaType: result.info.resource_type });
+    setSavedData({
+      ...formData,
+      imageUrl: uploadedUrl,
+      mediaType: uploadedMediaType,
+    });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSavedData(formData);
-    setIsSaved(true);
-    adminTools.updateDataBlock({ type: 'update', blockData: formData, blockIndex });
+    console.log('Image block form submitted.');
+    handleSubmitUtility({
+      event: e,
+      formData,
+      setSavedData,
+      adminTools,
+      blockIndex,
+    });
   };
 
   const handleDelete = () => {
@@ -86,9 +110,7 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
   const form = (
     <form onSubmit={handleSubmit} ref={formRef}>
       <CardContent className="space-y-4 px-0">
-
         <div className="flex-row space-x-4 justify-between my-5">
-
           <div className="flex grow flex-col space-y-2">
             <Label htmlFor="title">Title</Label>
             <Input id="title" name="title" value={formData.title} onChange={handleChange} />
@@ -109,8 +131,10 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
           </div>
 
           <div className="flex flex-col space-y-2">
-            <Label htmlFor="responsive" className="">Responsive</Label>
-            <div className='h-full flex items-end justify-end'>
+            <Label htmlFor="responsive" className="">
+              Responsive
+            </Label>
+            <div className="h-full flex items-end justify-end">
               <Checkbox
                 className="w-14 h-full"
                 checked={formData.responsive}
@@ -120,46 +144,18 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
           </div>
         </div>
 
+        {/**
+         * 3. Use the new UploadMediaButton
+         * Pass in any existing media URL, media type, and the success callback
+         */}
         <Card className="bg-gray-50 flex justify-center items-center p-5">
-          <CldUploadButton
-            options={{
-              multiple: false,
-              folder: 'codeBootcamp/imageBlock'
-            }}
-            uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME}
-            onSuccess={handleUploadSuccess}
-            className="relative z-50 cursor-pointer"
-          >
-            <div className="rounded-lg bg-gray-200 flex justify-center items-center relative overflow-hidden">
-              {formData.imageUrl ? (
-                <div className="w-full h-full flex justify-center items-center relative">
-                  {formData.mediaType === 'video' ? (
-                    <video
-                      src={formData.imageUrl}
-                      controls
-                      className="rounded-lg w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={formData.imageUrl}
-                      alt={formData.title || 'Uploaded Image'}
-                      width={600}
-                      height={400}
-                      objectFit="cover"
-                      className="rounded-lg opacity-65"
-                    />
-                  )}
-                  <div className="flex absolute z-50 py-3 px-4 inset-0 text-sm text-center justify-center items-center text-black rounded-lg">
-                    <span className="bg-white py-2 px-4 rounded-lg text-lg shadow-sm">
-                      Upload New Image/Video
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <span className="text-sm text-center">Upload New Image/Video</span>
-              )}
-            </div>
-          </CldUploadButton>
+          <UploadMediaButton
+            mediaUrl={formData.imageUrl}
+            mediaType={formData.mediaType}
+            title={formData.title}
+            onUploadSuccess={handleUploadSuccess}
+            folderPath="codeBootcamp/imageBlock" 
+          />
         </Card>
       </CardContent>
     </form>
@@ -173,7 +169,7 @@ const ImageAdminBlock: React.FC<ImageAdminBlockProps> = ({ data, adminTools, blo
 
   return (
     <AdminBlockTemplate
-      title="Image/Video"
+      title="Media"
       description="Fill out the form and click save."
       form={form}
       savedData={preview}

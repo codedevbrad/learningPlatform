@@ -2,12 +2,12 @@
 import Title from "@/app/reusables/content/title"
 import { Tabs, TabsList, TabsContent , TabsTrigger } from "@/components/ui/tabs"
 
-import SessionsWithProposals from "@/app/reusables/components/sessions"
-import MessagesDisplayComponent from "@/app/reusables/components/messages"
+import SessionsWithProposals from "@/db_queries/sessions/ui"
+import MessagesDisplayComponent from "@/db_queries/messages/ui"
 
-import FeatureDisabled from "@/app/reusables/access/sharable/protection.disabled"
+import FeatureDisabled from "@/db_queries/user/ui/protection.disabled"
 
-import AllowContentOrDisplayUserStatus from "@/app/reusables/access/components/student/student.displayAccess"
+// import AllowContentOrDisplayUserStatus from "@/app/reusables/access/components/student/student.displayAccess"
 
 import { action__getUserData } from "../actions"
 

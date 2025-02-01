@@ -1,6 +1,6 @@
 'use server'
 
-import { db__getSession } from "@/db_queries/sessions/admin.queries";
+import { db__getSession } from "@/db_queries/sessions/sharable.queries";
 
 // Correct action__getSession function
 export async function action__getSession({ sessionId }) {

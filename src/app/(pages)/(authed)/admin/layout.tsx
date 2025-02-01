@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import AdminAuthCheck from "./auth.flow/component"
 import Header from "./(layout)/header"
+import GoBackButton from "@/app/reusables/layouts/goBack";
 
 export const metadata: Metadata = {
   title: "CodeBootcamp.com",
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
       <AdminAuthCheck>
          <Header />
+         <GoBackButton />
         { children }
       </AdminAuthCheck>
   );
