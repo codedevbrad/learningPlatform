@@ -38,6 +38,7 @@ export async function saveAvailability(weekSchedule: any) {
   }
 }
 
+
 // Get the availability for the logged in admin user
 export async function getAvailability() {
   try {

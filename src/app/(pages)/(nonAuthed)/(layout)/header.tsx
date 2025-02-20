@@ -32,8 +32,11 @@ export default function Header() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavMenu link={{ title: 'Learning with us', href: '/' }} subLinks={null} />
-            <NavMenu link={{ title: 'Blog', href: '/' }} subLinks={null} />
-            <NavMenu link={{ title: 'Our Company', href: '/' }} subLinks={null} />
+            <NavMenu link={{ title: 'The Bootcamp', href: '/' }} subLinks={null} /> 
+            <NavMenu link={{ title: 'Blogs', href: '/' }} subLinks={[
+                { title: 'Learn ReactJs easily' , href: '/' }, 
+                { title: 'Why having a tutor helps your learning journey' , href: '/' }
+            ]} />
             <NavMenu link={{ title: 'Faqs', href: '/' }} subLinks={null} />
           </NavigationMenuList>
         </NavigationMenu>

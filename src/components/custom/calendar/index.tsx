@@ -18,6 +18,7 @@ interface CalendarProps {
   className?: string
   minDate?: Date // Minimum selectable date
   showFormattedDate?: boolean // New prop to toggle formatted date display
+  blockedDays?: number[] // Array of days to block (0 for Sunday, 1 for Monday, etc.)
 }
 
 export default function Calendar({
@@ -26,8 +27,14 @@ export default function Calendar({
   className,
   minDate = new Date(), // Defaults to the current date if not provided
   showFormattedDate = true, // Defaults to showing formatted date
+  blockedDays = [], // Defaults to no blocked days
 }: CalendarProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const isDayBlocked = (date: Date): boolean => {
+    // Check if the day of the week is in the blockedDays array
+    return blockedDays.includes(date.getDay())
+  }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -48,7 +55,9 @@ export default function Calendar({
             onDateChange(date)
             setIsOpen(false)
           }}
-          disabled={(date) => date < minDate.setHours(0, 0, 0, 0)}
+          disabled={(date) =>
+            date < minDate.setHours(0, 0, 0, 0) || isDayBlocked(date)
+          }
           initialFocus
         />
       </PopoverContent>

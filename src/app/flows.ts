@@ -1,4 +1,5 @@
 export const nonAuthedRoute  = '/' 
+export const onBoarding = '/onboard'
 
 export const signInRedirect  = '/authed/content/concepts'
 export const bootcampLogoRedirect  = '#'

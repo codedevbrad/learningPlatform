@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className={'bg-white'}>
+    <div className={'bg-white h-full'}>
         <Header />
-        <div className="p-8 pt-1">
+        <div className="p-8 pt-1 h-full mt-[100px]">
             { children }
         </div>
     </div>

@@ -3,44 +3,20 @@
 import React, { useState, useMemo } from "react";
 import useSWR from "swr";
 import Link from "next/link";
-import {
-  ColumnDef,
-  SortingState,
-  flexRender,
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-} from "@tanstack/react-table";
+import { ColumnDef , SortingState, flexRender, useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel, getPaginationRowModel } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableFooter,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu"
 
-import { formatDistanceToNow, isBefore, isAfter } from "date-fns"; // Importing necessary date-fns functions
+import { formatDistanceToNow, isBefore, isAfter } from "date-fns"; 
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
 import SessionProposedDisplay from "./client.proposeSession";
 import Title from "@/app/reusables/content/title";
-import { action__getSessions } from "./client.actions"; // Import your action function
+import { action__getSessions } from "./client.actions"; 
+
 
 export type Session = {
   id: string;
@@ -48,6 +24,7 @@ export type Session = {
   date: string | Date; // Date can be string or Date object
   length: number; // Length in minutes
 };
+
 
 const columns: ColumnDef<Session>[] = [
   {
@@ -130,10 +107,12 @@ const columns: ColumnDef<Session>[] = [
   },
 ];
 
+
 interface SessionProps {
   studentId: string;
   userType: "Teacher" | "Student";
 }
+
 
 export default function SessionsWithProposals({ studentId, userType }: SessionProps) {
   const [sorting, setSorting] = useState<SortingState>([]);

@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import DashboardLayout from "./(layout)"
 import AnalyticsPopover from "./tracking/component";
-import TimerMusicPlayer from "./zenMode/component";
 import GoBackButton from "@/app/reusables/layouts/goBack"
 
 export const metadata: Metadata = {
@@ -13,7 +12,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
       <>
           <AnalyticsPopover />
-          <TimerMusicPlayer />
           <DashboardLayout>
               <GoBackButton />
               { children }

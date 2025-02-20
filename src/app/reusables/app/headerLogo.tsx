@@ -8,7 +8,7 @@ export default function HeaderLogo({ url } : { url: string }) {
       <Link href={ url }>
         <div className="flex flex-row items-center">
             <AppLogo  />
-            <AppVersion />
+            <AppVersion size={undefined} />
         </div>
       </Link>
     </div>

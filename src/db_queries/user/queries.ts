@@ -1,5 +1,7 @@
 import prisma from "../../../prisma/client"
-import { auth, currentUser } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server"
+
+// gets the user by the signed in user from clerk AUTH.
 
 export const db_fetchUser = async ( ) => {
   try {
@@ -10,7 +12,7 @@ export const db_fetchUser = async ( ) => {
       });
   }
   catch ( error ) {
-      console.error("Error creating user:", error);
+      console.error("Error finding user:", error);
       throw error;
   }
 }

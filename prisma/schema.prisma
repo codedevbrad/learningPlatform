@@ -8,9 +8,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//////////////// ========= schema.prisma  ///////////////////
+//////////// ======= schema.prisma ======  /////////////////
 
-// ***** User ****** //
+
+// ***** User status ****** //
 enum UserStatus {
   PENDING
   ACTIVE
@@ -21,23 +22,54 @@ enum UserStatus {
 }
 
 
-// *** CHAT / Session ENUM Between student and teacher *** //
+model InterestedCapture  {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String @unique 
+  timestamp DateTime @default(now()) 
+}
+
+
 enum USERTYPE {
-  STUDENT
+  STUDENT 
   TEACHER
+  ADMIN
+}
+
+
+model Subscription {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  user           Users                @relation(fields: [userId], references: [id])
+  userId         String               @db.ObjectId
+  // 30-day cycle start/end
+  startDate         DateTime
+  endDate           DateTime
+  status            SubscriptionStatus @default(ACTIVE)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
 }
 
 
 model Users {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String       @unique
-  bio        String 
-  questions  Json[]
-  TopicsData UserDataForTopic[]
-  sessions   Sessions[]
-  role       String @default("USER")
-  status     UserStatus @default(PENDING)
-  nickname   String
+  id             String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String            @unique
+  bio            String
+  questions      Json[]
+  TopicsData     UserDataForTopic[]
+  sessions       Sessions[]
+  role           String            @default("USER")
+  status         UserStatus        @default(PENDING)
+  nickname       String
+  tutorRelation  TutorRelation?    @relation("UserTutorRelation")
+  subscriptions  Subscription[]
 }
 
 
@@ -48,6 +80,16 @@ model AdminUsers {
   topics     Topic[]      @relation("AuthorOfTopics")
   name       String
   tutorAvailability Calendar? 
+  students   TutorRelation[] @relation("AdminTutorRelation")
+}
+
+
+model TutorRelation {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  student    Users      @relation("UserTutorRelation", fields: [studentId], references: [id])
+  studentId  String     @unique @db.ObjectId  
+  tutor      AdminUsers @relation("AdminTutorRelation", fields: [tutorId], references: [id])
+  tutorId    String     @db.ObjectId
 }
 
 

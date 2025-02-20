@@ -10,7 +10,13 @@ import HeaderLogo from "@/app/reusables/app/headerLogo"
 import { action__getUserName } from "./action"
 import { useEffect, useState } from "react"
 
+import UserAuthedProfileAsDropdown from "@/db_queries/user/ui/profileDropdown"
+import StreakStatsDropdown from "@/db_queries/streakSystem/ui/streak.dropdown"
+
 import { useUserContext } from "@/app/contexts/context"
+import TimerMusicPlayer from "../../zenMode/component"
+import SubscriptionPlanModal from "@/db_queries/enrollment/ui.components/ui.plan/ui.plan.modal"
+
 
 export default function Header() {
 
@@ -33,6 +39,14 @@ export default function Header() {
 
     !isAdminRole ? fetchNickname() : null;
   }, [] );
+
+  function RenderZenMode ( ) {
+      return (
+        <div> 
+            zen mode
+        </div>
+      )
+  }
  
   return (
       <header className="text-black py-4 px-6 flex items-center justify-between">
@@ -44,6 +58,7 @@ export default function Header() {
                         { title: 'Concepts' , href: '/authed/content/concepts' , colorChosen: 'purple', emoji: '👹' },
                         { title: 'Challenge me' , href: '/authed/content/challenges', colorChosen: 'red' , emoji: '👊' }
                       ]} />
+                     <NavMenu link={{ title: 'Zen Mode' , href: '#' }} subLinks={ <RenderZenMode /> } />
                       <NavMenu link={{ title: 'Help with' , href: '#' }} subLinks={[
                         { title: 'Figuring problems out' , href: '/authed/content/help/chat' , colorChosen: 'emerald' },
                         { title: 'Creating' , href: '/authed/content/help/build', colorChosen: 'purple' },
@@ -63,13 +78,14 @@ export default function Header() {
           </button>            
           
             <SignedIn>
-              <PageLinkControl />
-              <UserButton />
-              { !isAdminRole && 
-                <span className="text-white px-3 py-1 rounded-md bg-black font-medium">
-                 {nickname}
-                </span> 
-              }
+                <div className="flex flex-row items-center gap-3">
+                  <PageLinkControl />
+                  <SubscriptionPlanModal hideIfActiveSubscription={ false } /> 
+                  <div className=" border rounded-md flex flex-row"> 
+                    <StreakStatsDropdown />
+                    <UserAuthedProfileAsDropdown />
+                  </div>
+                </div>
             </SignedIn>
         </div>
       </header>

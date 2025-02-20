@@ -96,31 +96,7 @@ const TimerMusicPlayer: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-20 right-4 z-50">
-      <Popover
-        onOpenChange={(open) => {
-          if (open) {
-            handlePopoverOpen();
-          }
-        }}
-        open={isPopoverOpen}
-      >
-        <PopoverTrigger asChild>
-          <button
-            className="w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 focus:outline-none"
-            onClick={() => setIsPopoverOpen( prev => !prev )} // Manually toggle popover open
-          >
-            <span className="text-white"> 🎵 </span>
-          </button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="bg-gray-800 text-white p-4 rounded-lg shadow-2xl w-64"
-          side="bottom"
-          align="end"
-        >
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Timer & Music Player</h2>
-          </div>
+    <div className="w-full">
 
           <div className="mb-4">
             <div className="text-center text-3xl font-bold mb-2">
@@ -195,8 +171,6 @@ const TimerMusicPlayer: React.FC = () => {
 
           <SliderCustom state={ volume } setState={ setVolume } title={ 'Set the volume' } />
         
-        </PopoverContent>
-      </Popover>
     </div>
   );
 };

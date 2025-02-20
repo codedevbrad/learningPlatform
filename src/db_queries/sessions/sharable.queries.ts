@@ -2,7 +2,7 @@
 import prisma from '../../../prisma/client'
 import { subHours, isBefore } from 'date-fns'
 import { ProposedSession, Sessions, USERTYPE } from '@prisma/client'
-import { db_fetchUser, getUserByuuid } from '@/db_queries/user/queries'
+import { getUserByuuid } from '@/db_queries/user/queries'
 
 interface DbGetProposedSessionParams {
   studentId: string;

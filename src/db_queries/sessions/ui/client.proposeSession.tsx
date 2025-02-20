@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { format, formatDistance } from "date-fns";
-import { Button } from "@/components/ui/button";
-import Calendar from '@/components/custom/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
-import useSWR, { mutate } from "swr";
-import { action__getProposedSession, action__proposeSession, action__acceptProposal } from "./client.actions";
+import * as React from "react"
+import { format, formatDistance } from "date-fns"
+import { Button } from "@/components/ui/button"
+import Calendar from '@/components/custom/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState, useEffect } from "react"
+import useSWR, { mutate } from "swr"
+import { action__getProposedSession, action__proposeSession, action__acceptProposal } from "./client.actions"
 
 // Additional imports for availability and custom calendar UI:
-import Title from "@/app/reusables/content/title";
-import { fetchAvailability } from "@/app/services/calendar/fetchevents";
+import Title from "@/app/reusables/content/title"
+import { fetchAvailability } from "@/app/services/calendar/fetchevents"
 
 // Utility function to format the session length
 const formatLength = (length: number): string => {
@@ -219,7 +219,11 @@ const SessionProposal: React.FC<SessionProposalProps> = ({ studentId, updateProp
               onChange={(e) => setSessionTitle(e.target.value)}
             />
             <Title title="Pick a Date" variant="subheading3" />
-            <Calendar className='w-full' selectedDate={selectedDate} onDateChange={setSelectedDate} />
+            <Calendar 
+             className='w-full' 
+             selectedDate={selectedDate}
+             onDateChange={setSelectedDate} 
+             blockedDays={[0, 6]} />
           </div>
           
           {loading ? (
@@ -384,7 +388,8 @@ const SessionProposedDisplay: React.FC<SessionProposedDisplayProps> = ({ student
           <p className="text-gray-500 text-md">Loading session details...</p>
         ) : !proposedSession ? (
           <p className="text-gray-500 text-md">
-            Any proposed sessions will appear here. A session needs to be accepted and confirmed by both Student and Teacher.
+            Any proposed sessions will appear here. 
+            A session needs to be accepted and confirmed by both Student and Teacher.
           </p>
         ) : (
           <div className="flex flex-col space-y-5">

@@ -1,10 +1,10 @@
 import { 
     AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
     AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
 
   
-  export default function ConfirmDeleteDialog({ children, onConfirm  }) {
+  export default function ConfirmDActionDialog({ children, onConfirm  }) {
   
     return (
       <AlertDialog>

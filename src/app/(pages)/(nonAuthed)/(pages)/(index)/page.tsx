@@ -1,5 +1,6 @@
 import HeroSection from "./components/hero"
 import FeatureSection from "./components/features"
+import SubscriptionPlan from "@/app/reusables/app/subscription"
 import FAQSection from "./components/faqs"
 import Testimonials from "./components/testimonials"
 import LearningeSection from "./components/learning"
@@ -13,6 +14,7 @@ export default function Page () {
           <HeroSection />
           <VideoWelcome />
           <LearningeSection />
+          <SubscriptionPlan />
           <TaughtSection />
           <FeatureSection />
           <FAQSection />
